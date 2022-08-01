@@ -1,0 +1,59 @@
+/*
+* Copyright 2021 Adobe. All rights reserved.
+* This file is licensed to you under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License. You may obtain a copy
+* of the License at http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software distributed under
+* the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+* OF ANY KIND, either express or implied. See the License for the specific language
+* governing permissions and limitations under the License.
+*/
+
+main .embed {
+  max-height: 600px;
+  width: unset;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 64px;
+}
+
+main .embed img {
+  max-width: 100%;
+}
+
+main .embed.embed-instagram {
+  max-width: fit-content;
+}
+
+main .embed.embed-instagram iframe.instagram-media {
+  border: 1px solid var(--color-gray-200);
+  background: white;
+  border-radius: 4px;
+  height: 462px;
+  width: 320px;
+}
+
+@media (min-width: 600px) {
+    main .embed.embed-instagram {
+        max-height: unset; 
+    }
+    
+    main .embed.embed-instagram iframe.instagram-media {
+        width: 550px;
+        height: 758px;
+    }
+}
+
+main .embed.embed-twitter {
+  max-height: unset;
+}
+
+main .embed.embed-tiktok {
+  max-height: unset;
+}
+
+main .embed.embed-twitter .twitter-tweet-rendered {
+  margin-left: auto;
+  margin-right: auto;
+}
