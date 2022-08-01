@@ -32,11 +32,9 @@ const embedYoutube = (url) => {
 const embedInstagram = (url) => {
   const endingSlash = url.pathname.endsWith('/') ? '' : '/';
   const location = window.location.href.endsWith('.html') ? window.location.href : `${window.location.href}.html`;
-  const src = `${url.origin}${url.pathname}${endingSlash}embed/?cr=1&amp;v=13&amp;wp=1316&amp;rd=${location}`;
-  const embedHTML = `<div style="width: 100%; position: relative; display: flex; justify-content: center">
-      <iframe class="instagram-media instagram-media-rendered" id="instagram-embed-0" src="${src}"
-        allowtransparency="true" allowfullscreen="true" frameborder="0" loading="lazy">
-      </iframe>
+  const src = `${url.origin}${url.pathname}${endingSlash}embed/captioned/?cr=1&amp;v=10&amp;wp=1080&amp;rd=${location}`;
+  const embedHTML = `<div>
+    <iframe class="instagram-media instagram-media-rendered" id="instagram-embed-0" src="${src}" allowtransparency="true" allowfullscreen="true" frameborder="0" height="975" data-instgrm-payload-id="instagram-media-payload-0" scrolling="no" style="background: white; max-width: 540px; width: calc(100% - 2px); border-radius: 3px; border: 1px solid rgb(219, 219, 219); box-shadow: none; display: block; margin: 0px 0px 12px; min-width: 326px; padding: 0px;"></iframe>
     </div>`;
   return embedHTML;
 };
@@ -106,7 +104,7 @@ const loadEmbed = (block, link) => {
   const url = new URL(link);
   if (config) {
     block.innerHTML = config.embed(url);
-    block.classList = `block embed embed-${config.type}`;
+    block.classList = `block embed embed-${config.match[0]}`;
   } else {
     block.innerHTML = getDefaultEmbed(url);
     block.classList = 'block embed';
