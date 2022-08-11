@@ -29,16 +29,6 @@ const embedYoutube = (url) => {
   return embedHTML;
 };
 
-const embedInstagram = (url) => {
-  const endingSlash = url.pathname.endsWith('/') ? '' : '/';
-  const location = window.location.href.endsWith('.html') ? window.location.href : `${window.location.href}.html`;
-  const src = `${url.origin}${url.pathname}${endingSlash}embed/captioned/?cr=1&amp;v=10&amp;wp=1080&amp;rd=${location}`;
-  const embedHTML = `<div>
-    <iframe class="instagram-media instagram-media-rendered" id="instagram-embed-0" src="${src}" allowtransparency="true" allowfullscreen="true" frameborder="0" height="975" data-instgrm-payload-id="instagram-media-payload-0" scrolling="no" style="background: white; max-width: 540px; width: calc(100% - 2px); border-radius: 3px; border: 1px solid rgb(219, 219, 219); box-shadow: none; display: block; margin: 0px 0px 12px; min-width: 326px; padding: 0px;"></iframe>
-    </div>`;
-  return embedHTML;
-};
-
 const embedVimeo = (url) => {
   const video = url.pathname.split('/')[1];
   const embedHTML = `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
@@ -56,22 +46,6 @@ const embedTwitter = (url) => {
   return embedHTML;
 };
 
-const embedTiktok = (url) => {
-  const resultHtml = document.createElement('div');
-  resultHtml.setAttribute('id', 'tiktok');
-
-  const tiktokBuild = async (fetchUrl) => {
-    loadScript('https://www.tiktok.com/embed.js');
-    const response = await fetch(fetchUrl);
-    const json = await response.json();
-    const tiktok = document.getElementById('tiktok');
-    tiktok.outerHTML = json.html;
-  };
-  tiktokBuild(`https://www.tiktok.com/oembed?url=${url}`);
-
-  return resultHtml.outerHTML;
-};
-
 const loadEmbed = (block, link) => {
   if (block.classList.contains('embed-is-loaded')) {
     return;
@@ -83,20 +57,12 @@ const loadEmbed = (block, link) => {
       embed: embedYoutube,
     },
     {
-      match: ['instagram'],
-      embed: embedInstagram,
-    },
-    {
       match: ['vimeo'],
       embed: embedVimeo,
     },
     {
       match: ['twitter'],
       embed: embedTwitter,
-    },
-    {
-      match: ['tiktok'],
-      embed: embedTiktok,
     },
   ];
 
