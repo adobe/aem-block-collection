@@ -5,8 +5,8 @@ const loadScript = (url, callback, type) => {
   if (type) {
     script.setAttribute('type', type);
   }
-  head.append(script);
   script.onload = callback;
+  head.append(script);
   return script;
 };
 
