@@ -23,11 +23,11 @@ async function loadFragment(path) {
 export default async function decorate(block) {
   const ref = block.textContent.trim();
   const path = new URL(ref, window.location.href).pathname.split('.')[0];
-  const main = await loadFragment(path);
-  const blockSection = block.closest('.section');
-  const fragmentSection = main.querySelector(':scope .section');
-  while (fragmentSection && fragmentSection.firstChild) {
-    blockSection.insertBefore(fragmentSection.firstChild, block.closest('.fragment-wrapper'));
+  const fragment = await loadFragment(path);
+  if (fragment) {
+    const fragmentSection = fragment.querySelector(':scope .section');
+    if (fragmentSection) {
+      block.closest('.fragment-wrapper').replaceWith(...fragmentSection.childNodes);
+    }
   }
-  block.closest('.fragment-wrapper').remove();
 }
