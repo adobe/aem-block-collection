@@ -9,20 +9,22 @@ import {
  * @returns {HTMLElement} The root element of the fragment
  */
 async function loadFragment(path) {
-  const resp = await fetch(`${path}.plain.html`);
-  if (resp.ok) {
-    const main = document.createElement('main');
-    main.innerHTML = await resp.text();
-    decorateMain(main);
-    await loadBlocks(main);
-    return main;
+  if (path && path.startsWith('/')) {
+    const resp = await fetch(`${path}.plain.html`);
+    if (resp.ok) {
+      const main = document.createElement('main');
+      main.innerHTML = await resp.text();
+      decorateMain(main);
+      await loadBlocks(main);
+      return main;
+    }
   }
   return null;
 }
 
 export default async function decorate(block) {
-  const ref = block.textContent.trim();
-  const path = new URL(ref, window.location.href).pathname.split('.')[0];
+  const link = block.querySelector('a');
+  const path = link ? link.getAttribute('href') : block.textContent.trim();
   const fragment = await loadFragment(path);
   if (fragment) {
     const fragmentSection = fragment.querySelector(':scope .section');
