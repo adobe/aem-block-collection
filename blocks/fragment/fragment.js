@@ -1,3 +1,9 @@
+/*
+ * Fragment Block
+ * Include content from one Helix page in another.
+ * https://www.hlx.live/developer/block-collection/fragment
+ */
+
 import {
   decorateMain,
   loadBlocks,
