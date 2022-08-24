@@ -1,3 +1,9 @@
+/*
+ * Embed Block
+ * Show videos and social posts directly on your page
+ * https://www.hlx.live/developer/block-collection/embed
+ */
+
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
   const script = document.createElement('script');
@@ -18,10 +24,10 @@ const getDefaultEmbed = (url) => `<div style="left: 0; width: 100%; height: 0; p
 
 const embedYoutube = (url) => {
   const usp = new URLSearchParams(url.search);
-  let vid = usp.get('v');
+  let vid = encodeURIComponent(usp.get('v'));
   const embed = url.pathname;
   if (url.origin.includes('youtu.be')) {
-    vid = url.pathname.substring(1);
+    vid = encodeURIComponent(url.pathname.substring(1));
   }
   const embedHTML = `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
       <iframe src="https://www.youtube.com${vid ? `/embed/${vid}?rel=0&amp;v=${vid}` : embed}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allow="encrypted-media; accelerometer; gyroscope; picture-in-picture" allowfullscreen="" scrolling="no" title="Content from Youtube" loading="lazy"></iframe>
@@ -30,7 +36,7 @@ const embedYoutube = (url) => {
 };
 
 const embedVimeo = (url) => {
-  const video = url.pathname.split('/')[1];
+  const video = encodeURIComponent(url.pathname.split('/')[1]);
   const embedHTML = `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
       <iframe src="https://player.vimeo.com/video/${video}" 
       style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" 
@@ -41,7 +47,7 @@ const embedVimeo = (url) => {
 };
 
 const embedTwitter = (url) => {
-  const embedHTML = `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;
+  const embedHTML = `<blockquote class="twitter-tweet"><a href="${encodeURI(url)}"></a></blockquote>`;
   loadScript('https://platform.twitter.com/widgets.js');
   return embedHTML;
 };
