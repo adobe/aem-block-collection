@@ -1,0 +1,16 @@
+main .embed {
+  width: unset;
+  text-align: center;
+  max-width: 800px;
+  margin: 32px auto;
+}
+
+main .embed > div {
+  display: flex;
+  justify-content: center;
+}
+
+main .embed.embed-twitter .twitter-tweet-rendered {
+  margin-left: auto;
+  margin-right: auto;
+}
