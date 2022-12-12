@@ -21,6 +21,7 @@ describe('Fragment block', () => {
     const section = document.querySelector('.section');
     await sectionLoaded(section);
     expect(section.textContent.trim()).to.equal('Hello world!');
+    expect(section.classList.contains('example-container')).to.be.true;
     expect(document.querySelectorAll('.fragment').length).to.equal(1);
   });
 });

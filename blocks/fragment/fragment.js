@@ -6,8 +6,11 @@
 
 import {
   decorateMain,
-  loadBlocks,
 } from '../../scripts/scripts.js';
+
+import {
+  loadBlocks,
+} from '../../scripts/lib-franklin.js';
 
 /**
  * Loads a fragment.
@@ -35,6 +38,7 @@ export default async function decorate(block) {
   if (fragment) {
     const fragmentSection = fragment.querySelector(':scope .section');
     if (fragmentSection) {
+      block.closest('.section').classList.add(...fragmentSection.classList);
       block.closest('.fragment-wrapper').replaceWith(...fragmentSection.childNodes);
     }
   }
