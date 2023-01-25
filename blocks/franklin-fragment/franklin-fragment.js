@@ -27,7 +27,7 @@ export class FranklinFragment extends HTMLElement {
           throw "franklin-fragment missing url attribute";
         }
 
-        const { href, origin } = new URL(urlAttribute.value);
+        const { href, origin } = new URL(`${urlAttribute.value}.plain.html`);
 
         // Load fragment
         const resp = await fetch(href);
