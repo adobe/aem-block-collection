@@ -49,33 +49,36 @@ export class FranklinFragment extends HTMLElement {
         // Query all the blocks in the fragment
         const blockElements = main.querySelectorAll(':scope > div > div');
 
-        // Get the block names
-        const blocks = Array.from(blockElements).map((block) => block.classList.item(0));
+        // Did we find any blocks or all default content?
+        if(blockElements.length > 0) {
+          // Get the block names
+          const blocks = Array.from(blockElements).map((block) => block.classList.item(0));
 
-        // Load scripts file for fragment host site
-        const scriptsFile = `${origin}/scripts/scripts.js`;
-        await this.importScript(scriptsFile);
+          // Load scripts file for fragment host site
+          const scriptsFile = `${origin}/scripts/scripts.js`;
+          await this.importScript(scriptsFile);
 
-        const { decorateMain } = await import(`${origin}/scripts/scripts.js`);
-        if (decorateMain) {
-          await decorateMain(main);
-        }
-        
-        // For each block in the fragment load it's js/css
-        blocks.forEach(async (blockName) => {
-          const block = main.querySelector(`.${blockName}`);
-          const link = document.createElement('link');
-          link.setAttribute('rel', 'stylesheet');
-          link.setAttribute('href', `${origin}/blocks/${blockName}/${blockName}.css`);
-          main.appendChild(link);
-
-          const blockScriptUrl = `${origin}/blocks/${blockName}/${blockName}.js`;
-          await this.importScript(blockScriptUrl);
-          const decorateBlock = await import(blockScriptUrl);
-          if (decorateBlock.default) {
-            await decorateBlock.default(block);
+          const { decorateMain } = await import(`${origin}/scripts/scripts.js`);
+          if (decorateMain) {
+            await decorateMain(main);
           }
-        })
+          
+          // For each block in the fragment load it's js/css
+          blocks.forEach(async (blockName) => {
+            const block = main.querySelector(`.${blockName}`);
+            const link = document.createElement('link');
+            link.setAttribute('rel', 'stylesheet');
+            link.setAttribute('href', `${origin}/blocks/${blockName}/${blockName}.css`);
+            main.appendChild(link);
+
+            const blockScriptUrl = `${origin}/blocks/${blockName}/${blockName}.js`;
+            await this.importScript(blockScriptUrl);
+            const decorateBlock = await import(blockScriptUrl);
+            if (decorateBlock.default) {
+              await decorateBlock.default(block);
+            }
+          })
+        }
 
         // Append the fragment to the shadow dom
         if(this.shadowRoot) {
