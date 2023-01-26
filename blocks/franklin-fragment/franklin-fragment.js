@@ -32,7 +32,7 @@ export class FranklinFragment extends HTMLElement {
         // Load fragment
         const resp = await fetch(href);
         if (!resp.ok) {
-          throw `Enable to fetch ${href}`;
+          throw `Unable to fetch ${href}`;
         }
 
         const main = document.createElement('main');
