@@ -1,5 +1,6 @@
+/* eslint-disable import/prefer-default-export, prefer-regex-literals, class-methods-use-this */
 /*
- * Franklin Fragment WebComponent 
+ * Franklin Fragment WebComponent
  * Include content from one Helix page in another.
  * https://www.hlx.live/developer/block-collection/TBD
  */
@@ -9,7 +10,7 @@ export class FranklinFragment extends HTMLElement {
 
     // Attaches a shadow DOM tree to the element
     // With mode open the shadow root elements are accessible from JavaScript outside the root
-    this.attachShadow({mode: 'open'});
+    this.attachShadow({ mode: 'open' });
 
     // Keep track if we have rendered the fragment yet.
     this.initialized = false;
@@ -17,14 +18,18 @@ export class FranklinFragment extends HTMLElement {
 
   /**
    * Invoked each time the custom element is appended into a document-connected element.
-   * This will happen each time the node is moved, and may happen before the element's contents have been fully parsed.
+   * This will happen each time the node is moved, and may
+   * happen before the element's contents have been fully parsed.
    */
   async connectedCallback() {
-    if(!this.initialized) {
+    if (!this.initialized) {
       try {
+        // Set initialized to true so we don't run through this again
+        this.initialized = true;
+
         const urlAttribute = this.attributes.getNamedItem('url');
-        if(!urlAttribute) {
-          throw "franklin-fragment missing url attribute";
+        if (!urlAttribute) {
+          throw new Error('franklin-fragment missing url attribute');
         }
 
         const { href, origin } = new URL(`${urlAttribute.value}.plain.html`);
@@ -32,7 +37,7 @@ export class FranklinFragment extends HTMLElement {
         // Load fragment
         const resp = await fetch(href);
         if (!resp.ok) {
-          throw `Unable to fetch ${href}`;
+          throw new Error(`Unable to fetch ${href}`);
         }
 
         const main = document.createElement('main');
@@ -43,14 +48,11 @@ export class FranklinFragment extends HTMLElement {
         htmlText = htmlText.replace(regex, `${origin}/media`);
         main.innerHTML = htmlText;
 
-        // Set initialized to true so we don't run through this again
-        this.initialized = true;
-
         // Query all the blocks in the fragment
         const blockElements = main.querySelectorAll(':scope > div > div');
 
         // Did we find any blocks or all default content?
-        if(blockElements.length > 0) {
+        if (blockElements.length > 0) {
           // Get the block names
           const blocks = Array.from(blockElements).map((block) => block.classList.item(0));
 
@@ -58,11 +60,11 @@ export class FranklinFragment extends HTMLElement {
           const scriptsFile = `${origin}/scripts/scripts.js`;
           await this.importScript(scriptsFile);
 
-          const { decorateMain } = await import(`${origin}/scripts/scripts.js`);
+          const { decorateMain } = await import(/* webpackIgnore: true */`${origin}/scripts/scripts.js`);
           if (decorateMain) {
             await decorateMain(main);
           }
-          
+
           // For each block in the fragment load it's js/css
           blocks.forEach(async (blockName) => {
             const block = main.querySelector(`.${blockName}`);
@@ -73,27 +75,27 @@ export class FranklinFragment extends HTMLElement {
 
             const blockScriptUrl = `${origin}/blocks/${blockName}/${blockName}.js`;
             await this.importScript(blockScriptUrl);
-            const decorateBlock = await import(blockScriptUrl);
+            const decorateBlock = await import(/* webpackIgnore: true */blockScriptUrl);
             if (decorateBlock.default) {
               await decorateBlock.default(block);
             }
-          })
+          });
         }
 
         // Append the fragment to the shadow dom
-        if(this.shadowRoot) {
+        if (this.shadowRoot) {
           this.shadowRoot.append(main);
         }
-      }catch(err){
-        console.log(err ?? "An error occured while loading the fragment");
+      } catch (err) {
+        console.log(err ?? 'An error occured while loading the fragment'); // eslint-disable-line no-console
       }
     }
   }
 
   /**
    * Imports a script and appends to document body
-   * @param {*} url 
-   * @returns 
+   * @param {*} url
+   * @returns
    */
   async importScript(url) {
     return new Promise((resolve, reject) => {
@@ -108,3 +110,5 @@ export class FranklinFragment extends HTMLElement {
     });
   }
 }
+
+customElements.define('franklin-fragment', FranklinFragment);
