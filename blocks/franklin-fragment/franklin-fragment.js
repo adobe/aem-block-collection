@@ -1,9 +1,9 @@
-/* eslint-disable import/prefer-default-export, prefer-regex-literals, class-methods-use-this */
 /*
  * Franklin Fragment WebComponent
  * Include content from one Helix page in another.
  * https://www.hlx.live/developer/block-collection/TBD
  */
+// eslint-disable-next-line import/prefer-default-export
 export class FranklinFragment extends HTMLElement {
   constructor() {
     super();
@@ -44,7 +44,7 @@ export class FranklinFragment extends HTMLElement {
         let htmlText = await resp.text();
 
         // Fix relative image urls
-        const regex = new RegExp('./media', 'g');
+        const regex = /.\/media/g;
         htmlText = htmlText.replace(regex, `${origin}/media`);
         main.innerHTML = htmlText;
 
@@ -97,6 +97,7 @@ export class FranklinFragment extends HTMLElement {
    * @param {*} url
    * @returns
    */
+  // eslint-disable-next-line class-methods-use-this
   async importScript(url) {
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
