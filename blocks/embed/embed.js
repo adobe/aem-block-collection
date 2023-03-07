@@ -25,6 +25,7 @@ const getDefaultEmbed = (url) => `<div style="left: 0; width: 100%; height: 0; p
 const embedYoutube = (url, autoplay) => {
   const usp = new URLSearchParams(url.search);
   const suffix = autoplay ? '&muted=1&autoplay=1' : '';
+  
   let vid = usp.get('v') ? encodeURIComponent(usp.get('v')) : '';
   const embed = url.pathname;
   if (url.origin.includes('youtu.be')) {
