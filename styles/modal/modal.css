@@ -1,0 +1,49 @@
+dialog button[name='close'] {
+  height: 22px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: inherit;
+  overflow: initial;
+  text-overflow: initial;
+  white-space: initial;
+}
+
+dialog .close-x,
+dialog .close-x::before,
+dialog .close-x::after {
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+  width: 20px;
+}
+
+dialog .close-x::before,
+dialog .close-x::after {
+  content: '';
+  position: absolute;
+  background: currentcolor;
+  top: 3px;
+  left: 1px;
+  transform: rotate(45deg);
+  transform-origin: 2px 1px;
+  width: 24px;
+  height: 2px;
+  border-radius: 2px;
+}
+
+dialog .close-x {
+  height: 22px;
+}
+
+dialog .close-x::after {
+  top: unset;
+  bottom: 3px;
+  transform: rotate(-45deg);
+}
+
+dialog::backdrop {
+  background-color: rgb(0 0 0 / 50%);
+}
