@@ -10,7 +10,7 @@ import {
 
 import {
   loadBlocks,
-} from '../../scripts/lib-franklin.js';
+} from '../../scripts/aem.js';
 
 /**
  * Loads a fragment.
