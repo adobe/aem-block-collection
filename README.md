@@ -1,5 +1,6 @@
-# Your Project's Title...
-Your project's description...
+# Block collection
+
+This project contains code that is feature on the [AEM Block Collection](https://www.aem.live/developer/block-collection#block-collection-1) documentation.
 
 ## Environments
 - Preview: https://main--{repo}--{owner}.hlx.page/
