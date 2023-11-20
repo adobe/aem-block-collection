@@ -22,6 +22,8 @@ describe('Fragment block', () => {
     await sectionLoaded(section);
     expect(section.textContent.trim()).to.equal('Hello world!');
     expect(section.classList.contains('example-container')).to.be.true;
+    expect(section.classList.contains('example-style')).to.be.true;
+    expect(section.dataset.exampleData).to.equals('Example Value');
     expect(document.querySelectorAll('.fragment').length).to.equal(1);
   });
 });
