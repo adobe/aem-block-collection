@@ -40,7 +40,7 @@ export default async function decorate(block) {
     if (fragmentSection) {
       const mainSection = block.closest('.section');
       mainSection.classList.add(...fragmentSection.classList);
-      // destination file metadata overrides the fragment metadata in case of conflicts
+      // in case of conflicts, the destination section's dataset wins
       const mergedDataset = { ...fragmentSection.dataset, ...mainSection.dataset };
       Object.keys(mergedDataset).forEach((key) => {
         mainSection.dataset[key] = mergedDataset[key];
