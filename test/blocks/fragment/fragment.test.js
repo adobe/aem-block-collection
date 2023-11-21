@@ -20,7 +20,6 @@ describe('Fragment block', () => {
     await import('../../../scripts/scripts.js');
     const section = document.querySelector('.section');
     await sectionLoaded(section);
-
     expect(section.textContent.trim()).to.equal('Hello world!');
     expect(section.classList.contains('example-container')).to.be.true;
     expect(section.classList.contains('example-style')).to.be.true;
