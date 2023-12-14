@@ -1,27 +1,27 @@
-main .embed {
+.embed {
   width: unset;
   text-align: center;
   max-width: 800px;
   margin: 32px auto;
 }
 
-main .embed > div {
+.embed > div {
   display: flex;
   justify-content: center;
 }
 
-main .embed.embed-twitter .twitter-tweet-rendered {
+.embed.embed-twitter .twitter-tweet-rendered {
   margin-left: auto;
   margin-right: auto;
 }
 
-main .embed .embed-placeholder {
+.embed .embed-placeholder {
   width: 100%;
   aspect-ratio: 16 / 9;
   position: relative;
 }
 
-main .embed .embed-placeholder > * {
+.embed .embed-placeholder > * {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,13 +32,13 @@ main .embed .embed-placeholder > * {
   bottom: 0;
 }
 
-main .embed .embed-placeholder picture img {
+.embed .embed-placeholder picture img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-main .embed .embed-placeholder-play button {
+.embed .embed-placeholder-play button {
   box-sizing: border-box;
   position: relative;
   display: block;
@@ -50,7 +50,7 @@ main .embed .embed-placeholder-play button {
   padding: 0;
 }
 
-main .embed .embed-placeholder-play button::before {
+.embed .embed-placeholder-play button::before {
   content: "";
   display: block;
   box-sizing: border-box;
