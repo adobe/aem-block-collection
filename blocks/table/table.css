@@ -10,13 +10,13 @@
   font-size: var(--body-font-size-xs);
 }
 
-@media (min-width: 600px) {
+@media (width >= 600px) {
   .table table {
     font-size: var(--body-font-size-s);
   }
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   .table table {
     font-size: var(--body-font-size-m);
   }
