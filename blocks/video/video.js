@@ -4,7 +4,7 @@
  * https://www.hlx.live/developer/block-collection/video
  */
 
-getVideoElement = (source, autoplay) => {
+const getVideoElement = (source, autoplay) => {
   const video = document.createElement('video');
   video.setAttribute('controls', '');
   if (autoplay) video.setAttribute('autoplay', '');
@@ -20,20 +20,19 @@ getVideoElement = (source, autoplay) => {
 export default async function decorate(block) {
   const a = block.querySelector('a');
   if (a) {
+    const source = a.href;
     const pic = block.querySelector('picture');
+    block.innerHTML = '';
     if (pic) {
       const wrapper = document.createElement('div');
       wrapper.className = 'video-placeholder';
       wrapper.innerHTML = '<div class="video-placeholder-play"><button title="Play"></button></div>';
       wrapper.prepend(pic);
       wrapper.addEventListener('click', () => {
-        block.innerHTML = '';
-        wrapper.replaceWith(getVideoElement(a.href, true));
+        wrapper.replaceWith(getVideoElement(source, true));
       });
       block.append(wrapper);
     } else {
-      const source = a.href;
-      block.innerHTML = '';
       block.append(getVideoElement(source, false));
     }
   }
