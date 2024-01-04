@@ -28,7 +28,7 @@ export default async function decorate(block) {
       wrapper.className = 'video-placeholder';
       wrapper.innerHTML = '<div class="video-placeholder-play"><button title="Play"></button></div>';
       wrapper.prepend(pic);
-      wrapper.addEventListener('click', () => {
+      wrapper.querySelector('.video-placeholder-play button').addEventListener('click', () => {
         wrapper.replaceWith(getVideoElement(source, true));
       });
       block.append(wrapper);
