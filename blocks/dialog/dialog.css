@@ -1,0 +1,47 @@
+.dialog.block dialog {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  max-width: 40vw;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.dialog.block :is(h1,h2,h3,h4,h5,h6):first-child {
+  margin-top: 0;
+}
+
+.dialog.block dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialog.block .modal-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 100%;
+  max-height: calc((1.5rem * 2) + 18px);
+  border-radius: 0 16px 0 0;
+  background-color: unset;
+  margin: 0;
+}
+
+.dialog.block .modal-close::before {
+  transform: rotate(45deg);
+}
+
+.dialog.block .modal-close::after {
+  transform: rotate(-45deg);
+}
+
+.dialog.block .modal-close::before,
+.dialog.block .modal-close::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 18px;
+  right: 1.5rem;
+  width: 2px;
+  height: 1.5rem;
+  background-color: var(--text-color);
+}
