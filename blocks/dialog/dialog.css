@@ -4,10 +4,6 @@
   border-radius: 10px;
   left: 20px;
   right: 20px;
-  top: 0;
-  bottom: 0;
-  margin-top: 10px;
-  margin-bottom: 20px;
   width: clamp(300px, 80%, 600px);
 }
 
