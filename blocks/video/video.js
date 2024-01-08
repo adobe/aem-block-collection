@@ -26,7 +26,7 @@ export default async function decorate(block) {
     if (pic) {
       const wrapper = document.createElement('div');
       wrapper.className = 'video-placeholder';
-      wrapper.innerHTML = '<div class="video-placeholder-play"><button title="Play"></button></div>';
+      wrapper.innerHTML = '<div class="video-placeholder-play"><button type="button" title="Play"></button></div>';
       wrapper.prepend(pic);
       wrapper.querySelector('.video-placeholder-play button').addEventListener('click', () => {
         wrapper.replaceWith(getVideoElement(source, true));
