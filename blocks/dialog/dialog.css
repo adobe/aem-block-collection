@@ -7,10 +7,6 @@
   width: clamp(300px, 80%, 700px);
 }
 
-.dialog.block dialog :is(h1,h2,h3,h4,h5,h6):first-of-type {
-  margin-top: 0;
-}
-
 .dialog.block dialog::backdrop {
   background-color: rgb(0 0 0 / 50%);
 }
