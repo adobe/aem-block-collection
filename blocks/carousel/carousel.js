@@ -26,11 +26,9 @@ function showSlide(block, slideIndex = 0, scroll = true) {
   const indicators = block.querySelectorAll('.carousel-slide-indicator');
   indicators.forEach((indicator) => {
     indicator.querySelector('button').removeAttribute('disabled');
-    indicator.setAttribute('aria-selected', 'false');
   });
   const activeIndicator = indicators[realSlideIndex];
   activeIndicator.querySelector('button').setAttribute('disabled', 'true');
-  activeIndicator.setAttribute('aria-selected', 'true');
 
   block.dataset.activeSlide = realSlideIndex;
 }
