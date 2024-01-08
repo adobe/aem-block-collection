@@ -1,15 +1,5 @@
 .accordion details {
   border: 1px solid var(--dark-color);
-  transition: background-color 0.2s;
-}
-
-.accordion details[open] {
-  background-color: var(--light-color);
-}
-
-.accordion details:focus,
-.accordion details:hover {
-  background-color: var(--dark-color);
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
@@ -24,6 +14,16 @@
   cursor: pointer;
   list-style: none;
   overflow: auto;
+  transition: background-color 0.2s;
+}
+
+.accordion details[open] summary {
+  background-color: var(--light-color);
+}
+
+.accordion details summary:focus,
+.accordion details summary:hover {
+  background-color: var(--dark-color);
 }
 
 .accordion details summary::-webkit-details-marker {
@@ -49,7 +49,6 @@
 
 .accordion details .accordion-item-body {
   padding: 0 16px;
-  overflow: auto;
 }
 
 .accordion details[open] .accordion-item-body {
