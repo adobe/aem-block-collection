@@ -1,33 +1,32 @@
-.accordion > div {
-  position: relative;
-  border: 1px solid var(--light-color);
-}
-
-.accordion > div:not(:first-of-type) {
-  margin-top: 16px;
-}
-
-.accordion button {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  border: 0;
-  border-radius: 0;
-  padding: 0 48px 0 16px;
-  background-color: initial;
-  color: initial;
-  font-size: unset;
-  font-weight: initial;
-  line-height: unset;
-  text-align: initial;
-  text-overflow: unset;
-  overflow: unset;
-  white-space: unset;
+.accordion details {
+  border: 1px solid var(--dark-color);
   transition: background-color 0.2s;
 }
 
-.accordion button::after {
+.accordion details[open] {
+  background-color: var(--light-color);
+}
+
+.accordion details:focus,
+.accordion details:hover {
+  background-color: var(--dark-color);
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.accordion details + details {
+  margin-top: 16px;
+}
+
+.accordion details summary {
+  position: relative;
+  padding: 0 16px;
+  padding-right: 48px;
+  cursor: pointer;
+  list-style: none;
+  overflow: auto;
+}
+
+.accordion details summary::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -40,19 +39,16 @@
   transition: transform 0.2s;
 }
 
-.accordion button:hover,
-.accordion button:focus {
-  background-color: var(--light-color);
-}
-
-.accordion button[aria-expanded="true"] {
-  background-color: var(--dark-color);
-}
-
-.accordion button[aria-expanded="true"]::after {
+.accordion details[open] summary::after {
   transform: translateY(-50%) rotate(-45deg);
 }
 
-.accordion .accordion-content {
-  margin: 16px;
+.accordion details .accordion-item-body {
+  padding: 0 16px;
+  overflow: auto;
+}
+
+.accordion details[open] .accordion-item-body {
+  border-top: 1px solid var(--dark-color);
+  background-color: var(--background-color);
 }
