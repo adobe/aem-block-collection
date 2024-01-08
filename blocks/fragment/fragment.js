@@ -38,7 +38,13 @@ export default async function decorate(block) {
   if (fragment) {
     const fragmentSection = fragment.querySelector(':scope .section');
     if (fragmentSection) {
-      block.closest('.section').classList.add(...fragmentSection.classList);
+      const mainSection = block.closest('.section');
+      mainSection.classList.add(...fragmentSection.classList);
+      // in case of conflicts, the destination section's dataset wins
+      const mergedDataset = { ...fragmentSection.dataset, ...mainSection.dataset };
+      Object.keys(mergedDataset).forEach((key) => {
+        mainSection.dataset[key] = mergedDataset[key];
+      });
       block.closest('.fragment-wrapper').replaceWith(...fragmentSection.childNodes);
     }
   }
