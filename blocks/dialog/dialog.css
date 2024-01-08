@@ -7,7 +7,7 @@
   width: clamp(300px, 80%, 700px);
 }
 
-.dialog.block :is(h1,h2,h3,h4,h5,h6):first-child {
+.dialog.block dialog :is(h1,h2,h3,h4,h5,h6):first-of-type {
   margin-top: 0;
 }
 
