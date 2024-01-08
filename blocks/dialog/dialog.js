@@ -5,9 +5,10 @@ export default async function decorate(block) {
 
   const dialog = document.createElement('dialog');
   const closeButton = document.createElement('button');
-  closeButton.classList.add('modal-close');
+  closeButton.classList.add('close-button');
   closeButton.setAttribute('aria-label', 'Close');
   closeButton.type = 'button';
+  closeButton.textContent = '×';
   closeButton.addEventListener('click', () => dialog.close());
   dialog.append(closeButton);
 

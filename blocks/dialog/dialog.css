@@ -14,34 +14,22 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.dialog.block .modal-close {
+.dialog.block .close-button {
   position: absolute;
   top: 0;
   right: 0;
   width: 20px;
   height: 100%;
-  max-height: calc((1.5rem * 2) + 18px);
+  max-height: 66px;
   border-radius: 0 16px 0 0;
   background-color: unset;
   margin: 0;
+  border: none;
+  padding-right: 46px;
+
+  color: black;
+  font-size: 34px;
+  font-weight: lighter;
+  font-family: monospace;
 }
 
-.dialog.block .modal-close::before {
-  transform: rotate(45deg);
-}
-
-.dialog.block .modal-close::after {
-  transform: rotate(-45deg);
-}
-
-.dialog.block .modal-close::before,
-.dialog.block .modal-close::after {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 18px;
-  right: 1.5rem;
-  width: 2px;
-  height: 1.5rem;
-  background-color: var(--text-color);
-}
