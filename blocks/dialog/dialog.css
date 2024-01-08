@@ -2,8 +2,10 @@
   border: 1px solid #ccc;
   border-radius: 10px;
   max-width: 40vw;
+  min-height: 20rem;
   margin-top: 40px;
   margin-bottom: 40px;
+  overscroll-behavior: none;
 }
 
 .dialog.block :is(h1,h2,h3,h4,h5,h6):first-child {
@@ -11,7 +13,7 @@
 }
 
 .dialog.block dialog::backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgb(0 0 0 / 50%);
 }
 
 .dialog.block .close-button {
@@ -26,10 +28,8 @@
   margin: 0;
   border: none;
   padding-right: 46px;
-
   color: black;
   font-size: 34px;
   font-weight: lighter;
   font-family: monospace;
 }
-

@@ -1,3 +1,4 @@
+// todo: support fragments
 export default async function decorate(block) {
   const button = block.querySelector('.button-container');
   button.remove();
@@ -25,10 +26,6 @@ export default async function decorate(block) {
   block.append(dialog);
 
   block.append(button);
-  button.addEventListener('click', () => {
-    dialog.showModal();
-    document.body.style.overflow = "hidden"
-  });
-  dialog.addEventListener('close', () => document.body.style.overflow = "");
+  button.addEventListener('click', () => dialog.showModal());
 }
 
