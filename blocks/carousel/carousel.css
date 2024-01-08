@@ -32,7 +32,7 @@
 .carousel .carousel-slide-indicators {
   display: flex;
   justify-content: center;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .carousel .carousel-slide-indicator button {
@@ -40,19 +40,20 @@
   height: 1rem;
   padding: 0;
   border-radius: 1rem;
-  background-color: rgba(0, 0, 0, .25);
+  background-color: rgba(0 0 0 / 25%);
 }
 
 .carousel .carousel-slide-indicator button:disabled,
 .carousel .carousel-slide-indicator button:hover,
 .carousel .carousel-slide-indicator button:focus-visible {
-  background-color: rgba(0, 0, 0, .8);
+  background-color: rgba(0 0 0 80%);
 }
 
 .carousel .carousel-slide-indicator span,
-.carousel .carousel-increment-buttons span  {
+.carousel .carousel-increment-buttons span {
   border: 0;
   clip: rect(0 0 0 0);
+  /* stylelint-disable-next-line property-no-vendor-prefix */
   -webkit-clip-path: inset(50%);
   clip-path: inset(50%);
   height: 1px;
@@ -68,13 +69,14 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: .5rem;
-  right: .5rem;
+  left: 0.5rem;
+  right: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .carousel .carousel-increment-buttons button {
   border-radius: 8px;
   margin: 0;
@@ -82,22 +84,22 @@
   width: 2rem;
   height: 2rem;
   position: relative;
-  background-color: rgba(0, 0, 0, .25);
+  background-color: rgba(0 0 0 / 25%);
 }
 
 .carousel .carousel-increment-buttons button:hover,
 .carousel .carousel-increment-buttons button:focus-visible {
-  background-color: rgba(0, 0, 0, .8);
+  background-color: rgba(0 0 0 / 80%);
 }
 
 .carousel .carousel-increment-buttons button::after {
   display: block;
-  content: '';
+  content: "";
   border: 3px white solid;
   border-bottom: 0;
   border-left: 0;
-  height: .75rem;
-  width: .75rem;
+  height: 0.75rem;
+  width: 0.75rem;
   position: absolute;
   top: 50%;
   left: calc(50% + 3px);
@@ -109,12 +111,12 @@
   left: calc(50% - 3px);
 }
 
-@media(min-width: 600px) {
+@media (min-width: 600px) {
   .carousel .carousel-increment-buttons {
     left: 1rem;
     right: 1rem;
   }
-  
+
   .carousel .carousel-increment-buttons button {
     width: 3rem;
     height: 3rem;
