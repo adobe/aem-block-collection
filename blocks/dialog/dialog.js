@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 import { loadFragment } from '../fragment/fragment.js';
-import { decorateButtons } from '../../scripts/aem.js';
+import { decorateButtons, decorateIcons } from '../../scripts/aem.js';
 
 export default async function decorate(block) {
   decorateButtons(block);
@@ -15,7 +15,7 @@ export default async function decorate(block) {
   closeButton.classList.add('close-button');
   closeButton.setAttribute('aria-label', 'Close');
   closeButton.type = 'button';
-  closeButton.textContent = '×';
+  closeButton.innerHTML = '<span class="icon icon-close"></span>';
   closeButton.addEventListener('click', () => dialog.close());
   dialog.append(closeButton);
 
@@ -33,6 +33,7 @@ export default async function decorate(block) {
 
   block.append(button);
   button.addEventListener('click', () => dialog.showModal());
+  decorateIcons(block);
 }
 
 async function addContent(dialog, content, fragmentUrl) {

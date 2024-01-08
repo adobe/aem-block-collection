@@ -20,6 +20,7 @@
   max-height: 66px;
   border-radius: 0 16px 0 0;
   background-color: unset;
+  text-overflow: clip;
   margin: 0;
   border: none;
   padding-right: 46px;
