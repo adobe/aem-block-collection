@@ -26,6 +26,10 @@
   overflow: auto;
 }
 
+.accordion details summary::-webkit-details-marker {
+  display: none;
+}
+
 .accordion details summary::after {
   content: "";
   position: absolute;
