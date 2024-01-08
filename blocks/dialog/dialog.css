@@ -1,10 +1,10 @@
 .dialog.block dialog {
   overscroll-behavior: none;
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 16px;
   left: 20px;
   right: 20px;
-  width: clamp(300px, 80%, 600px);
+  width: clamp(300px, 80%, 700px);
 }
 
 .dialog.block :is(h1,h2,h3,h4,h5,h6):first-child {
