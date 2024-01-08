@@ -1,11 +1,12 @@
-import {loadFragment} from "../fragment/fragment.js";
-import {decorateButtons} from "../../scripts/aem.js";
+/* eslint-disable no-use-before-define */
+import { loadFragment } from '../fragment/fragment.js';
+import { decorateButtons } from '../../scripts/aem.js';
 
 export default async function decorate(block) {
   decorateButtons(block);
   const button = getCell(block, 'button');
   const content = getCell(block, 'content');
-  const fragmentUrl = getCell(block, 'fragment')?.querySelector('a')?.href
+  const fragmentUrl = getCell(block, 'fragment')?.querySelector('a')?.href;
   block.textContent = '';
 
   const dialog = document.createElement('dialog');
@@ -34,7 +35,6 @@ export default async function decorate(block) {
   button.addEventListener('click', () => dialog.showModal());
 }
 
-
 async function addContent(dialog, content, fragmentUrl) {
   if (content) {
     dialog.append(...content.childNodes);
@@ -46,6 +46,6 @@ async function addContent(dialog, content, fragmentUrl) {
 
 function getCell(table, key) {
   const resultRow = Array.from(table.children)
-    .find(row => row.firstElementChild.textContent.toLowerCase() === key.toLowerCase());
+    .find((row) => row.firstElementChild.textContent.toLowerCase() === key.toLowerCase());
   return resultRow?.lastElementChild;
 }
