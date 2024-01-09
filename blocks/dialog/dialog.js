@@ -7,9 +7,18 @@ function getCell(table, key) {
   return resultRow?.lastElementChild;
 }
 
+function formatButton(button) {
+  if (button.classList.contains('button-container')) return button;
+
+  const buttonContainer = document.createElement('div');
+  buttonContainer.classList.add('button-container');
+  buttonContainer.innerHTML = '<a href="#" class="button"></a></div>';
+  buttonContainer.querySelector('a').textContent = button.textContent;
+  return buttonContainer;
+}
+
 export default async function decorate(block) {
-  decorateButtons(block);
-  const button = getCell(block, 'button');
+  const button = formatButton(getCell(block, 'button'));
   const content = getCell(block, 'content');
   const fragmentUrl = getCell(block, 'fragment')?.querySelector('a')?.href;
   block.textContent = '';
@@ -47,4 +56,5 @@ export default async function decorate(block) {
     dialog.showModal();
   });
   decorateIcons(block);
+  decorateButtons(block);
 }
