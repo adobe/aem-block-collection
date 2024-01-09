@@ -20,7 +20,7 @@
   text-overflow: unset;
   overflow: unset;
   white-space: unset;
-  transition: background-color .2s;
+  transition: background-color 0.2s;
 }
 
 .tabs .tabs-list button[aria-selected="true"] {
