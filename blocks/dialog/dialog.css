@@ -1,4 +1,4 @@
-.dialog.block dialog {
+.dialog dialog {
   overscroll-behavior: none;
   border: 1px solid #ccc;
   border-radius: 16px;
@@ -7,11 +7,11 @@
   width: clamp(300px, 80%, 700px);
 }
 
-.dialog.block dialog::backdrop {
+.dialog dialog::backdrop {
   background-color: rgb(0 0 0 / 50%);
 }
 
-.dialog.block .close-button {
+.dialog .close-button {
   position: absolute;
   top: 0;
   right: 0;
