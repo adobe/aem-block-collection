@@ -54,7 +54,7 @@ export default async function decorate(block) {
   block.append(dialog);
 
   block.append(button);
-  button.addEventListener('click', async (e) => {
+  button.firstElementChild.addEventListener('click', async (e) => {
     e.preventDefault();
 
     if (fragmentUrl && !fragmentContentAdded) {
