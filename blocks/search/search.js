@@ -126,6 +126,7 @@ async function renderResults(block, filteredData, searchTerms) {
         (result) => renderResultCard(result, searchTerms),
       ),
     );
+    cards.style.display = 'none';
     searchResults.appendChild(cards);
     decorateBlock(cards);
     await loadBlock(cards);
@@ -135,6 +136,7 @@ async function renderResults(block, filteredData, searchTerms) {
       cardLink.append(...card.children);
       card.append(cardLink);
     });
+    cards.style.display = null;
   }
 }
 
