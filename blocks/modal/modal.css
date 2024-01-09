@@ -1,4 +1,4 @@
-.dialog dialog {
+.modal dialog {
   --dialog-border-radius: 16px;
 
   overscroll-behavior: none;
@@ -9,11 +9,11 @@
   width: clamp(300px, 80%, 700px);
 }
 
-.dialog dialog::backdrop {
+.modal dialog::backdrop {
   background-color: rgb(0 0 0 / 50%);
 }
 
-.dialog .close-button {
+.modal .close-button {
   position: absolute;
   top: 0;
   right: 0;
