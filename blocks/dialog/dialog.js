@@ -28,21 +28,19 @@ export default async function decorate(block) {
     }
   });
 
-  await addContent(dialog, content, fragmentUrl);
   block.append(dialog);
 
   block.append(button);
-  button.addEventListener('click', () => dialog.showModal());
+  button.addEventListener('click', async () => {
+    if (content) {
+      dialog.append(...content.childNodes);
+    } else if (fragmentUrl) {
+      const fragment = await loadFragment(new URL(fragmentUrl.trim()).pathname);
+      dialog.append(...fragment.childNodes);
+    }
+    dialog.showModal();
+  });
   decorateIcons(block);
-}
-
-async function addContent(dialog, content, fragmentUrl) {
-  if (content) {
-    dialog.append(...content.childNodes);
-  } else if (fragmentUrl) {
-    const fragment = await loadFragment(new URL(fragmentUrl.trim()).pathname);
-    dialog.append(...fragment.childNodes);
-  }
 }
 
 function getCell(table, key) {
