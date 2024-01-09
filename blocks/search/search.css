@@ -1,0 +1,30 @@
+.search input {
+  width: calc(100% - 30px);
+  border: solid 1px lightgray;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs);
+}
+
+.search .search-results .search-result {
+  list-style: none;
+}
+
+.search .cards {
+  margin-top: 22px;
+}
+
+.search .cards li a:any-link {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.search.minimal .search-results p {
+  margin-top: 0;
+}
+
+.search.minimal .search-result p:last-child {
+  font-size: var(--body-font-size-xs);
+}

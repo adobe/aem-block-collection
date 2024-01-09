@@ -1,18 +1,52 @@
-import { decorateIcons, readBlockConfig } from '../../scripts/aem.js';
+import { 
+  buildBlock,
+  createOptimizedPicture,
+  decorateBlock,
+  decorateIcons,
+  loadBlock,
+} from '../../scripts/aem.js';
 
-function debounce(func, delay) {
-  let debounceTimer;
-  // eslint-disable-next-line func-names
-  return function (...args) {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      func.apply(this, args);
-    }, delay);
-  };
+function highlightTextElements(terms, elements) {
+  elements.forEach((element) => {
+    if (!element || !element.textContent) return;
+
+    const matches = [];
+    const textContent = element.textContent;
+    terms.forEach((term) => {
+      const offset = textContent.toLowerCase().indexOf(term.toLowerCase());
+      if (offset >= 0) {
+        matches.push({ offset, term: textContent.substring(offset, offset + term.length) });
+      }
+    });
+
+    if (!matches.length) {
+      return;
+    }
+
+    matches.sort((a, b) => a.offset - b.offset);
+    let currentIndex = 0;
+    const fragment = matches.reduce((acc, { offset, term }) => {
+      const textBefore = textContent.substring(currentIndex, offset);
+      if (textBefore) {
+        acc.appendChild(document.createTextNode(textBefore));
+      }
+      const markedTerm  = document.createElement('mark');
+      markedTerm.classList.add('gnav-search-highlight');
+      markedTerm.textContent = term;
+      acc.appendChild(markedTerm);
+      currentIndex = offset + term.length;
+      return acc;
+    }, document.createDocumentFragment());
+    const textAfter = textContent.substring(currentIndex);
+    if (textAfter) {
+      fragment.appendChild(document.createTextNode(textAfter));
+    }
+    element.innerHTML = '';
+    element.appendChild(fragment);
+  });
 }
 
-export async function fetchData(config) {
-  const source = config.source || '/query-index.json';
+export async function fetchData(source) {
   const response = await fetch(source);
   if (!response.ok) {
     // eslint-disable-next-line no-console
@@ -27,41 +61,87 @@ export async function fetchData(config) {
     return null;
   }
 
-  return json;
+  return json.data;
 }
 
-function renderResultLink(result) {
+function renderResultCard(result, searchTerms) {
+  const cardContent = [];
+  if (result.image) {
+    cardContent.push({ elems: [ createOptimizedPicture(result.image, result.title) ]});
+  }
+
+  const cardTitleParagraph = document.createElement('p');
+  const cardTitle = document.createElement('strong');
+  cardTitle.textContent = result.header || result.title;
+  cardTitleParagraph.appendChild(cardTitle);
+
+  const cardDescription = document.createElement('p');
+  cardDescription.textContent = result.description;
+
+  const cardLink = document.createElement('a');
+  cardLink.href = result.path;
+  
+  cardContent.push({ elems: [ cardTitleParagraph, cardDescription, cardLink ]});
+
+  highlightTextElements(searchTerms, [ cardTitle, cardDescription ]);
+  return cardContent;
+}
+
+function renderResultLink(result, searchTerms) {
   const link = document.createElement('a');
   link.href = result.path;
   link.textContent = result.header || result.title;
 
+  const description = document.createElement('p');
+  description.classList.add('description');
+  description.textContent = result.description;
+
   const listItem = document.createElement('li');
   listItem.classList.add('search-result');
-  listItem.append(link);
-  return link;
+  listItem.append(link, description);
+  highlightTextElements(searchTerms, [link, description]);
+
+  return listItem;
 }
 
-function renderResults(block, filteredData) {
+function clearResults(block) {
+  const searchResults = block.querySelector('.search-results');
+  searchResults.innerHTML = '';
+}
+
+async function renderResults(block, filteredData, searchTerms) {
+  clearResults(block);
   const searchResultsContainer = block.querySelector('.search-results');
-  searchResultsContainer.innerHTML = '';
 
-  filteredData.forEach((result) => {
-    if(block.classList.contains('cards')) {
-      // TODO
-    } else {
-      const list = document.createElement('ol');
-      list.append(...filterData.map(renderResultLink));
-      searchResultsContainer.append(list);
-    }
-  });
+  if (block.classList.contains('minimal')) {
+    const list = document.createElement('ul');
+    list.append(
+      ...filteredData.map((result) => renderResultLink(result, searchTerms)),
+    );
+    searchResultsContainer.append(list);
+  } else {
+    const cards = buildBlock(
+      'cards',
+      filteredData.map(
+        (result) => renderResultCard(result, searchTerms),
+      ),
+    );
+    searchResultsContainer.appendChild(cards);
+    decorateBlock(cards);
+    await loadBlock(cards);
+    cards.querySelectorAll('ul > li').forEach((card) => {
+      const cardLink = card.querySelector('a');
+      cardLink.remove();
+      cardLink.append(...card.children);
+      card.append(cardLink);
+    });
+  }
 }
 
-function filterData(block, searchTerms, data) {
-  console.log('Searching for ', searchTerms, ' in ', config.source);
-
+function filterData(searchTerms, data) {
   const foundInHeader = [];
   const foundInMeta = [];
-
+  
   data.forEach((result) => {
     if (searchTerms.some((term) => (result.header || result.title).toLowerCase().includes(term))) {
       foundInHeader.push(result);
@@ -79,11 +159,17 @@ function filterData(block, searchTerms, data) {
 }
 
 async function handleSearch(block, config) {
-  console.log('searching...');
-  const data = await fetchData(config);
-  const searchTerms = block.querySelector('input').value.toLowerCase().split(/\s+/);
-  const filteredData = filterData(block, searchTerms, data);
-  renderResults(block, filteredData);
+  console.log('Searching...');
+  const searchValue = block.querySelector('input').value;
+  const searchTerms = searchValue.toLowerCase().split(/\s+/);
+  if (searchValue.length < 3) {
+    clearResults(block);
+    return;
+  }
+
+  const data = await fetchData(config.source);
+  const filteredData = filterData(searchTerms, data);
+  await renderResults(block, filteredData, searchTerms);
 }
 
 function searchResults() {
@@ -96,11 +182,10 @@ function searchInput(block, config) {
   const input = document.createElement('input');
   input.setAttribute('type', 'text');
   input.classList.add('search-input');
+  input.placeholder = 'Search...';
 
   input.addEventListener('input', () => {
-    // debounce(() => {
       handleSearch(block, config);
-    // }, 350);
   });
 
   return input;
@@ -113,11 +198,11 @@ function searchIcon() {
 }
 
 export default async function decorate(block) {
-  const config = readBlockConfig(block);
+  const source = document.querySelector('a')?.href.toString() || '/query-index.json';
   block.innerHTML = '';
   block.append(
     searchIcon(),
-    searchInput(block, config),
+    searchInput(block, { source }),
     searchResults(),
   );
 
