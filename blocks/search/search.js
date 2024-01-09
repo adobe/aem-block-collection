@@ -31,7 +31,6 @@ function highlightTextElements(terms, elements) {
         acc.appendChild(document.createTextNode(textBefore));
       }
       const markedTerm = document.createElement('mark');
-      markedTerm.classList.add('gnav-search-highlight');
       markedTerm.textContent = term;
       acc.appendChild(markedTerm);
       currentIndex = offset + term.length;
