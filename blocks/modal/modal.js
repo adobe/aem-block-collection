@@ -17,7 +17,7 @@ function formatButton(button) {
   return buttonContainer;
 }
 
-export function createDialog() {
+export function createModal() {
   const dialog = document.createElement('dialog');
 
   const closeButton = document.createElement('button');
@@ -47,7 +47,7 @@ export default async function decorate(block) {
   let fragmentContentAdded = false;
   block.textContent = '';
 
-  const dialog = createDialog();
+  const dialog = createModal();
   if (content) {
     dialog.append(...content.childNodes);
   }
