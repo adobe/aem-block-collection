@@ -9,7 +9,7 @@
   flex: 0 0 max-content;
   margin: 0;
   border: 1px solid var(--dark-color);
-  border-radius: 0;
+  border-radius: 15px 15px 0 0;
   padding: 8px 16px;
   background-color: var(--light-color);
   color: initial;
@@ -20,6 +20,7 @@
   text-overflow: unset;
   overflow: unset;
   white-space: unset;
+  transition: background-color .2s;
 }
 
 .tabs .tabs-list button[aria-selected="true"] {
