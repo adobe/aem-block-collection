@@ -1,4 +1,9 @@
-.search input {
+.search .search-box {
+  display: flex;
+  align-items: center;
+}
+
+.search .search-box input {
   width: calc(100% - 30px);
   border: solid 1px lightgray;
   padding: 5px 10px;
