@@ -123,8 +123,8 @@ export default async function decorate(block) {
 
   const container = document.createElement('div');
   container.classList.add('carousel-slides-container');
-  container.append(slidesWrapper);
   container.append(buttons);
+  container.append(slidesWrapper);
   block.prepend(container);
 
   bindEvents(block);
