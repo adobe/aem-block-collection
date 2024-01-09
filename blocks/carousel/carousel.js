@@ -60,11 +60,21 @@ function bindEvents(block) {
   });
 }
 
+function createSlide(row) {
+  const slide = document.createElement('li');
+  slide.classList.add('carousel-slide');
+
+  row.querySelectorAll(':scope > div').forEach((column, colIdx) => {
+    column.classList.add(`carousel-slide-${colIdx === 0 ? 'image' : 'content'}`);
+    slide.append(column);
+  });
+
+  return slide;
+}
+
 export default async function decorate(block) {
   const carouselItems = block.querySelectorAll('picture');
   if (carouselItems.length < 2) return;
-
-  const blockDivs = block.querySelectorAll(':scope > div');
 
   const slidesWrapper = document.createElement('ul');
   slidesWrapper.classList.add('carousel-slides');
@@ -74,42 +84,33 @@ export default async function decorate(block) {
   slideIndicators.classList.add('carousel-slide-indicators');
   block.append(slideIndicators);
 
-  carouselItems.forEach((item, idx) => {
-    const slide = document.createElement('li');
-    slide.classList.add('carousel-slide');
-    slide.setAttribute('tabindex', '-1');
-    slide.append(item);
+  const buttons = document.createElement('div');
+  buttons.classList.add('carousel-navigation-buttons');
+  buttons.innerHTML = `
+    <button type = "button" class= "slide-prev"><span>Previous Item</span></button>
+    <button type="button" class="slide-next"><span>Next Item</span></button>
+  `;
+
+  const rows = block.querySelectorAll(':scope > div');
+  rows.forEach((row, idx) => {
+    const slide = createSlide(row);
     slidesWrapper.append(slide);
 
     const indicator = document.createElement('li');
     indicator.classList.add('carousel-slide-indicator');
     indicator.dataset.targetSlide = idx;
-    indicator.innerHTML = `<button type="button"><span>${idx + 1}</span></button>`;
+    indicator.innerHTML = `<button type = "button"><span>${idx + 1}</span></button>`;
     slideIndicators.append(indicator);
+    row.remove();
   });
 
-  const buttons = document.createElement('div');
-  buttons.classList.add('carousel-increment-buttons');
-  block.append(buttons);
-  const prev = document.createElement('button');
-  prev.classList.add('slide-prev');
-  prev.innerHTML = '<span>Previous Item</span>';
-  buttons.prepend(prev);
-
-  const next = document.createElement('button');
-  next.classList.add('slide-next');
-  next.innerHTML = '<span>Next Item</span>';
-  buttons.append(next);
-
-  bindEvents(block);
-
   const container = document.createElement('div');
-  container.classList.add('carousel-container');
+  container.classList.add('carousel-slides-container');
   container.append(slidesWrapper);
   container.append(buttons);
   block.prepend(container);
 
-  showSlide(block);
+  bindEvents(block);
 
-  blockDivs.forEach((div) => div.remove());
+  showSlide(block);
 }
