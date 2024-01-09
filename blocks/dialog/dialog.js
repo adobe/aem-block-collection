@@ -1,6 +1,11 @@
-/* eslint-disable no-use-before-define */
 import { loadFragment } from '../fragment/fragment.js';
 import { decorateButtons, decorateIcons } from '../../scripts/aem.js';
+
+function getCell(table, key) {
+  const resultRow = Array.from(table.children)
+    .find((row) => row.firstElementChild.textContent.toLowerCase() === key.toLowerCase());
+  return resultRow?.lastElementChild;
+}
 
 export default async function decorate(block) {
   decorateButtons(block);
@@ -41,10 +46,4 @@ export default async function decorate(block) {
     dialog.showModal();
   });
   decorateIcons(block);
-}
-
-function getCell(table, key) {
-  const resultRow = Array.from(table.children)
-    .find((row) => row.firstElementChild.textContent.toLowerCase() === key.toLowerCase());
-  return resultRow?.lastElementChild;
 }
