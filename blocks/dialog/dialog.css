@@ -1,7 +1,9 @@
 .dialog dialog {
+  --dialog-border-radius: 16px;
+
   overscroll-behavior: none;
   border: 1px solid #ccc;
-  border-radius: 16px;
+  border-radius: var(--dialog-border-radius);
   left: 20px;
   right: 20px;
   width: clamp(300px, 80%, 700px);
@@ -18,14 +20,10 @@
   width: 20px;
   height: 100%;
   max-height: 66px;
-  border-radius: 0 16px 0 0;
+  border-radius: 0 var(--dialog-border-radius) 0 0;
   background-color: unset;
   text-overflow: clip;
   margin: 0;
   border: none;
   padding-right: 46px;
-  color: black;
-  font-size: 34px;
-  font-weight: lighter;
-  font-family: monospace;
 }
