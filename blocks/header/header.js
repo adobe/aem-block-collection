@@ -1,4 +1,6 @@
-import { getMetadata } from '../../scripts/aem.js';
+import {
+  buildBlock, decorateBlock, getMetadata, loadBlock,
+} from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // media query match that indicates mobile/tablet width
@@ -145,4 +147,9 @@ export default async function decorate(block) {
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
   block.append(navWrapper);
+
+  const breadcrumb = buildBlock('breadcrumb', '');
+  navWrapper.append(breadcrumb);
+  decorateBlock(breadcrumb);
+  loadBlock(breadcrumb);
 }

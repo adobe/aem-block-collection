@@ -39,6 +39,9 @@
 
   /* nav height */
   --nav-height: 64px;
+
+  /* breadcrumb */
+  --breadcrumb-height: 50px;
 }
 
 @font-face {

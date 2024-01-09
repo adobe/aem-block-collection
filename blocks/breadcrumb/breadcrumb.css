@@ -1,0 +1,88 @@
+.breadcrumb {
+  display: none;
+  width: 100%;
+  max-height: var(--breadcrumb-height);
+  z-index: 100;
+  height: var(--breadcrumb-height);
+  max-width: 1200px;
+  padding: 0 32px;
+  overflow: hidden;
+  margin: auto;
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-flow: wrap;
+  list-style: none;
+  padding: 8px 0;
+}
+
+.breadcrumb.contained.block > div > div > ol {
+  margin: 0;
+}
+
+.breadcrumb ol li {
+  padding-right: 8px;
+  padding-inline-start: 0;
+  font-size: var(--body-font-size-xs);
+}
+
+.breadcrumb ol li:not(:last-child) a::after {
+  content: "/";
+  padding-left: 8px;
+}
+
+.breadcrumb ol li a {
+  text-decoration: none;
+  color: var(--dark-color);
+  font-size: var(--body-font-size-xs);
+}
+
+.breadcrumb ol li:last-of-type a {
+  color: var(--text-color);
+}
+
+.breadcrumb .category {
+  text-transform: capitalize;
+}
+
+@media screen and (min-width: 600px) {
+  .breadcrumb {
+    display: block;
+    position: sticky;
+    top: calc(var(--nav-height));
+    left: 0;
+  }
+
+  .block.breadcrumb {
+    max-width: none;
+  }
+
+  .breadcrumb ol {
+    padding: 11px 0 12px;
+    margin: 0 auto;
+  }
+
+  .breadcrumb:not(.no-shadow) {
+    margin-bottom: 24px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .breadcrumb:not(.no-shadow) {
+    margin-bottom: 40px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .block.breadcrumb {
+    max-width: 1200px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .block.breadcrumb {
+    max-width: 1200px;
+    padding: 0 20px;
+  }
+}
