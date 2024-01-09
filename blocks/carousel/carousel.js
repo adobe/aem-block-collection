@@ -84,46 +84,52 @@ let carouselId = 0;
 export default async function decorate(block) {
   carouselId += 1;
   block.setAttribute('id', `carousel-${carouselId}`);
-  const carouselItems = block.querySelectorAll('picture');
-  if (carouselItems.length < 2) return;
+  const rows = block.querySelectorAll(':scope > div');
+  const isSingleSlide = rows.length < 2;
 
   block.setAttribute('role', 'region');
   block.setAttribute('aria-roledescription', 'Carousel');
+
+  const container = document.createElement('div');
+  container.classList.add('carousel-slides-container');
 
   const slidesWrapper = document.createElement('ul');
   slidesWrapper.classList.add('carousel-slides');
   block.prepend(slidesWrapper);
 
-  const slideIndicatorsNav = document.createElement('nav');
-  slideIndicatorsNav.setAttribute('aria-label', 'Carousel Slide Controls');
-  const slideIndicators = document.createElement('ol');
-  slideIndicators.classList.add('carousel-slide-indicators');
-  slideIndicatorsNav.append(slideIndicators);
-  block.append(slideIndicatorsNav);
+  let slideIndicators;
+  if (!isSingleSlide) {
+    const slideIndicatorsNav = document.createElement('nav');
+    slideIndicatorsNav.setAttribute('aria-label', 'Carousel Slide Controls');
+    slideIndicators = document.createElement('ol');
+    slideIndicators.classList.add('carousel-slide-indicators');
+    slideIndicatorsNav.append(slideIndicators);
+    block.append(slideIndicatorsNav);
 
-  const buttons = document.createElement('div');
-  buttons.classList.add('carousel-navigation-buttons');
-  buttons.innerHTML = `
-    <button type = "button" class= "slide-prev" aria-label="Previous Slide"></button>
-    <button type="button" class="slide-next" aria-label="Next Slide"></button>
-  `;
+    const slideNavButtons = document.createElement('div');
+    slideNavButtons.classList.add('carousel-navigation-buttons');
+    slideNavButtons.innerHTML = `
+      <button type = "button" class= "slide-prev" aria-label="Previous Slide"></button>
+      <button type="button" class="slide-next" aria-label="Next Slide"></button>
+    `;
 
-  const rows = block.querySelectorAll(':scope > div');
+    container.append(slideNavButtons);
+  }
+
   rows.forEach((row, idx) => {
     const slide = createSlide(row, idx, carouselId);
     slidesWrapper.append(slide);
 
-    const indicator = document.createElement('li');
-    indicator.classList.add('carousel-slide-indicator');
-    indicator.dataset.targetSlide = idx;
-    indicator.innerHTML = `<button type = "button"><span>Show Slide ${idx + 1} of ${rows.length}</span></button>`;
-    slideIndicators.append(indicator);
+    if (slideIndicators) {
+      const indicator = document.createElement('li');
+      indicator.classList.add('carousel-slide-indicator');
+      indicator.dataset.targetSlide = idx;
+      indicator.innerHTML = `<button type = "button"><span>Show Slide ${idx + 1} of ${rows.length}</span></button>`;
+      slideIndicators.append(indicator);
+    }
     row.remove();
   });
 
-  const container = document.createElement('div');
-  container.classList.add('carousel-slides-container');
-  container.append(buttons);
   container.append(slidesWrapper);
   block.prepend(container);
 

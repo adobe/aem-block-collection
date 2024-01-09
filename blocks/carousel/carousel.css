@@ -2,6 +2,11 @@
   position: relative;
 }
 
+.carousel.carousel-single-slide .carousel-slide-indicators,
+.carousel.carousel-single-slide .carousel-navigation-buttons {
+  display: none;
+}
+
 .carousel .carousel-slides,
 .carousel .carousel-slide-indicators {
   list-style: none;
