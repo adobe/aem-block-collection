@@ -17,12 +17,7 @@ function formatButton(button) {
   return buttonContainer;
 }
 
-export default async function decorate(block) {
-  const button = formatButton(getCell(block, 'button'));
-  const content = getCell(block, 'content');
-  const fragmentUrl = getCell(block, 'fragment')?.querySelector('a')?.href;
-  block.textContent = '';
-
+export function createDialog() {
   const dialog = document.createElement('dialog');
 
   const closeButton = document.createElement('button');
@@ -42,16 +37,30 @@ export default async function decorate(block) {
     }
   });
 
+  return dialog;
+}
+
+export default async function decorate(block) {
+  const button = formatButton(getCell(block, 'button'));
+  const content = getCell(block, 'content');
+  const fragmentUrl = getCell(block, 'fragment')?.querySelector('a')?.href;
+  let fragmentContentAdded = false;
+  block.textContent = '';
+
+  const dialog = createDialog();
+  if (content) {
+    dialog.append(...content.childNodes);
+  }
   block.append(dialog);
 
   block.append(button);
   button.addEventListener('click', async (e) => {
     e.preventDefault();
-    if (content) {
-      dialog.append(...content.childNodes);
-    } else if (fragmentUrl) {
+
+    if (fragmentUrl && !fragmentContentAdded) {
       const fragment = await loadFragment(new URL(fragmentUrl.trim()).pathname);
       dialog.append(...fragment.childNodes);
+      fragmentContentAdded = true;
     }
     dialog.showModal();
   });
