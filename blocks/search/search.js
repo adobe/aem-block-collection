@@ -186,6 +186,8 @@ function searchInput(block, config) {
     handleSearch(block, config);
   });
 
+  input.addEventListener('keyup', (e) => { if (e.code === 'Escape') { clearResults(block); } });
+
   return input;
 }
 
