@@ -307,6 +307,7 @@ header .breadcrumbs ol li:not(:last-child)::after {
   padding-left: 1ch;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 header .breadcrumbs ol li a:any-link {
   color: var(--text-color);
 }
