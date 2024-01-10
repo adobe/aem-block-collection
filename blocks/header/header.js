@@ -119,7 +119,7 @@ async function buildBreadcrumbsFromNavTree(nav, currentUrl) {
 
   // last link is current page and should not be linked
   crumbs[crumbs.length - 1].url = null;
-  crumbs[crumbs.length - 1].setAttribute('aria-current', 'page');
+  crumbs[crumbs.length - 1]['aria-current'] = 'page';
   return crumbs;
 }
 
@@ -132,6 +132,7 @@ async function buildBreadcrumbs() {
   const ol = document.createElement('ol');
   ol.append(...crumbs.map((item) => {
     const li = document.createElement('li');
+    if (item['aria-current']) li.setAttribute('aria-current', item['aria-current']);
     if (item.url) {
       const a = document.createElement('a');
       a.href = item.url;
