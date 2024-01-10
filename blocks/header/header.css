@@ -274,6 +274,7 @@ header nav .nav-tools {
   grid-area: tools;
 }
 
+/* breadcrumbs */
 header .breadcrumbs {
   display: none;
   padding: 0 32px;
@@ -294,6 +295,7 @@ header .breadcrumbs ol {
   margin-bottom: 0;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 header .breadcrumbs ol li {
   padding-right: 8px;
   padding-inline-start: 0;
