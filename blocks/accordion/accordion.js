@@ -4,44 +4,30 @@
  * https://www.hlx.live/developer/block-collection/accordion
  */
 
-function toggleAccordionContent(e) {
-  const target = e.target.closest('button');
-  const expanded = target.getAttribute('aria-expanded') === 'true';
-  // toggle button properties
-  target.setAttribute('aria-expanded', !expanded);
-  // toggle related content properties
-  const block = target.closest('.block');
-  const content = block.querySelector(`#${target.getAttribute('aria-controls')}`);
-  content.hidden = expanded;
+function hasWrapper(el) {
+  return !!el.firstElementChild && window.getComputedStyle(el.firstElementChild).display === 'block';
 }
 
-export default async function decorate(block) {
-  [...block.children].forEach((row, i) => {
-    const [title, content] = row.children;
-    // build accordion title
-    const button = document.createElement('button');
-    button.className = 'accordion-title';
-    button.id = `accordionTitle${i + 1}`;
-    button.setAttribute('type', 'button');
-    button.setAttribute('aria-expanded', false);
-    button.setAttribute('aria-controls', `accordionContent${i + 1}`);
-    const titleHasWrapper = title.firstElementChild;
-    if (!titleHasWrapper) {
-      button.innerHTML = `<p>${title.innerHTML}</p>`;
-    } else {
-      button.innerHTML = title.innerHTML;
+export default function decorate(block) {
+  [...block.children].forEach((row) => {
+    // decorate accordion item label
+    const label = row.children[0];
+    const summary = document.createElement('summary');
+    summary.className = 'accordion-item-label';
+    summary.append(...label.childNodes);
+    if (!hasWrapper(summary)) {
+      summary.innerHTML = `<p>${summary.innerHTML}</p>`;
     }
-    title.replaceWith(button);
-    button.addEventListener('click', toggleAccordionContent);
-    // decorate accordion content
-    content.className = 'accordion-content';
-    content.id = `accordionContent${i + 1}`;
-    content.setAttribute('role', 'region');
-    content.setAttribute('aria-labelledby', `accordionTitle${i + 1}`);
-    const contentHasWrapper = content.firstElementChild;
-    if (!contentHasWrapper) {
-      content.innerHTML = `<p>${content.innerHTML}</p>`;
+    // decorate accordion item body
+    const body = row.children[1];
+    body.className = 'accordion-item-body';
+    if (!hasWrapper(body)) {
+      body.innerHTML = `<p>${body.innerHTML}</p>`;
     }
-    content.hidden = true;
+    // decorate accordion item
+    const details = document.createElement('details');
+    details.className = 'accordion-item';
+    details.append(summary, body);
+    row.replaceWith(details);
   });
 }
