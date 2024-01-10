@@ -119,6 +119,7 @@ async function buildBreadcrumbsFromNavTree(nav, currentUrl) {
 
   // last link is current page and should not be linked
   crumbs[crumbs.length - 1].url = null;
+  crumbs[crumbs.length - 1].setAttribute('aria-current', 'page');
   return crumbs;
 }
 
