@@ -121,17 +121,10 @@ function buildBreadcrumbs() {
   const breadcrumbs = document.createElement('div');
   breadcrumbs.className = 'breadcrumbs';
 
-  const tree = buildBreadcrumbsFromNavTree(document.querySelector('.nav-sections'), document.location.href);
-
-  // breadcrumbs.innerHTML = `<ol>
-  //     <li><a href="/home" class="breadcrumb-link-underline-effect">Home</a></li>
-  //     <li><a href="/docs/" class="breadcrumb-link-underline-effect">Documentation</a></li>
-  //     <li><a href="/docs/#build" class="breadcrumb-link-underline-effect category">Build</a></li>
-  //     <li><a href="/developer/block-collection" style="cursor: default;">Block Collection</a></li>
-  // </ol>`;
+  const crumbs = buildBreadcrumbsFromNavTree(document.querySelector('.nav-sections'), document.location.href);
 
   const ol = document.createElement('ol');
-  for (const item of tree) {
+  ol.append(...crumbs.map((item) => {
     const li = document.createElement('li');
     if (item.url) {
       const a = document.createElement('a');
@@ -141,12 +134,9 @@ function buildBreadcrumbs() {
     } else {
       li.textContent = item.title;
     }
-    ol.append(li);
-  }
+    return li;
+  }));
   breadcrumbs.append(ol);
-
-  console.log(tree);
-
   return breadcrumbs;
 }
 
