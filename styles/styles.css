@@ -40,7 +40,7 @@
   /* header */
   --nav-height: 64px;
   --breadcrumb-height: 50px;
-  --header-height: calc(var(--nav-height) + var(--breadcrumb-height));
+  --header-height: var(--nav-height);
 }
 
 @font-face {
@@ -71,12 +71,16 @@ body {
   display: none;
 }
 
+body.breadcrumbs-enabled {
+  --header-height: calc(var(--nav-height) + var(--breadcrumb-height));
+}
+
 body.appear {
   display: block;
 }
 
 header {
-  height: var(--nav-height);
+  height: var(--header-height);
 }
 
 h1,
@@ -90,7 +94,7 @@ h6 {
   line-height: 1.25;
   margin-top: 1em;
   margin-bottom: 0.5em;
-  scroll-margin: calc(var(--nav-height) + 1em);
+  scroll-margin: calc(var(--header-height) + 1em);
 }
 
 h1 { font-size: var(--heading-font-size-xxl); }
