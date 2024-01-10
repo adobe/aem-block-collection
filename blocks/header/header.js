@@ -124,7 +124,7 @@ async function buildBreadcrumbsFromNavTree(nav, currentUrl) {
 }
 
 async function buildBreadcrumbs() {
-  const breadcrumbs = document.createElement('div');
+  const breadcrumbs = document.createElement('nav');
   breadcrumbs.className = 'breadcrumbs';
 
   const crumbs = await buildBreadcrumbsFromNavTree(document.querySelector('.nav-sections'), document.location.href);
