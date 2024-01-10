@@ -1,9 +1,6 @@
 import {
-  buildBlock,
   createOptimizedPicture,
-  decorateBlock,
   decorateIcons,
-  loadBlock,
 } from '../../scripts/aem.js';
 
 function highlightTextElements(terms, elements) {
@@ -64,9 +61,19 @@ export async function fetchData(source) {
 }
 
 function renderResultCard(result, searchTerms) {
-  const cardContent = [];
+  const card = document.createElement('li');
+  const cardLink = document.createElement('a');
+  cardLink.href = result.path;
+
+  card.appendChild(cardLink);
+
   if (result.image) {
-    cardContent.push({ elems: [createOptimizedPicture(result.image, result.title)] });
+    const imageContainer = document.createElement('div');
+    imageContainer.classList.add('card-image');
+    imageContainer.append(
+      createOptimizedPicture(result.image),
+    );
+    cardLink.appendChild(imageContainer);
   }
 
   const cardTitleParagraph = document.createElement('p');
@@ -77,14 +84,17 @@ function renderResultCard(result, searchTerms) {
   const cardDescription = document.createElement('p');
   cardDescription.textContent = result.description;
 
-  const cardLink = document.createElement('a');
-  cardLink.href = result.path;
-
-  cardContent.push({ elems: [cardTitleParagraph, cardDescription, cardLink] });
-
+  const cardBody = document.createElement('div');
+  cardBody.classList.add('card-body');
+  cardBody.append(
+    cardTitleParagraph,
+    cardDescription,
+  );
+  cardLink.append(cardBody);
   highlightTextElements(searchTerms, [cardTitle, cardDescription]);
-  return cardContent;
+  return card;
 }
+
 
 function renderResultLink(result, searchTerms) {
   const link = document.createElement('a');
@@ -112,31 +122,12 @@ async function renderResults(block, filteredData, searchTerms) {
   clearResults(block);
   const searchResults = block.querySelector('.search-results');
 
-  if (block.classList.contains('minimal')) {
-    const list = document.createElement('ul');
-    list.append(
-      ...filteredData.map((result) => renderResultLink(result, searchTerms)),
-    );
-    searchResults.append(list);
-  } else {
-    const cards = buildBlock(
-      'cards',
-      filteredData.map(
-        (result) => renderResultCard(result, searchTerms),
-      ),
-    );
-    cards.style.display = 'none';
-    searchResults.appendChild(cards);
-    decorateBlock(cards);
-    await loadBlock(cards);
-    cards.querySelectorAll('ul > li').forEach((card) => {
-      const cardLink = card.querySelector('a');
-      cardLink.remove();
-      cardLink.append(...card.children);
-      card.append(cardLink);
-    });
-    cards.style.display = null;
-  }
+  const list = document.createElement('ul');
+  const renderer = block.classList.contains('minimal') ? renderResultLink : renderResultCard;
+  list.append(
+    ...filteredData.map((result) => renderer(result, searchTerms)),
+  );
+  searchResults.append(list);
 }
 
 function filterData(searchTerms, data) {
@@ -210,7 +201,7 @@ function searchBox(block, source) {
 }
 
 export default async function decorate(block) {
-  const source = document.querySelector('a')?.href.toString() || '/query-index.json';
+  const source = document.querySelector('a').href.toString() || '/query-index.json';
   block.innerHTML = '';
   block.append(
     searchBox(block, source),

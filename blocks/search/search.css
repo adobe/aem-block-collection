@@ -17,19 +17,66 @@
   list-style: none;
 }
 
-.search .cards {
-  margin-top: 22px;
+.search ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(278px, 1fr));
+  grid-gap: 16px;
+  margin-top: 24px;
 }
 
-.search .cards li a:any-link {
+.search ul > li {
+  border: 1px solid var(--dark-color);
+  background-color: var(--background-color);
+}
+
+.search ul > li > a:any-link {
   text-decoration: none;
-  color: var(--text-color);
+  color: inherit;
+}
+
+.search .card-body {
+  margin: 16px;
+}
+
+.search .card-image {
+  line-height: 0;
+}
+
+.search .card-body > *:first-child {
+  margin-top: 0;
+}
+
+.search ul > li img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.search.minimal ul {
+  padding-left: 24px;
+  display: block;
+}
+
+.search.minimal ul > li {
+  border: none;
+  text-decoration: unset;
+  color: unset;
 }
 
 .search.minimal .search-results p {
   margin-top: 0;
 }
 
+.search.minimal .search-results a:any-link {
+  text-decoration: underline;
+  color: var(--link-color);
+}
+
 .search.minimal .search-result p:last-child {
   font-size: var(--body-font-size-xs);
 }
+
+
