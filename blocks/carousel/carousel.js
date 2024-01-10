@@ -10,13 +10,17 @@ function debounce(method, delay) {
 
 function showSlide(block, slideIndex = 0, scroll = true) {
   const slides = block.querySelectorAll('.carousel-slide');
-  slides.forEach((slide) => slide.setAttribute('aria-hidden', 'true'));
+  slides.forEach((slide) => {
+    slide.setAttribute('aria-hidden', 'true');
+    slide.querySelectorAll('a').forEach((link) => link.setAttribute('tabindex', '-1'));
+  });
 
   let realSlideIndex = slideIndex < 0 ? slides.length - 1 : slideIndex;
   if (slideIndex >= slides.length) realSlideIndex = 0;
   const activeSlide = slides[realSlideIndex];
 
   activeSlide.setAttribute('aria-hidden', 'false');
+  activeSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
   if (scroll) {
     block.querySelector('.carousel-slides').scrollTo({
       top: 0,
