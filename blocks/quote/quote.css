@@ -1,0 +1,29 @@
+.quote blockquote {
+  margin: 0;
+}
+
+.quote blockquote .quote-quotation {
+  flex: 1 0 100%;
+  font-size: 120%;
+}
+
+.quote blockquote .quote-quotation > :first-child {
+  text-indent: -0.6ch;
+}
+
+.quote blockquote .quote-quotation > :first-child::before,
+.quote blockquote .quote-quotation > :last-child::after {
+  line-height: 0;
+}
+
+.quote blockquote .quote-quotation > :first-child::before {
+  content: "“";
+}
+
+.quote blockquote .quote-quotation > :last-child::after {
+  content: "”";
+}
+
+.quote blockquote .quote-attribution > :first-child::before {
+  content: "—";
+}
