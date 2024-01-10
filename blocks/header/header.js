@@ -98,23 +98,21 @@ function getDirectTextContent(menuItem) {
 }
 
 function buildBreadcrumbsFromNavTree(nav, currentUrl) {
+  const crumbs = [];
+
   let menuItem = Array.from(nav.querySelectorAll('a')).find((a) => a.href === currentUrl);
-  if (!menuItem) {
-    return [
-      { title: 'Home', url: '/' },
-      // last link is current page and should not be linked
-      { title: document.head.title },
-    ];
+  if (menuItem) {
+    do {
+      const link = menuItem.querySelector(':scope > a');
+      crumbs.unshift({ title: getDirectTextContent(menuItem), url: link ? link.href : null });
+      menuItem = menuItem.closest('ul')?.closest('li');
+    } while (menuItem);
+  } else {
+    crumbs.unshift({ title: getMetadata('og:title'), url: currentUrl });
   }
 
-  const crumbs = [];
-  do {
-    const link = menuItem.querySelector(':scope > a');
-    crumbs.unshift({ title: getDirectTextContent(menuItem), url: link ? link.href : null });
-    menuItem = menuItem.closest('ul')?.closest('li');
-  } while (menuItem);
-
-  crumbs.unshift({ title: 'Home', url: '/' });
+  const homeUrl = document.querySelector('.nav-brand a').href;
+  crumbs.unshift({ title: 'Home', url: homeUrl });
 
   // last link is current page and should not be linked
   crumbs[crumbs.length - 1].url = null;
