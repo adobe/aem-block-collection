@@ -1,24 +1,15 @@
 import { loadFragment } from '../fragment/fragment.js';
-import { decorateButtons, decorateIcons } from '../../scripts/aem.js';
+import {
+  buildBlock, decorateBlock, decorateIcons, loadBlock, loadCSS,
+} from '../../scripts/aem.js';
 
-function getCell(table, key) {
-  const resultRow = Array.from(table.children)
-    .find((row) => row.firstElementChild.textContent.toLowerCase() === key.toLowerCase());
-  return resultRow?.lastElementChild;
-}
-
-function formatButton(button) {
-  if (button.classList.contains('button-container')) return button;
-
-  const buttonContainer = document.createElement('div');
-  buttonContainer.classList.add('button-container');
-  buttonContainer.innerHTML = '<a href="#" class="button"></a></div>';
-  buttonContainer.querySelector('a').textContent = button.textContent;
-  return buttonContainer;
-}
-
-export function createModal() {
+export async function createModal(contentNodes) {
+  await loadCSS(`${window.hlx.codeBasePath}/blocks/modal/modal.css`);
   const dialog = document.createElement('dialog');
+  const dialogContent = document.createElement('div');
+  dialogContent.classList.add('dialog-content');
+  dialogContent.append(...contentNodes);
+  dialog.append(dialogContent);
 
   const closeButton = document.createElement('button');
   closeButton.classList.add('close-button');
@@ -37,33 +28,28 @@ export function createModal() {
     }
   });
 
-  return dialog;
+  dialog.addEventListener('close', () => dialog.remove());
+
+  const block = buildBlock('modal', '');
+  document.querySelector('main').append(block);
+  decorateBlock(block);
+  await loadBlock(block);
+  decorateIcons(closeButton);
+
+  block.append(dialog);
+  return { block, showModal: () => dialog.showModal() };
+}
+
+export async function openModal(fragmentUrl) {
+  const path = fragmentUrl.startsWith('http')
+    ? new URL(fragmentUrl, window.location).pathname
+    : fragmentUrl;
+
+  const fragment = await loadFragment(path);
+  const { showModal } = await createModal(fragment.childNodes);
+  showModal();
 }
 
 export default async function decorate(block) {
-  const button = formatButton(getCell(block, 'button'));
-  const content = getCell(block, 'content');
-  const fragmentUrl = getCell(block, 'fragment')?.querySelector('a')?.href;
-  let fragmentContentAdded = false;
-  block.textContent = '';
-
-  const dialog = createModal();
-  if (content) {
-    dialog.append(...content.childNodes);
-  }
-  block.append(dialog);
-
-  block.append(button);
-  button.firstElementChild.addEventListener('click', async (e) => {
-    e.preventDefault();
-
-    if (fragmentUrl && !fragmentContentAdded) {
-      const fragment = await loadFragment(new URL(fragmentUrl.trim()).pathname);
-      dialog.append(...fragment.childNodes);
-      fragmentContentAdded = true;
-    }
-    dialog.showModal();
-  });
-  decorateIcons(block);
-  decorateButtons(block);
+  // this is not used as a traditional block. please use the createModal() and openModal() functions instead.
 }

@@ -27,3 +27,7 @@
   border: none;
   padding-right: 46px;
 }
+
+.modal dialog .section {
+  padding: 0;
+}

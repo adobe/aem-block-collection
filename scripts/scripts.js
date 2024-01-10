@@ -43,13 +43,13 @@ async function loadFonts() {
 }
 
 function autolinkModals(main) {
-  document.addEventListener('click', (e) => {
+  main.addEventListener('click', async (e) => {
     const origin = e.target.closest('a');
 
     if (origin && origin.href && origin.href.includes('/modals/')) {
       e.preventDefault();
-      console.clear();
-      alert(`You clicked ${origin.href}`);
+      const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
+      openModal(origin.href);
     }
   });
 }
