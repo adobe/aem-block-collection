@@ -37,11 +37,10 @@
   --heading-font-size-s: 20px;
   --heading-font-size-xs: 18px;
 
-  /* nav height */
+  /* header */
   --nav-height: 64px;
-
-  /* breadcrumb */
   --breadcrumb-height: 50px;
+  --header-height: calc(var(--nav-height) + var(--breadcrumb-height));
 }
 
 @font-face {
