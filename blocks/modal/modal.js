@@ -3,8 +3,9 @@ import {
   buildBlock, decorateBlock, decorateIcons, loadBlock, loadCSS,
 } from '../../scripts/aem.js';
 
-// This is not a traditional block, so there is no decorate function. Instead, links to a */modals/* path  are
-// automatically transformed into a modal. Other blocks can also use the createModal() and openModal() functions.
+// This is not a traditional block, so there is no decorate function. Instead, links to
+// a */modals/* path  are automatically transformed into a modal. Other blocks can also use
+// the createModal() and openModal() functions.
 
 export async function createModal(contentNodes) {
   await loadCSS(`${window.hlx.codeBasePath}/blocks/modal/modal.css`);
