@@ -148,8 +148,13 @@ export default async function decorate(block) {
   navWrapper.append(nav);
   block.append(navWrapper);
 
-  const breadcrumb = buildBlock('breadcrumb', '');
-  navWrapper.append(breadcrumb);
-  decorateBlock(breadcrumb);
-  loadBlock(breadcrumb);
+  const breadcrumbs = document.createElement('div');
+  breadcrumbs.className = 'breadcrumbs';
+  breadcrumbs.innerHTML = `<ol>
+      <li><a href="/home" class="breadcrumb-link-underline-effect">Home</a></li>
+      <li><a href="/docs/" class="breadcrumb-link-underline-effect">Documentation</a></li>
+      <li><a href="/docs/#build" class="breadcrumb-link-underline-effect category">Build</a></li>
+      <li><a href="/developer/block-collection" style="cursor: default;">Block Collection</a></li>
+  </ol>`;
+  navWrapper.append(breadcrumbs);
 }

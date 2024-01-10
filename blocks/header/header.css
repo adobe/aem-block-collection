@@ -273,3 +273,93 @@ header nav .nav-sections ul > li > ul > li {
 header nav .nav-tools {
   grid-area: tools;
 }
+
+
+header .breadcrumbs {
+  display: none;
+  width: 100%;
+  max-height: var(--breadcrumb-height);
+  z-index: 100;
+  height: var(--breadcrumb-height);
+  max-width: 1200px;
+  padding: 0 32px;
+  overflow: hidden;
+  margin: auto;
+}
+
+header .breadcrumbs ol {
+  display: flex;
+  flex-flow: wrap;
+  list-style: none;
+  padding: 8px 0;
+}
+
+.breadcrumb.contained.block > div > div > ol {
+  margin: 0;
+}
+
+header .breadcrumbs ol li {
+  padding-right: 8px;
+  padding-inline-start: 0;
+  font-size: var(--body-font-size-xs);
+}
+
+header .breadcrumbs ol li:not(:last-child) a::after {
+  content: "/";
+  padding-left: 8px;
+}
+
+header .breadcrumbs ol li a {
+  text-decoration: none;
+  color: var(--dark-color);
+  font-size: var(--body-font-size-xs);
+}
+
+header .breadcrumbs ol li:last-of-type a {
+  color: var(--text-color);
+}
+
+header .breadcrumbs .category {
+  text-transform: capitalize;
+}
+
+@media screen and (min-width: 600px) {
+  header .breadcrumbs {
+    display: block;
+    position: sticky;
+    top: calc(var(--nav-height));
+    left: 0;
+  }
+
+  header .breadcrumbs {
+    max-width: none;
+  }
+
+  header .breadcrumbs ol {
+    padding: 11px 0 12px;
+    margin: 0 auto;
+  }
+
+  .breadcrumb:not(.no-shadow) {
+    margin-bottom: 24px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .breadcrumb:not(.no-shadow) {
+    margin-bottom: 40px;
+  }
+}
+
+@media (min-width: 1440px) {
+  header .breadcrumbs {
+    max-width: 1200px;
+  }
+}
+
+@media (min-width: 1440px) {
+  header .breadcrumbs {
+    max-width: 1200px;
+    padding: 0 20px;
+  }
+}
