@@ -11,9 +11,24 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  getMetadata,
 } from './aem.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
+
+
+/**
+ * Builds hero block and prepends to main in a new section.
+ * @param {Element} main The container element
+ */
+function buildCookieConsent(main) {
+  const cookieConsentPath = getMetadata('cookie-consent');
+  if (cookieConsentPath) {
+    
+  }
+}
+
+
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -48,6 +63,7 @@ async function loadFonts() {
  */
 function buildAutoBlocks(main) {
   try {
+    buildCookieConsent(main);
     buildHeroBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
