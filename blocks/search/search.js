@@ -137,23 +137,44 @@ async function renderResults(block, config, filteredData, searchTerms) {
   }
 }
 
+function compareFound(hit1, hit2) {
+  return hit1.minIdx - hit2.minIdx;
+}
+
 function filterData(searchTerms, data) {
   const foundInHeader = [];
   const foundInMeta = [];
 
   data.forEach((result) => {
-    if (searchTerms.some((term) => (result.header || result.title).toLowerCase().includes(term))) {
-      foundInHeader.push(result);
+    let minIdx = -1;
+
+    searchTerms.forEach((term) => {
+      const idx = (result.header || result.title).toLowerCase().indexOf(term);
+      if (idx < 0) return;
+      if (minIdx < idx) minIdx = idx;
+    });
+
+    if (minIdx >= 0) {
+      foundInHeader.push({ minIdx, result });
       return;
     }
 
     const metaContents = `${result.title} ${result.description} ${result.path.split('/').pop()}`.toLowerCase();
-    if (searchTerms.some((term) => metaContents.includes(term))) {
-      foundInMeta.push(result);
+    searchTerms.forEach((term) => {
+      const idx = metaContents.indexOf(term);
+      if (idx < 0) return;
+      if (minIdx < idx) minIdx = idx;
+    });
+
+    if (minIdx >= 0) {
+      foundInMeta.push({ minIdx, result });
     }
   });
 
-  return [...foundInHeader, ...foundInMeta];
+  return [
+    ...foundInHeader.sort(compareFound),
+    ...foundInMeta.sort(compareFound),
+  ].map((item) => item.result);
 }
 
 async function handleSearch(block, config) {
