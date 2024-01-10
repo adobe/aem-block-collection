@@ -1,2 +1,4 @@
 mountpoints:
-  /: https://drive.google.com/drive/folders/1Gwwrujv0Z4TxJM8askdqQkHSD969dGK7
+  /:
+    url: https://content.da.live/hlxsites/da-block-collection/
+    type: markup
