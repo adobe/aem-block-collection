@@ -18,17 +18,17 @@ const LCP_BLOCKS = []; // add your LCP blocks to the list
 
 
 /**
- * Builds hero block and prepends to main in a new section.
+ * Builds cookie consent block and prepends to main in a new section.
  * @param {Element} main The container element
  */
 function buildCookieConsent(main) {
   const cookieConsentPath = getMetadata('cookie-consent');
   if (cookieConsentPath) {
-    
+    const section = document.createElement('div');
+    section.append(buildBlock('consent-management', cookieConsentPath));
+    main.append(section);
   }
 }
-
-
 
 /**
  * Builds hero block and prepends to main in a new section.
