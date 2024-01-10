@@ -299,7 +299,7 @@ header .breadcrumbs ol {
 header .breadcrumbs ol li {
   padding-right: 8px;
   padding-inline-start: 0;
-  opacity: 0.5;
+  opacity: 0.7;
 }
 
 header .breadcrumbs ol li:not(:last-child)::after {
