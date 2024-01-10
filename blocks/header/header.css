@@ -280,6 +280,7 @@ header .breadcrumbs {
   /* hide on mobile and tablet */
   display: none;
 
+  padding: 0 32px;
   width: 100%;
   height: var(--breadcrumbs-height);
   max-width: 1200px;
