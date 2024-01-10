@@ -102,7 +102,8 @@ function buildBreadcrumbsFromNavTree(nav, currentUrl) {
   if (!menuItem) {
     return [
       { title: 'Home', url: '/' },
-      { title: document.head.title, url: currentUrl },
+      // last link is current page and should not be linked
+      { title: document.head.title },
     ];
   }
 
@@ -114,6 +115,9 @@ function buildBreadcrumbsFromNavTree(nav, currentUrl) {
   } while (menuItem);
 
   crumbs.unshift({ title: 'Home', url: '/' });
+
+  // last link is current page and should not be linked
+  crumbs[crumbs.length - 1].url = null;
   return crumbs;
 }
 
@@ -136,6 +140,7 @@ function buildBreadcrumbs() {
     }
     return li;
   }));
+
   breadcrumbs.append(ol);
   return breadcrumbs;
 }
@@ -200,7 +205,7 @@ export default async function decorate(block) {
   navWrapper.append(nav);
   block.append(navWrapper);
 
-  if (getMetadata('breadcrumbs')) {
+  if (getMetadata('breadcrumbs').toLowerCase() === 'true') {
     document.body.classList.add('breadcrumbs-enabled');
     navWrapper.append(buildBreadcrumbs());
   }
