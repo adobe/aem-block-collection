@@ -277,14 +277,15 @@ header nav .nav-tools {
 
 
 header .breadcrumbs {
+  /* hide on mobile and tablet */
   display: none;
+
   width: 100%;
-  max-height: var(--breadcrumb-height);
-  height: var(--breadcrumb-height);
+  height: var(--breadcrumbs-height);
   max-width: 1200px;
-  padding: 0 32px;
   overflow: hidden;
-  margin: auto;
+  margin: 0 auto;
+  font-size: var(--breadcrumbs-font-size);
 }
 
 header .breadcrumbs ol {
@@ -292,16 +293,14 @@ header .breadcrumbs ol {
   flex-flow: wrap;
   list-style: none;
   padding: 0 0;
-}
-
-.breadcrumb.contained.block > div > div > ol {
-  margin: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 header .breadcrumbs ol li {
   padding-right: 8px;
   padding-inline-start: 0;
-  font-size: var(--body-font-size-xs);
+  opacity: 50%;
 }
 
 header .breadcrumbs ol li:not(:last-child)::after {
@@ -309,57 +308,16 @@ header .breadcrumbs ol li:not(:last-child)::after {
   padding-left: 8px;
 }
 
-header .breadcrumbs ol li a {
-  text-decoration: none;
-  color: var(--dark-color);
-  font-size: var(--body-font-size-xs);
-}
-
-header .breadcrumbs ol li:last-of-type a {
+header .breadcrumbs ol li a:any-link {
   color: var(--text-color);
 }
 
-header .breadcrumbs .category {
-  text-transform: capitalize;
-}
-
-@media screen and (min-width: 600px) {
-  header .breadcrumbs {
-    display: block;
-    position: sticky;
-    top: calc(var(--nav-height));
-    left: 0;
-  }
-
-  header .breadcrumbs {
-    max-width: none;
-  }
-
-  header .breadcrumbs ol {
-    padding: 0 0 12px;
-    margin: 0 auto;
-  }
-
-  .breadcrumb:not(.no-shadow) {
-    margin-bottom: 24px;
-  }
+header .breadcrumbs ol li:last-of-type {
+  opacity: 100%;
 }
 
 @media screen and (min-width: 900px) {
-  .breadcrumb:not(.no-shadow) {
-    margin-bottom: 40px;
-  }
-}
-
-@media (min-width: 1440px) {
   header .breadcrumbs {
-    max-width: 1200px;
-  }
-}
-
-@media (min-width: 1440px) {
-  header .breadcrumbs {
-    max-width: 1200px;
-    padding: 0 20px;
+    display: block;
   }
 }

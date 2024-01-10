@@ -39,8 +39,10 @@
 
   /* header */
   --nav-height: 64px;
-  --breadcrumb-height: 50px;
+  --breadcrumbs-height: 50px;
   --header-height: var(--nav-height);
+  --breadcrumbs-font-size: 14px;
+
 }
 
 @font-face {
@@ -71,8 +73,11 @@ body {
   display: none;
 }
 
-body.breadcrumbs-enabled {
-  --header-height: calc(var(--nav-height) + var(--breadcrumb-height));
+
+@media screen and (min-width: 900px) {
+  body.breadcrumbs-enabled {
+    --header-height: calc(var(--nav-height) + var(--breadcrumbs-height));
+  }
 }
 
 body.appear {
