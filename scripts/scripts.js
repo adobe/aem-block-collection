@@ -132,4 +132,13 @@ async function loadPage() {
   loadDelayed();
 }
 
+// Side-effects
+(async function daPreview() {
+  const { searchParams } = new URL(window.location.href);
+  if (searchParams.get('dapreview') === 'on') {
+    const { default: livePreview } = await import('https://da.live/scripts/dapreview.js');
+    livePreview(loadPage);
+  }
+}());
+
 loadPage();
