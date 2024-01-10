@@ -4,6 +4,22 @@ import {
   fetchPlaceholders,
 } from '../../scripts/aem.js';
 
+function findNextHeading(el) {
+  let preceedingEl = el.parentElement.previousElement || el.parentElement.parentElement;
+  let h = 'H2';
+  while (preceedingEl) {
+    const lastHeading = [...preceedingEl.querySelectorAll('h1, h2, h3, h4, h5, h6')].pop();
+    if (lastHeading) {
+      const level = parseInt(lastHeading.nodeName[1], 10);
+      h = level < 6 ? `H${level + 1}` : 'H6';
+      preceedingEl = false;
+    } else {
+      preceedingEl = preceedingEl.previousElement || preceedingEl.parentElement;
+    }
+  }
+  return h;
+}
+
 function highlightTextElements(terms, elements) {
   elements.forEach((element) => {
     if (!element || !element.textContent) return;
@@ -61,56 +77,35 @@ export async function fetchData(source) {
   return json.data;
 }
 
-function renderResultCard(result, searchTerms) {
-  const card = document.createElement('li');
-  const cardLink = document.createElement('a');
-  cardLink.href = result.path;
-
-  card.appendChild(cardLink);
-
+function renderResult(result, searchTerms, titleTag) {
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  a.href = result.path;
   if (result.image) {
-    const imageContainer = document.createElement('div');
-    imageContainer.classList.add('card-image');
-    imageContainer.append(
-      createOptimizedPicture(result.image),
-    );
-    cardLink.appendChild(imageContainer);
+    const wrapper = document.createElement('div');
+    wrapper.className = 'search-result-image';
+    const pic = createOptimizedPicture(result.image, '', false, [{ width: '350' }]);
+    wrapper.append(pic);
+    a.append(wrapper);
   }
-
-  const cardTitleParagraph = document.createElement('p');
-  const cardTitle = document.createElement('strong');
-  cardTitle.textContent = result.header || result.title;
-  cardTitleParagraph.appendChild(cardTitle);
-
-  const cardDescription = document.createElement('p');
-  cardDescription.textContent = result.description;
-
-  const cardBody = document.createElement('div');
-  cardBody.classList.add('card-body');
-  cardBody.append(
-    cardTitleParagraph,
-    cardDescription,
-  );
-  cardLink.append(cardBody);
-  highlightTextElements(searchTerms, [cardTitle, cardDescription]);
-  return card;
-}
-
-function renderResultLink(result, searchTerms) {
-  const link = document.createElement('a');
-  link.href = result.path;
-  link.textContent = result.header || result.title;
-
-  const description = document.createElement('p');
-  description.classList.add('description');
-  description.textContent = result.description;
-
-  const listItem = document.createElement('li');
-  listItem.classList.add('search-result');
-  listItem.append(link, description);
-  highlightTextElements(searchTerms, [link, description]);
-
-  return listItem;
+  if (result.title) {
+    const title = document.createElement(titleTag);
+    title.className = 'search-result-title';
+    const link = document.createElement('a');
+    link.href = result.path;
+    link.textContent = result.title;
+    highlightTextElements(searchTerms, [link]);
+    title.append(link);
+    a.append(title);
+  }
+  if (result.description) {
+    const description = document.createElement('p');
+    description.textContent = result.description;
+    highlightTextElements(searchTerms, [description]);
+    a.append(description);
+  }
+  li.append(a);
+  return li;
 }
 
 function clearResults(block) {
@@ -121,19 +116,19 @@ function clearResults(block) {
 async function renderResults(block, config, filteredData, searchTerms) {
   clearResults(block);
   const searchResults = block.querySelector('.search-results');
+  const headingTag = searchResults.dataset.h;
 
   if (filteredData.length) {
-    const list = document.createElement('ul');
-    const renderer = block.classList.contains('minimal') ? renderResultLink : renderResultCard;
-    list.append(
-      ...filteredData.map((result) => renderer(result, searchTerms)),
-    );
-    searchResults.append(list);
+    searchResults.classList.remove('no-results');
+    filteredData.forEach((result) => {
+      const li = renderResult(result, searchTerms, headingTag);
+      searchResults.append(li);
+    });
   } else {
-    const noResultMessage = document.createElement('p');
-    noResultMessage.classList.add('no-results');
-    noResultMessage.textContent = config.placeholders.searchNoResults || 'No results found.';
-    searchResults.append(noResultMessage);
+    const noResultsMessage = document.createElement('li');
+    searchResults.classList.add('no-results');
+    noResultsMessage.textContent = config.placeholders.searchNoResults || 'No results found.';
+    searchResults.append(noResultsMessage);
   }
 }
 
@@ -190,16 +185,17 @@ async function handleSearch(block, config) {
   await renderResults(block, config, filteredData, searchTerms);
 }
 
-function searchResultsContainer() {
-  const results = document.createElement('div');
-  results.classList.add('search-results');
+function searchResultsContainer(block) {
+  const results = document.createElement('ul');
+  results.className = 'search-results';
+  results.dataset.h = findNextHeading(block);
   return results;
 }
 
 function searchInput(block, config) {
   const input = document.createElement('input');
   input.setAttribute('type', 'search');
-  input.classList.add('search-input');
+  input.className = 'search-input';
 
   const searchPlaceholder = config.placeholders.searchPlaceholder || 'Search...';
   input.placeholder = searchPlaceholder;
@@ -233,11 +229,11 @@ function searchBox(block, config) {
 
 export default async function decorate(block) {
   const placeholders = await fetchPlaceholders();
-  const source = document.querySelector('a').href.toString() || '/query-index.json';
+  const source = document.querySelector('a[href]') ? document.querySelector('a[href]').href : '/query-index.json';
   block.innerHTML = '';
   block.append(
     searchBox(block, { source, placeholders }),
-    searchResultsContainer(),
+    searchResultsContainer(block),
   );
 
   decorateIcons(block);
