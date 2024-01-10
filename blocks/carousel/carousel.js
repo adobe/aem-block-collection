@@ -64,10 +64,8 @@ function bindEvents(block) {
   });
 }
 
-function createSlide(row, slideIndex, carouselId, placeholders) {
+function createSlide(row, slideIndex, carouselId) {
   const slide = document.createElement('li');
-  slide.setAttribute('role', 'group');
-  slide.setAttribute('aria-roledescription', placeholders.slide || 'Slide');
   slide.setAttribute('id', `carousel-${carouselId}-slide-${slideIndex}`);
   slide.classList.add('carousel-slide');
 
@@ -123,7 +121,7 @@ export default async function decorate(block) {
   }
 
   rows.forEach((row, idx) => {
-    const slide = createSlide(row, idx, carouselId, placeholders);
+    const slide = createSlide(row, idx, carouselId);
     slidesWrapper.append(slide);
 
     if (slideIndicators) {
