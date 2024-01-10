@@ -30,7 +30,7 @@
   justify-content: center;
   position: relative;
   width: 100%;
-  min-height: 40rem;
+  min-height: minmax(40rem, calc(100vh - var(--nav-height)));
 }
 
 .carousel .carousel-slide:has(.carousel-slide-content[data-align="center"]) {
@@ -55,7 +55,7 @@
 .carousel .carousel-slide .carousel-slide-content {
   z-index: 1;
   padding: 1rem;
-  margin-inline: 3rem;
+  margin: 1.5rem 3rem;
   color: white;
   background-color: rgba(0 0 0 / 50%);
   position: relative;
@@ -164,7 +164,7 @@
   .carousel .carousel-slide .carousel-slide-content {
     --slide-content-width: 50%;
 
-    margin-inline: 5rem;
+    margin: 2.5rem 5rem;
   }
 
   .carousel .carousel-slide .carousel-slide-content[data-align="justify"] {

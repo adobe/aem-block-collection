@@ -37,6 +37,8 @@ function showSlide(block, slideIndex = 0, scroll = true) {
 
 function bindEvents(block) {
   const slideIndicators = block.querySelector('.carousel-slide-indicators');
+  if (!slideIndicators) return;
+
   slideIndicators.querySelectorAll('button').forEach((button) => {
     button.addEventListener('click', (e) => {
       const slideIndicator = e.currentTarget.parentElement;
@@ -137,7 +139,9 @@ export default async function decorate(block) {
   container.append(slidesWrapper);
   block.prepend(container);
 
-  bindEvents(block);
+  if (!isSingleSlide) {
+    bindEvents(block);
 
-  showSlide(block);
+    showSlide(block);
+  }
 }
