@@ -119,11 +119,12 @@ async function buildBreadcrumbsFromNavTree(nav, currentUrl) {
 
   // last link is current page and should not be linked
   crumbs[crumbs.length - 1].url = null;
+  crumbs[crumbs.length - 1].setAttribute('aria-current', 'page');
   return crumbs;
 }
 
 async function buildBreadcrumbs() {
-  const breadcrumbs = document.createElement('div');
+  const breadcrumbs = document.createElement('nav');
   breadcrumbs.className = 'breadcrumbs';
 
   const crumbs = await buildBreadcrumbsFromNavTree(document.querySelector('.nav-sections'), document.location.href);

@@ -293,18 +293,18 @@ header .breadcrumbs ol {
   padding: 0;
   margin-top: 0;
   margin-bottom: 0;
+  gap: 1ch;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
 header .breadcrumbs ol li {
-  padding-right: 8px;
   padding-inline-start: 0;
   opacity: 0.7;
 }
 
 header .breadcrumbs ol li:not(:last-child)::after {
   content: "/";
-  padding-left: 8px;
+  padding-left: 1ch;
 }
 
 header .breadcrumbs ol li a:any-link {
