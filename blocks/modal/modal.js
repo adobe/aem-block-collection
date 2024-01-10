@@ -7,7 +7,7 @@ export async function createModal(contentNodes) {
   await loadCSS(`${window.hlx.codeBasePath}/blocks/modal/modal.css`);
   const dialog = document.createElement('dialog');
   const dialogContent = document.createElement('div');
-  dialogContent.classList.add('dialog-content');
+  dialogContent.classList.add('modal-content');
   dialogContent.append(...contentNodes);
   dialog.append(dialogContent);
 
