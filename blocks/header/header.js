@@ -1,6 +1,4 @@
-import {
-  buildBlock, decorateBlock, getMetadata, loadBlock,
-} from '../../scripts/aem.js';
+import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // media query match that indicates mobile/tablet width
@@ -88,6 +86,70 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   }
 }
 
+function buildBreadcrumbsFromNavTree(nav, currentUrl) {
+  let menuItem = Array.from(nav.querySelectorAll('a')).find((a) => a.href === currentUrl);
+  if (!menuItem) {
+    return [
+      { title: 'Home', url: '/' },
+      { title: document.head.title, url: currentUrl },
+    ];
+  }
+
+  const tree = [];
+  tree.unshift({ title: menuItem.textContent, url: menuItem.href });
+
+  while (menuItem.closest('ul')) {
+    menuItem = menuItem.closest('ul').closest('li');
+    if (!menuItem) break;
+    const menuLink = menuItem.querySelector(':scope > a');
+    if (menuLink) {
+      tree.unshift({ title: menuLink.textContent, url: menuLink.href });
+    } else {
+      const text = Array.from(menuItem.childNodes)
+        .filter((n) => n.nodeType === Node.TEXT_NODE)
+        .map((n) => n.textContent)
+        .join(' ');
+      tree.unshift({ title: text.trim(), url: null });
+    }
+  }
+
+  tree.unshift({ title: 'Home', url: '/' });
+  return tree;
+}
+
+function buildBreadcrumbs() {
+  const breadcrumbs = document.createElement('div');
+  breadcrumbs.className = 'breadcrumbs';
+
+  const tree = buildBreadcrumbsFromNavTree(document.querySelector('.nav-sections'), document.location.href);
+
+  // breadcrumbs.innerHTML = `<ol>
+  //     <li><a href="/home" class="breadcrumb-link-underline-effect">Home</a></li>
+  //     <li><a href="/docs/" class="breadcrumb-link-underline-effect">Documentation</a></li>
+  //     <li><a href="/docs/#build" class="breadcrumb-link-underline-effect category">Build</a></li>
+  //     <li><a href="/developer/block-collection" style="cursor: default;">Block Collection</a></li>
+  // </ol>`;
+
+  const ol = document.createElement('ol');
+  for (const item of tree) {
+    const li = document.createElement('li');
+    if (item.url) {
+      const a = document.createElement('a');
+      a.href = item.url;
+      a.textContent = item.title;
+      li.append(a);
+    } else {
+      li.textContent = item.title;
+    }
+    ol.append(li);
+  }
+  breadcrumbs.append(ol);
+
+  console.log(tree);
+
+  return breadcrumbs;
+}
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -150,14 +212,6 @@ export default async function decorate(block) {
 
   if (getMetadata('breadcrumbs')) {
     document.body.classList.add('breadcrumbs-enabled');
-    const breadcrumbs = document.createElement('div');
-    breadcrumbs.className = 'breadcrumbs';
-    breadcrumbs.innerHTML = `<ol>
-      <li><a href="/home" class="breadcrumb-link-underline-effect">Home</a></li>
-      <li><a href="/docs/" class="breadcrumb-link-underline-effect">Documentation</a></li>
-      <li><a href="/docs/#build" class="breadcrumb-link-underline-effect category">Build</a></li>
-      <li><a href="/developer/block-collection" style="cursor: default;">Block Collection</a></li>
-  </ol>`;
-    navWrapper.append(breadcrumbs);
+    navWrapper.append(buildBreadcrumbs());
   }
 }

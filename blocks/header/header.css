@@ -201,6 +201,7 @@ header nav .nav-sections ul > li > ul > li {
     position: relative;
     padding-right: 16px;
     cursor: pointer;
+    z-index: 10;
   }
 
   header nav .nav-sections .nav-drop::after {
@@ -279,7 +280,6 @@ header .breadcrumbs {
   display: none;
   width: 100%;
   max-height: var(--breadcrumb-height);
-  z-index: 100;
   height: var(--breadcrumb-height);
   max-width: 1200px;
   padding: 0 32px;
@@ -304,7 +304,7 @@ header .breadcrumbs ol li {
   font-size: var(--body-font-size-xs);
 }
 
-header .breadcrumbs ol li:not(:last-child) a::after {
+header .breadcrumbs ol li:not(:last-child)::after {
   content: "/";
   padding-left: 8px;
 }
