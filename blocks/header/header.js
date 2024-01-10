@@ -86,6 +86,17 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   }
 }
 
+function getDirectTextContent(menuItem) {
+  const menuLink = menuItem.querySelector(':scope > a');
+  if (menuLink) {
+    return menuLink.textContent.trim();
+  }
+  return Array.from(menuItem.childNodes)
+    .filter((n) => n.nodeType === Node.TEXT_NODE)
+    .map((n) => n.textContent)
+    .join(' ');
+}
+
 function buildBreadcrumbsFromNavTree(nav, currentUrl) {
   let menuItem = Array.from(nav.querySelectorAll('a')).find((a) => a.href === currentUrl);
   if (!menuItem) {
@@ -95,26 +106,15 @@ function buildBreadcrumbsFromNavTree(nav, currentUrl) {
     ];
   }
 
-  const tree = [];
-  tree.unshift({ title: menuItem.textContent, url: menuItem.href });
+  const crumbs = [];
+  do {
+    const link = menuItem.querySelector(':scope > a');
+    crumbs.unshift({ title: getDirectTextContent(menuItem), url: link ? link.href : null });
+    menuItem = menuItem.closest('ul')?.closest('li');
+  } while (menuItem);
 
-  while (menuItem.closest('ul')) {
-    menuItem = menuItem.closest('ul').closest('li');
-    if (!menuItem) break;
-    const menuLink = menuItem.querySelector(':scope > a');
-    if (menuLink) {
-      tree.unshift({ title: menuLink.textContent, url: menuLink.href });
-    } else {
-      const text = Array.from(menuItem.childNodes)
-        .filter((n) => n.nodeType === Node.TEXT_NODE)
-        .map((n) => n.textContent)
-        .join(' ');
-      tree.unshift({ title: text.trim(), url: null });
-    }
-  }
-
-  tree.unshift({ title: 'Home', url: '/' });
-  return tree;
+  crumbs.unshift({ title: 'Home', url: '/' });
+  return crumbs;
 }
 
 function buildBreadcrumbs() {
