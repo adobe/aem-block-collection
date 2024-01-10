@@ -1,8 +1,10 @@
-import { getMetadata } from '../../scripts/aem.js';
+import { fetchPlaceholders, getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
+
+let placeholders;
 
 function closeOnEscape(e) {
   if (e.code === 'Escape') {
@@ -97,7 +99,7 @@ function getDirectTextContent(menuItem) {
     .join(' ');
 }
 
-function buildBreadcrumbsFromNavTree(nav, currentUrl) {
+async function buildBreadcrumbsFromNavTree(nav, currentUrl) {
   const crumbs = [];
 
   let menuItem = Array.from(nav.querySelectorAll('a')).find((a) => a.href === currentUrl);
@@ -111,19 +113,20 @@ function buildBreadcrumbsFromNavTree(nav, currentUrl) {
     crumbs.unshift({ title: getMetadata('og:title'), url: currentUrl });
   }
 
+  const homePlaceholder = placeholders.breadcrumbsHomeLabel || 'Home';
   const homeUrl = document.querySelector('.nav-brand a').href;
-  crumbs.unshift({ title: 'Home', url: homeUrl });
+  crumbs.unshift({ title: homePlaceholder, url: homeUrl });
 
   // last link is current page and should not be linked
   crumbs[crumbs.length - 1].url = null;
   return crumbs;
 }
 
-function buildBreadcrumbs() {
+async function buildBreadcrumbs() {
   const breadcrumbs = document.createElement('div');
   breadcrumbs.className = 'breadcrumbs';
 
-  const crumbs = buildBreadcrumbsFromNavTree(document.querySelector('.nav-sections'), document.location.href);
+  const crumbs = await buildBreadcrumbsFromNavTree(document.querySelector('.nav-sections'), document.location.href);
 
   const ol = document.createElement('ol');
   ol.append(...crumbs.map((item) => {
@@ -148,6 +151,7 @@ function buildBreadcrumbs() {
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
+  placeholders = await fetchPlaceholders();
   // load nav as fragment
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta).pathname : '/nav';
@@ -205,6 +209,6 @@ export default async function decorate(block) {
 
   if (getMetadata('breadcrumbs').toLowerCase() === 'true') {
     document.body.classList.add('breadcrumbs-enabled');
-    navWrapper.append(buildBreadcrumbs());
+    navWrapper.append(await buildBreadcrumbs());
   }
 }
