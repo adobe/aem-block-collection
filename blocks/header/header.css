@@ -312,6 +312,7 @@ header .breadcrumbs ol li a:any-link {
   color: var(--text-color);
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 header .breadcrumbs ol li:last-of-type {
   opacity: 1;
 }
