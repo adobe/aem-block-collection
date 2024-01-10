@@ -29,6 +29,17 @@ async function createForm(formHref) {
 function generatePayload(form) {
   const payload = {};
 
+  [...form.elements].forEach((field) => {
+    if (field.name && !field.type === 'submit' && !field.disabled) {
+      if (field.type === 'radio') {
+        if (field.checked) payload[field.name] = field.value;
+      } else if (field.type === 'checkbox') {
+        if (field.checked) payload[field.name] = payload[field.name] ? `${payload[field.name]},${field.value}` : field.value;
+      } else {
+        payload[field.name] = field.value;
+      }
+    }
+  });
   return payload;
 }
 
