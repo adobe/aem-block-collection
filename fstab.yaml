@@ -1,4 +1,4 @@
 mountpoints:
   /:
-    url: https://content.da.live/hlxsites/da-block-collection/
+    url: https://content.da.live/aemsites/da-block-collection/
     type: markup
