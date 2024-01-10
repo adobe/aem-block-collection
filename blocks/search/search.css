@@ -1,10 +1,11 @@
 .search .search-box {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px;
   align-items: center;
 }
 
 .search .search-box input {
-  width: calc(100% - 30px);
   border: solid 1px lightgray;
   padding: 5px 10px;
   box-sizing: border-box;
@@ -56,7 +57,7 @@
 }
 
 .search.minimal ul {
-  padding-left: 24px;
+  padding-left: 28px;
   display: block;
 }
 
@@ -75,6 +76,6 @@
   color: var(--link-color);
 }
 
-.search.minimal .search-result p:last-child {
+.search.minimal .search-result p {
   font-size: var(--body-font-size-xs);
 }
