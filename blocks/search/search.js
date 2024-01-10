@@ -132,7 +132,7 @@ async function renderResults(block, config, filteredData, searchTerms) {
   } else {
     const noResultMessage = document.createElement('p');
     noResultMessage.classList.add('no-results');
-    noResultMessage.textContent = config.placeholders.searchNoResults || 'No Results Found.';
+    noResultMessage.textContent = config.placeholders.searchNoResults || 'No results found.';
     searchResults.append(noResultMessage);
   }
 }
