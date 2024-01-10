@@ -42,7 +42,6 @@
   --breadcrumbs-height: 50px;
   --header-height: var(--nav-height);
   --breadcrumbs-font-size: 14px;
-
 }
 
 @font-face {
@@ -72,7 +71,6 @@ body {
   background-color: var(--background-color);
   display: none;
 }
-
 
 @media screen and (min-width: 900px) {
   body.breadcrumbs-enabled {
