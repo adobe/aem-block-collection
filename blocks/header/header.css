@@ -158,7 +158,6 @@ header nav .nav-sections {
   flex: 1 1 auto;
   display: none;
   visibility: hidden;
-  background-color: var(--overlay-color);
 }
 
 header nav[aria-expanded="true"] .nav-sections {
@@ -277,9 +276,7 @@ header nav .nav-tools {
 
 
 header .breadcrumbs {
-  /* hide on mobile and tablet */
   display: none;
-
   padding: 0 32px;
   width: 100%;
   height: var(--breadcrumbs-height);
