@@ -30,7 +30,6 @@ function highlightTextElements(terms, elements) {
       let start = 0;
       let offset = textContent.toLowerCase().indexOf(term.toLowerCase(), start);
       while (offset >= 0) {
-        console.log("Offset", offset, "Start", start);
         matches.push({ offset, term: textContent.substring(offset, offset + term.length) });
         start = offset + term.length;
         offset = textContent.toLowerCase().indexOf(term.toLowerCase(), start);
@@ -184,7 +183,6 @@ async function handleSearch(block, config) {
     return;
   }
   const searchTerms = searchValue.toLowerCase().split(/\s+/).filter((term) => !!term);
-  console.log('Search Terms:', searchTerms);
 
   const data = await fetchData(config.source);
   const filteredData = filterData(searchTerms, data);
