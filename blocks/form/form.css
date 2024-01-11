@@ -50,9 +50,12 @@
   resize: vertical;
 }
 
-.form input[type="checkbox"],
-.form input[type="radio"] {
+.form .selection-wrapper input {
   width: 16px;
+}
+
+.form .selection-wrapper label {
+  margin-bottom: 0;
 }
 
 .form input:hover {
@@ -65,34 +68,30 @@
   padding: 0.2em 0.4em;
 }
 
-.form .field-wrapper.form-radio-wrapper,
-.form .field-wrapper.form-checkbox-wrapper,
-.form .field-wrapper.form-toggle-wrapper {
+.form .field-wrapper.selection-wrapper {
   grid-auto-flow: column;
   justify-content: start;
   gap: 16px;
 }
 
-.form .field-wrapper.form-radio-wrapper > label,
-.form .field-wrapper.form-checkbox-wrapper > label,
-.form .field-wrapper.form-toggle-wrapper > label {
+.form .field-wrapper.selection-wrapper > label {
   order: 1;
 }
 
-.form .form-toggle-wrapper .switch {
+.form .toggle-wrapper .switch {
   position: relative;
   display: inline-block;
   width: 48px;
   height: 24px;
 }
 
-.form .form-toggle-wrapper input {
+.form .toggle-wrapper input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.form .form-toggle-wrapper .slider {
+.form .toggle-wrapper .slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -104,7 +103,7 @@
   border-radius: 30px;
 }
 
-.form .form-toggle-wrapper .slider::before {
+.form .toggle-wrapper .slider::before {
   position: absolute;
   content: "";
   height: 20px;
@@ -116,15 +115,15 @@
   border-radius: 50%;
 }
 
-.form .form-toggle-wrapper input:checked + .slider {
+.form .toggle-wrapper input:checked + .slider {
   background-color: var(--link-color);
 }
 
-.form .form-toggle-wrapper input:focus + .slider {
+.form .toggle-wrapper input:focus + .slider {
   outline: 2px solid var(--link-color);
   outline-offset: 2px;
 }
 
-.form .form-toggle-wrapper input:checked + .slider::before {
+.form .toggle-wrapper input:checked + .slider::before {
   transform: translateX(24px);
 }

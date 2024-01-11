@@ -3,7 +3,7 @@ import { toClassName } from '../../scripts/aem.js';
 function createFieldWrapper(fd) {
   const fieldWrapper = document.createElement('div');
   if (fd.Style) fieldWrapper.className = fd.Style;
-  fieldWrapper.classList.add('field-wrapper', `form-${fd.Type}-wrapper`);
+  fieldWrapper.classList.add('field-wrapper', `${fd.Type}-wrapper`);
 
   fieldWrapper.dataset.fieldset = fd.Fieldset;
 
@@ -173,6 +173,7 @@ const createToggle = (fd) => {
   field.type = 'checkbox';
   if (!field.value) field.value = 'on';
   field.classList.add('toggle');
+  fieldWrapper.classList.add('selection-wrapper');
 
   const toggleSwitch = document.createElement('div');
   toggleSwitch.classList.add('switch');
@@ -192,6 +193,7 @@ const createToggle = (fd) => {
 const createCheckbox = (fd) => {
   const { field, fieldWrapper } = createInput(fd);
   if (!field.value) field.value = 'checked';
+  fieldWrapper.classList.add('selection-wrapper');
 
   return { field, fieldWrapper };
 };
@@ -199,6 +201,7 @@ const createCheckbox = (fd) => {
 const createRadio = (fd) => {
   const { field, fieldWrapper } = createInput(fd);
   if (!field.value) field.value = fd.Label || 'on';
+  fieldWrapper.classList.add('selection-wrapper');
 
   return { field, fieldWrapper };
 };
