@@ -47,7 +47,7 @@ export async function createModal(contentNodes) {
       dialog.showModal();
       // Google Chrome restores the scroll position when the dialog is reopened,
       // so we need to reset it.
-      dialogContent.scrollTop = 0;
+      setTimeout(() => { dialogContent.scrollTop = 0; }, 0);
     },
   };
 }
