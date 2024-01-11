@@ -42,7 +42,7 @@ function manageConsentRead(categories) {
  * If preferences are not available in localStorage, show consent dialog.
  * @param {*} path to the document which contains the consent dialog
  */
-export default async function loadConsent(path) {
+export async function loadConsent(path) {
   const selectedCategories = userPreferences();
   if (selectedCategories && selectedCategories.length > 0) {
     window.hlx = window.hlx || {};
