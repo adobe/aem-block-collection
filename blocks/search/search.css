@@ -98,6 +98,7 @@
   color: var(--link-color);
 }
 
+/* stylelint-disable no-descending-specificity */
 .search.minimal ul.search-results > li > a {
   background-color: unset;
 }
