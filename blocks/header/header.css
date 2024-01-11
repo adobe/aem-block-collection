@@ -55,7 +55,6 @@ header nav p {
 
 header nav a:any-link {
   color: currentcolor;
-  display: block;
 }
 
 /* hamburger */
@@ -188,10 +187,15 @@ header nav .nav-sections ul > li > ul > li {
 }
 
 @media (width >= 900px) {
+
   header nav .nav-sections {
     display: block;
     visibility: visible;
     white-space: nowrap;
+  }
+
+  header nav a:any-link {
+    display: block;
   }
 
   header nav[aria-expanded="true"] .nav-sections {
