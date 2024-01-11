@@ -49,7 +49,6 @@
   width: 16px;
 }
 
-
 .form input:hover {
   border: 1px solid var(--text-color);
 }
