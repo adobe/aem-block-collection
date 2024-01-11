@@ -118,13 +118,36 @@ export default async function decorate(block) {
   if (navSections) {
     navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
       if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
-      navSection.addEventListener('click', () => {
+
+      function closeMenuSection(event) {
+        if (!nav.contains(event.target)) {
+          const expanded = navSection.getAttribute('aria-expanded') === 'true';
+          if (expanded) {
+            navSection.setAttribute('aria-expanded', 'false');
+          }
+        }
+      }
+
+      const openMenu = () => {
         if (isDesktop.matches) {
           const expanded = navSection.getAttribute('aria-expanded') === 'true';
+
           toggleAllNavSections(navSections);
           navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
         }
-      });
+      };
+
+      const mouseOverMenu = () => {
+        const expanded = navSection.getAttribute('aria-expanded') === 'true';
+        if (expanded) {
+          return; // it's already open
+        }
+        openMenu();
+      };
+
+      navSection.addEventListener('click', openMenu);
+      navSection.addEventListener('mouseover', mouseOverMenu);
+      document.addEventListener('mouseover', closeMenuSection);
     });
   }
 
