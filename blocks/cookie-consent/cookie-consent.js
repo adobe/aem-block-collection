@@ -1,5 +1,5 @@
 import { readBlockConfig } from '../../scripts/aem.js';
-import { manageConsentUpdate } from '../../scripts/consent-management.js';
+import { manageConsentUpdate } from '../../scripts/scripts.js';
 
 function consentButtonsPanel() {
   return document.createRange().createContextualFragment(`
