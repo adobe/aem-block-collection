@@ -27,9 +27,13 @@ function highlightTextElements(terms, elements) {
     const matches = [];
     const { textContent } = element;
     terms.forEach((term) => {
-      const offset = textContent.toLowerCase().indexOf(term.toLowerCase());
-      if (offset >= 0) {
+      let start = 0;
+      let offset = textContent.toLowerCase().indexOf(term.toLowerCase(), start);
+      while (offset >= 0) {
+        console.log("Offset", offset, "Start", start);
         matches.push({ offset, term: textContent.substring(offset, offset + term.length) });
+        start = offset + term.length;
+        offset = textContent.toLowerCase().indexOf(term.toLowerCase(), start);
       }
     });
 
@@ -40,6 +44,7 @@ function highlightTextElements(terms, elements) {
     matches.sort((a, b) => a.offset - b.offset);
     let currentIndex = 0;
     const fragment = matches.reduce((acc, { offset, term }) => {
+      if (offset < currentIndex) return acc;
       const textBefore = textContent.substring(currentIndex, offset);
       if (textBefore) {
         acc.appendChild(document.createTextNode(textBefore));
@@ -174,11 +179,12 @@ function filterData(searchTerms, data) {
 
 async function handleSearch(block, config) {
   const searchValue = block.querySelector('input').value;
-  const searchTerms = searchValue.toLowerCase().split(/\s+/);
   if (searchValue.length < 3) {
     clearResults(block);
     return;
   }
+  const searchTerms = searchValue.toLowerCase().split(/\s+/).filter((term) => !!term);
+  console.log('Search Terms:', searchTerms);
 
   const data = await fetchData(config.source);
   const filteredData = filterData(searchTerms, data);
