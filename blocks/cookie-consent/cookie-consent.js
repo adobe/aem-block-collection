@@ -22,14 +22,16 @@ function consentCategoriesButtonsPanel() {
     </div>`);
 }
 
-function categoryHeaderHTML(title, code, optional) {
+function categoryHeaderHTML(title, code, optional, selected) {
   return `
   <div>
     <p>${title}</p>
   </div>
   <div class="consent-category-switch">
     <label class="switch">
-      <input type="checkbox" data-cc-code="${code}" value="${code}" ${!optional ? ' checked disabled' : ''}/>
+      <input type="checkbox" data-cc-code="${code}" value="${code}"
+              ${!optional || selected ? ' checked ' : ''}
+              ${!optional ? 'disabled' : ''} />
       <span class="slider round"></span>
     </label>
   </div>`;
@@ -60,6 +62,8 @@ function addListeners(block) {
 }
 
 export default function decorate(block) {
+  // eslint-disable-next-line max-len
+  const selectedCategories = (window.hlx && Array.isArray(window.hlx.consent)) ? window.hlx.consent : [];
   const cmpSections = [...block.querySelectorAll('h2')].map((title) => title.parentElement);
   const cookiesInfoContent = cmpSections.shift();
   const ccInfoSection = document.createElement('div');
@@ -79,7 +83,9 @@ export default function decorate(block) {
     const categoryTitle = category.children[0].innerHTML;
     const categoryHeader = document.createElement('div');
     categoryHeader.classList = 'consent-category-header';
-    categoryHeader.innerHTML = categoryHeaderHTML(categoryTitle, categoryConfig.code, optional);
+    const selected = selectedCategories && selectedCategories.includes(categoryConfig.code);
+    // eslint-disable-next-line max-len
+    categoryHeader.innerHTML = categoryHeaderHTML(categoryTitle, categoryConfig.code, optional, selected);
 
     const summary = document.createElement('summary');
     summary.className = 'accordion-item-label';
@@ -107,6 +113,9 @@ export default function decorate(block) {
   block.firstElementChild.remove();
   block.append(ccInfoSection);
   block.append(ccCategoriesSection);
-
   addListeners(block);
+
+  if (selectedCategories) {
+    toggleCategoriesPanel(block);
+  }
 }

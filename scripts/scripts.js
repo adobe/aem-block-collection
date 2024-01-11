@@ -25,6 +25,8 @@ function userCookiePreferences(categories) {
   }
   storage.categories = categories;
   localStorage.setItem(LOCAL_STORAGE_AEM_CONSENT, JSON.stringify(storage));
+  window.hlx = window.hlx || [];
+  window.hlx.consent = categories;
   return categories;
 }
 
@@ -49,13 +51,29 @@ function manageConsentRead(categories) {
 }
 
 /**
+ * Shows cookie consent dialog, if the page
+ * has one defined in the metadata.
+ */
+export async function showCookieConsentDialog() {
+  const ccPath = getMetadata('cookie-consent');
+  if (!ccPath) {
+    return;
+  }
+  if (ccPath && ccPath.startsWith('/') && ccPath.indexOf('/cookie-consent/')) {
+    const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
+    await openModal(ccPath);
+    document.querySelector('dialog > .close-button').remove();
+  }
+}
+
+/**
  * Checks if user has preferences saved. If preferences are already saved
  * set categories in the window.hlx.consent property, trigger downstream events,
  * track in RUM, and continue execution.
  * If preferences are not available in localStorage, show consent dialog.
- * @param {*} path to the document which contains the consent dialog
+
  */
-async function cookieConsent() {
+async function initCookieConsent() {
   const ccPath = getMetadata('cookie-consent');
   if (!ccPath) {
     return;
@@ -65,23 +83,10 @@ async function cookieConsent() {
     window.hlx = window.hlx || {};
     window.hlx.consent = selectedCategories;
     manageConsentRead(selectedCategories);
-  } else if (ccPath && ccPath.startsWith('/') && ccPath.indexOf('/cookie-consent/')) {
-    const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
-    await openModal(ccPath);
-    document.querySelector('dialog > .close-button').remove();
+  } else {
+    showCookieConsentDialog();
   }
 }
-
-/**
- * Builds cookie consent block and prepends to main in a new section.
- * @param {Element} main The container element
-
-async function cookieConsent() {
-  const cookieConsentPath = getMetadata('cookie-consent');
-  if (cookieConsentPath) {
-    import('./consent-management.js').then((cc) => cc.loadConsent(cookieConsentPath));
-  }
-}  */
 
 function buildCookieConsentDialog(main) {
   if (window.location.href.includes('/cookie-consent/')
@@ -223,7 +228,7 @@ function loadDelayed() {
 }
 
 async function loadPage() {
-  cookieConsent();
+  initCookieConsent();
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
