@@ -20,7 +20,7 @@ import { openModal } from '../blocks/modal/modal.js';
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 const LOCAL_STORAGE_AEM_CONSENT = 'aem-consent';
 
-function userPreferences(categories) {
+function userCookiePreferences(categories) {
   // eslint-disable-next-line max-len
   const storage = localStorage.getItem(LOCAL_STORAGE_AEM_CONSENT) ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_AEM_CONSENT)) : {};
   if (!categories) {
@@ -39,7 +39,7 @@ function userPreferences(categories) {
  */
 export function manageConsentUpdate(selCategories) {
   const newCategories = Array.isArray(selCategories) ? selCategories : [selCategories];
-  userPreferences(newCategories);
+  userCookiePreferences(newCategories);
   sampleRUM('consentupdate', newCategories);
   const consentUpdateEvent = new CustomEvent('consent-updated', newCategories);
   dispatchEvent(consentUpdateEvent);
@@ -59,17 +59,17 @@ function manageConsentRead(categories) {
  * @param {*} path to the document which contains the consent dialog
  */
 async function cookieConsent() {
-  const cookieConsentPath = getMetadata('cookie-consent');
-  if (!cookieConsentPath) {
+  const ccPath = getMetadata('cookie-consent');
+  if (!ccPath) {
     return;
   }
-  const selectedCategories = userPreferences();
+  const selectedCategories = userCookiePreferences();
   if (selectedCategories && selectedCategories.length > 0) {
     window.hlx = window.hlx || {};
     window.hlx.consent = selectedCategories;
     manageConsentRead(selectedCategories);
-  } else if (path && path.startsWith('/') && path.indexOf('/cookie-consent/')) {
-    await openModal(path);
+  } else if (ccPath && ccPath.startsWith('/') && ccPath.indexOf('/cookie-consent/')) {
+    await openModal(ccPath);
     document.querySelector('dialog > .close-button').remove();
   }
 }
