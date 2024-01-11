@@ -74,8 +74,18 @@
   gap: 16px;
 }
 
+.form .field-wrapper > label {
+  order: -1;
+}
+
 .form .field-wrapper.selection-wrapper > label {
   order: 1;
+}
+
+.form input[required] + label::after {
+  content: "*";
+  color: firebrick;
+  margin-inline-start: 1ch;
 }
 
 .form .toggle-wrapper .switch {

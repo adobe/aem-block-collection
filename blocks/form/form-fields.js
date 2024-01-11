@@ -102,8 +102,8 @@ const createSelect = async (fd) => {
   }
 
   const fieldWrapper = createFieldWrapper(fd);
-  fieldWrapper.append(createLabel(fd));
   fieldWrapper.append(select);
+  fieldWrapper.append(createLabel(fd));
 
   return { field: select, fieldWrapper };
 };
@@ -132,8 +132,8 @@ const createTextArea = (fd) => {
   const fieldWrapper = createFieldWrapper(fd);
   const label = createLabel(fd);
   field.setAttribute('aria-labelledby', label.id);
-  fieldWrapper.append(label);
   fieldWrapper.append(field);
+  fieldWrapper.append(label);
 
   return { field, fieldWrapper };
 };
@@ -146,8 +146,8 @@ const createInput = (fd) => {
   const fieldWrapper = createFieldWrapper(fd);
   const label = createLabel(fd);
   field.setAttribute('aria-labelledby', label.id);
-  fieldWrapper.append(label);
   fieldWrapper.append(field);
+  fieldWrapper.append(label);
 
   return { field, fieldWrapper };
 };
