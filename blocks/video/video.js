@@ -82,7 +82,7 @@ export default async function decorate(block) {
     const observer = new IntersectionObserver((entries) => {
       if (entries.some((e) => e.isIntersecting)) {
         observer.disconnect();
-        loadVideoEmbed(block, link);
+        loadVideoEmbed(block, link, false);
       }
     });
     observer.observe(block);
