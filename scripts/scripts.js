@@ -14,9 +14,6 @@ import {
   getMetadata,
 } from './aem.js';
 
-// eslint-disable-next-line import/no-cycle
-import { openModal } from '../blocks/modal/modal.js';
-
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 const LOCAL_STORAGE_AEM_CONSENT = 'aem-consent';
 
@@ -69,6 +66,7 @@ async function cookieConsent() {
     window.hlx.consent = selectedCategories;
     manageConsentRead(selectedCategories);
   } else if (ccPath && ccPath.startsWith('/') && ccPath.indexOf('/cookie-consent/')) {
+    const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
     await openModal(ccPath);
     document.querySelector('dialog > .close-button').remove();
   }
