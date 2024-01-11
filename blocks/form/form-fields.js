@@ -166,6 +166,7 @@ const createFieldset = (fd) => {
 const createToggle = (fd) => {
   const { field, fieldWrapper } = createInput(fd);
   field.type = 'checkbox';
+  if (!field.value) field.value = 'on';
   field.classList.add('toggle');
 
   const toggleSwitch = document.createElement('div');
@@ -183,6 +184,20 @@ const createToggle = (fd) => {
   return { field, fieldWrapper };
 };
 
+const createCheckbox = (fd) => {
+  const { field, fieldWrapper } = createInput(fd);
+  if (!field.value) field.value = 'checked';
+
+  return { field, fieldWrapper };
+};
+
+const createRadio = (fd) => {
+  const { field, fieldWrapper } = createInput(fd);
+  if (!field.value) field.value = 'on';
+
+  return { field, fieldWrapper };
+};
+
 const FIELD_CREATOR_FUNCTIONS = {
   select: createSelect,
   heading: createHeading,
@@ -191,6 +206,8 @@ const FIELD_CREATOR_FUNCTIONS = {
   toggle: createToggle,
   submit: createSubmit,
   fieldset: createFieldset,
+  checkbox: createCheckbox,
+  radio: createRadio,
 };
 
 export default async function createField(fd) {
