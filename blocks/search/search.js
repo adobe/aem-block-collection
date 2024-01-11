@@ -4,6 +4,8 @@ import {
   fetchPlaceholders,
 } from '../../scripts/aem.js';
 
+const searchParams = new URLSearchParams(window.location.search);
+
 function findNextHeading(el) {
   let preceedingEl = el.parentElement.previousElement || el.parentElement.parentElement;
   let h = 'H2';
@@ -112,13 +114,23 @@ function renderResult(result, searchTerms, titleTag) {
   return li;
 }
 
-function clearResults(block) {
+function clearSearchResults(block) {
   const searchResults = block.querySelector('.search-results');
   searchResults.innerHTML = '';
 }
 
+function clearSearch(block) {
+  clearSearchResults(block);
+  if (window.history.pushState) {
+    const url = new URL(window.location.href);
+    url.search = '';
+    searchParams.delete('q');
+    window.history.pushState({}, '', url.toString());
+  }
+}
+
 async function renderResults(block, config, filteredData, searchTerms) {
-  clearResults(block);
+  clearSearchResults(block);
   const searchResults = block.querySelector('.search-results');
   const headingTag = searchResults.dataset.h;
 
@@ -176,10 +188,17 @@ function filterData(searchTerms, data) {
   ].map((item) => item.result);
 }
 
-async function handleSearch(block, config) {
-  const searchValue = block.querySelector('input').value;
+async function handleSearch(e, block, config) {
+  const searchValue = e.target.value;
+  searchParams.set('q', searchValue);
+  if (window.history.pushState) {
+    const url = new URL(window.location.href);
+    url.search = searchParams.toString();
+    window.history.pushState({}, '', url.toString());
+  }
+
   if (searchValue.length < 3) {
-    clearResults(block);
+    clearSearch(block);
     return;
   }
   const searchTerms = searchValue.toLowerCase().split(/\s+/).filter((term) => !!term);
@@ -205,11 +224,11 @@ function searchInput(block, config) {
   input.placeholder = searchPlaceholder;
   input.setAttribute('aria-label', searchPlaceholder);
 
-  input.addEventListener('input', () => {
-    handleSearch(block, config);
+  input.addEventListener('input', (e) => {
+    handleSearch(e, block, config);
   });
 
-  input.addEventListener('keyup', (e) => { if (e.code === 'Escape') { clearResults(block); } });
+  input.addEventListener('keyup', (e) => { if (e.code === 'Escape') { clearSearch(block); } });
 
   return input;
 }
@@ -239,6 +258,12 @@ export default async function decorate(block) {
     searchBox(block, { source, placeholders }),
     searchResultsContainer(block),
   );
+
+  if (searchParams.get('q')) {
+    const input = block.querySelector('input');
+    input.value = searchParams.get('q');
+    input.dispatchEvent(new Event('input'));
+  }
 
   decorateIcons(block);
 }
