@@ -14,14 +14,10 @@ import {
   getMetadata,
 } from './aem.js';
 
+// eslint-disable-next-line import/no-cycle
 import { openModal } from '../blocks/modal/modal.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
-
-// eslint-disable-next-line import/no-cycle
-import { openModal } from '../blocks/modal/modal.js';
-import { sampleRUM } from './aem.js';
-
 const LOCAL_STORAGE_AEM_CONSENT = 'aem-consent';
 
 function userPreferences(categories) {
