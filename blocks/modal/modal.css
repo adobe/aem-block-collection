@@ -10,8 +10,7 @@
 .modal dialog .modal-content {
   overflow-y: auto;
   overscroll-behavior: none;
-  max-height: calc(100vh - 60px);
-  ;
+  max-height: calc(100dvh - 60px);
 }
 
 @media (width >= 600px) {
