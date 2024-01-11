@@ -10,16 +10,19 @@
 .modal dialog .modal-content {
   overflow-y: auto;
   overscroll-behavior: none;
-  max-height: calc(100vh - 150px);
+  max-height: calc(100vh - 60px);
+  ;
 }
 
 @media (width >= 600px) {
   .modal dialog {
     padding: 30px;
-    left: 20px;
-    right: 20px;
     width: 80vw;
     max-width: 700px;
+  }
+
+  .modal dialog .modal-content {
+    max-height: calc(100vh - 90px)
   }
 }
 
