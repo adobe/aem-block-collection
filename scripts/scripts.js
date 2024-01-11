@@ -20,7 +20,7 @@ const LCP_BLOCKS = []; // add your LCP blocks to the list
  * Builds cookie consent block and prepends to main in a new section.
  * @param {Element} main The container element
  */
-function cookieConsent() {
+async function cookieConsent() {
   const cookieConsentPath = getMetadata('cookie-consent');
   if (cookieConsentPath) {
     import('./consent-management.js').then((cc) => cc.loadConsent(cookieConsentPath));
@@ -116,7 +116,6 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
-  cookieConsent();
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
@@ -168,6 +167,7 @@ function loadDelayed() {
 }
 
 async function loadPage() {
+  cookieConsent();
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
