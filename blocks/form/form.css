@@ -44,6 +44,12 @@
   background-color: var(--background-color);
 }
 
+.form input[type="checkbox"],
+.form input[type="radio"] {
+  width: 16px;
+}
+
+
 .form input:hover {
   border: 1px solid var(--text-color);
 }
