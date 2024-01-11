@@ -32,16 +32,24 @@ export async function createModal(contentNodes) {
     }
   });
 
-  dialog.addEventListener('close', () => dialog.remove());
-
   const block = buildBlock('modal', '');
   document.querySelector('main').append(block);
   decorateBlock(block);
   await loadBlock(block);
   decorateIcons(closeButton);
 
+  dialog.addEventListener('close', () => block.remove());
+
   block.append(dialog);
-  return { block, showModal: () => dialog.showModal() };
+  return {
+    block,
+    showModal: () => {
+      dialog.showModal();
+      // Google Chrome restores the scroll position when the dialog is reopened,
+      // so we need to reset it.
+      dialogContent.scrollTop = 0;
+    },
+  };
 }
 
 export async function openModal(fragmentUrl) {
