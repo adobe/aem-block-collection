@@ -193,7 +193,7 @@ header nav#nav .nav-sections ul > li > ul > li {
     white-space: nowrap;
   }
 
-  header nav a:any-link {
+  header nav#nav a:any-link {
     display: block;
   }
 
