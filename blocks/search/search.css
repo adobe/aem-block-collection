@@ -30,6 +30,7 @@
   display: block;
   color: currentcolor;
   cursor: pointer;
+  height: 100%;
 }
 
 .search ul.search-results > li > a:hover,
