@@ -21,13 +21,14 @@ function generateFieldId(fd, suffix = '') {
 
 function createLabel(fd) {
   const label = document.createElement('label');
-  label.for = generateFieldId(fd, '-label');
+  label.id = generateFieldId(fd, '-label');
   label.textContent = fd.Label || fd.Name;
+  label.setAttribute('for', fd.Id);
   return label;
 }
 
 function setCommonAttributes(field, fd) {
-  field.id = fd.Id || generateFieldId(fd);
+  field.id = fd.Id;
   field.name = fd.Name;
   field.required = fd.Mandatory && (fd.Mandatory.toLowerCase() === 'true' || fd.Mandatory.toLowerCase() === 'x');
   field.placeholder = fd.Placeholder;
@@ -40,7 +41,7 @@ const createHeading = (fd) => {
   const level = fd.Style && fd.Style.includes('sub-heading') ? 3 : 2;
   const heading = document.createElement(`h${level}`);
   heading.textContent = fd.Value || fd.Label;
-  heading.id = fd.Id || generateFieldId(fd);
+  heading.id = fd.Id;
 
   fieldWrapper.append(heading);
 
@@ -52,7 +53,7 @@ const createPlaintext = (fd) => {
 
   const text = document.createElement('p');
   text.textContent = fd.Value || fd.Label;
-  text.id = fd.Id || generateFieldId(fd);
+  text.id = fd.Id;
 
   fieldWrapper.append(text);
 
@@ -74,15 +75,15 @@ const createSelect = async (fd) => {
   };
 
   if (fd.Placeholder) {
-    const ph = addOption(fd.Placeholder, '');
+    const ph = addOption({ text: fd.Placeholder, value: '' });
     ph.setAttribute('disabled', '');
   }
 
   if (fd.Options) {
-    let options;
+    let options = [];
     if (fd.Options.startsWith('https://')) {
-      const optionsUrl = new URL(fd.Options, window.location.origin);
-      const resp = await fetch(optionsUrl);
+      const optionsUrl = new URL(fd.Options);
+      const resp = await fetch(`${optionsUrl.pathname}${optionsUrl.search}`);
       const json = await resp.json();
       json.data.forEach((opt) => {
         options.push({
@@ -165,6 +166,19 @@ const createFieldset = (fd) => {
 const createToggle = (fd) => {
   const { field, fieldWrapper } = createInput(fd);
   field.type = 'checkbox';
+  field.classList.add('toggle');
+
+  const toggleSwitch = document.createElement('div');
+  toggleSwitch.classList.add('switch');
+  toggleSwitch.append(field);
+  fieldWrapper.append(toggleSwitch);
+
+  const slider = document.createElement('span');
+  slider.classList.add('slider');
+  toggleSwitch.append(slider);
+  slider.addEventListener('click', () => {
+    field.checked = !field.checked;
+  });
 
   return { field, fieldWrapper };
 };
@@ -180,6 +194,7 @@ const FIELD_CREATOR_FUNCTIONS = {
 };
 
 export default async function createField(fd) {
+  fd.Id = fd.Id || generateFieldId(fd);
   const type = fd.Type.toLowerCase();
   const createFieldFunc = FIELD_CREATOR_FUNCTIONS[type] || createInput;
   const { fieldWrapper } = await createFieldFunc(fd);

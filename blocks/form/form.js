@@ -30,7 +30,7 @@ function generatePayload(form) {
   const payload = {};
 
   [...form.elements].forEach((field) => {
-    if (field.name && !field.type === 'submit' && !field.disabled) {
+    if (field.name && field.type !== 'submit' && !field.disabled) {
       if (field.type === 'radio') {
         if (field.checked) payload[field.name] = field.value;
       } else if (field.type === 'checkbox') {
@@ -84,17 +84,17 @@ async function handleSubmit(form) {
 }
 
 export default async function decorate(block) {
-  const form = block.querySelector('a[href$=".json"]');
-  if (!form) return;
+  const formLink = block.querySelector('a[href$=".json"]');
+  if (!formLink) return;
 
-  const formEl = await createForm(form.href);
-  block.replaceChildren(formEl);
+  const form = await createForm(formLink.href);
+  block.replaceChildren(form);
 
-  formEl.addEventListener('submit', (e) => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
     const valid = form.checkValidity();
     if (valid) {
-      handleSubmit(formEl);
+      handleSubmit(form);
     } else {
       const firstInvalidEl = form.querySelector(':invalid:not(fieldset)');
       if (firstInvalidEl) {
