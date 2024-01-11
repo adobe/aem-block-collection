@@ -28,6 +28,7 @@
 
 .search ul.search-results > li > a {
   display: block;
+  background-color: var(--background-color);
   color: currentcolor;
   cursor: pointer;
   height: 100%;
@@ -95,6 +96,10 @@
 
 .search.minimal ul.search-results > li .search-result-title a {
   color: var(--link-color);
+}
+
+.search.minimal ul.search-results > li > a {
+  background-color: unset;
 }
 
 .search.minimal ul.search-results > li > a:hover a,
