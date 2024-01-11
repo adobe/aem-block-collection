@@ -1,42 +1,45 @@
 import { fetchPlaceholders } from '../../scripts/aem.js';
 
-let tId;
-function debounce(method, delay) {
-  clearTimeout(tId);
-  tId = setTimeout(() => {
-    method();
-  }, delay);
-}
+function updateActiveSlide(slide) {
+  const block = slide.closest('.carousel');
+  const slideIndex = parseInt(slide.dataset.slideIndex, 10);
+  block.dataset.activeSlide = slideIndex;
 
-function showSlide(block, slideIndex = 0, scroll = true) {
   const slides = block.querySelectorAll('.carousel-slide');
-  slides.forEach((slide) => {
-    slide.setAttribute('aria-hidden', 'true');
-    slide.querySelectorAll('a').forEach((link) => link.setAttribute('tabindex', '-1'));
+
+  slides.forEach((aSlide, idx) => {
+    aSlide.setAttribute('aria-hidden', idx !== slideIndex);
+    aSlide.querySelectorAll('a').forEach((link) => {
+      if (idx !== slideIndex) {
+        link.setAttribute('tabindex', '-1');
+      } else {
+        link.removeAttribute('tabindex');
+      }
+    });
   });
 
+  const indicators = block.querySelectorAll('.carousel-slide-indicator');
+  indicators.forEach((indicator, idx) => {
+    if (idx !== slideIndex) {
+      indicator.querySelector('button').removeAttribute('disabled');
+    } else {
+      indicator.querySelector('button').setAttribute('disabled', 'true');
+    }
+  });
+}
+
+function showSlide(block, slideIndex = 0) {
+  const slides = block.querySelectorAll('.carousel-slide');
   let realSlideIndex = slideIndex < 0 ? slides.length - 1 : slideIndex;
   if (slideIndex >= slides.length) realSlideIndex = 0;
   const activeSlide = slides[realSlideIndex];
 
-  activeSlide.setAttribute('aria-hidden', 'false');
   activeSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
-  if (scroll) {
-    block.querySelector('.carousel-slides').scrollTo({
-      top: 0,
-      left: activeSlide.offsetLeft,
-      behavior: 'smooth',
-    });
-  }
-
-  const indicators = block.querySelectorAll('.carousel-slide-indicator');
-  indicators.forEach((indicator) => {
-    indicator.querySelector('button').removeAttribute('disabled');
+  block.querySelector('.carousel-slides').scrollTo({
+    top: 0,
+    left: activeSlide.offsetLeft,
+    behavior: 'smooth',
   });
-  const activeIndicator = indicators[realSlideIndex];
-  activeIndicator.querySelector('button').setAttribute('disabled', 'true');
-
-  block.dataset.activeSlide = realSlideIndex;
 }
 
 function bindEvents(block) {
@@ -57,19 +60,19 @@ function bindEvents(block) {
     showSlide(block, parseInt(block.dataset.activeSlide, 10) + 1);
   });
 
-  const slidesWrapper = block.querySelector('.carousel-slides');
-  slidesWrapper.addEventListener('scroll', () => {
-    debounce(() => {
-      const position = slidesWrapper.scrollLeft;
-      const slideWidth = slidesWrapper.querySelector('.carousel-slide').scrollWidth;
-      const slide = Math.round(position / slideWidth);
-      showSlide(block, slide, false);
-    }, 200);
+  const slideObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) updateActiveSlide(entry.target);
+    });
+  }, { threshold: 0.5 });
+  block.querySelectorAll('.carousel-slide').forEach((slide) => {
+    slideObserver.observe(slide);
   });
 }
 
 function createSlide(row, slideIndex, carouselId) {
   const slide = document.createElement('li');
+  slide.dataset.slideIndex = slideIndex;
   slide.setAttribute('id', `carousel-${carouselId}-slide-${slideIndex}`);
   slide.classList.add('carousel-slide');
 
@@ -143,7 +146,5 @@ export default async function decorate(block) {
 
   if (!isSingleSlide) {
     bindEvents(block);
-
-    showSlide(block);
   }
 }
