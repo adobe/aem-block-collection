@@ -2,12 +2,19 @@
   --dialog-border-radius: 16px;
 
   overscroll-behavior: none;
-  padding: 30px;
   border: 1px solid #ccc;
   border-radius: var(--dialog-border-radius);
-  left: 20px;
-  right: 20px;
-  width: clamp(300px, 80%, 700px);
+  width: 100vw;
+}
+
+@media (width >= 600px) {
+  .modal dialog {
+    padding: 30px;
+    left: 20px;
+    right: 20px;
+    width: 80vw;
+    max-width: 700px;
+  }
 }
 
 .modal dialog::backdrop {
