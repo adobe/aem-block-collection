@@ -1,9 +1,10 @@
 .quote blockquote {
-  margin: 0;
+  margin: 0 auto;
+  padding: 0 32px;
+  max-width: 700px;
 }
 
 .quote blockquote .quote-quotation {
-  flex: 1 0 100%;
   font-size: 120%;
 }
 
@@ -22,6 +23,10 @@
 
 .quote blockquote .quote-quotation > :last-child::after {
   content: "”";
+}
+
+.quote blockquote .quote-attribution {
+  text-align: right;
 }
 
 .quote blockquote .quote-attribution > :first-child::before {
