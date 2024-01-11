@@ -193,6 +193,10 @@ header nav .nav-sections ul > li > ul > li {
     white-space: nowrap;
   }
 
+  header nav a:any-link {
+    display: block;
+  }
+
   header nav[aria-expanded="true"] .nav-sections {
     align-self: unset;
   }
