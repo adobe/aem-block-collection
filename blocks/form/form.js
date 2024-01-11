@@ -70,7 +70,7 @@ async function handleSubmit(form) {
     if (response.ok) {
       sampleRUM('form:submit', { source: '.form', target: form.dataset.action });
       if (submit.dataset.redirect) {
-        window.location.href = form.dataset.redirect;
+        window.location.href = submit.dataset.redirect;
       }
     } else {
       const error = await response.text();

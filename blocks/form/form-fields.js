@@ -113,7 +113,7 @@ const createSubmit = (fd) => {
   button.textContent = fd.Label || fd.Name;
   button.classList.add('button');
   button.type = 'submit';
-  button.dataset.redirect = fd.Extra;
+  button.dataset.redirect = new URL(fd.Extra).pathname;
 
   const fieldWrapper = createFieldWrapper(fd);
   fieldWrapper.append(button);
