@@ -1,0 +1,171 @@
+.consent-info-panel {
+  display: block;
+}
+
+.consent-categories-panel {
+  display: none;
+}
+
+.consent-categories-panel .accordion {
+  margin-top: 40px;
+}
+
+.consent-categories-panel .consent-buttons-preferences {
+  padding-top: 40px;
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  column-gap: 10px;
+}
+
+.consent-controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.consent-button {
+  font-size: var(--body-font-size-m);
+}
+
+.consent-category-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.consent-category {
+  padding-top: 10px;
+}
+
+.consent-category-desc {
+  font-size: var(--body-font-size-s);
+}
+
+/* TOGGLE SWITCH */
+.consent-category-switch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked+.slider {
+  background-color: #2196F3;
+}
+
+input:focus+.slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* ACCORDION */
+
+.accordion details {
+  border: 1px solid var(--dark-color);
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.accordion details+details {
+  margin-top: 16px;
+}
+
+.accordion details summary {
+  position: relative;
+  padding: 0 16px;
+  padding-right: 48px;
+  cursor: pointer;
+  list-style: none;
+  overflow: auto;
+  transition: background-color 0.2s;
+}
+
+.accordion details[open] summary {
+  background-color: var(--light-color);
+}
+
+.accordion details summary:focus,
+.accordion details summary:hover {
+  background-color: var(--dark-color);
+}
+
+.accordion details summary::-webkit-details-marker {
+  display: none;
+}
+
+.accordion details summary::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%) rotate(135deg);
+  width: 9px;
+  height: 9px;
+  border: 2px solid;
+  border-width: 2px 2px 0 0;
+  transition: transform 0.2s;
+}
+
+.accordion details[open] summary::after {
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.accordion details .accordion-item-body {
+  padding: 0 16px;
+}
+
+.accordion details[open] .accordion-item-body {
+  border-top: 1px solid var(--dark-color);
+  background-color: var(--background-color);
+}

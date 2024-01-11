@@ -16,19 +16,30 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
-
 /**
  * Builds cookie consent block and prepends to main in a new section.
  * @param {Element} main The container element
  */
-function buildCookieConsent(main) {
+function cookieConsent() {
   const cookieConsentPath = getMetadata('cookie-consent');
   if (cookieConsentPath) {
+    import('./consent-management.js').then((cc) => cc.loadConsent(cookieConsentPath));
+  }
+}
+
+function buildCookieConsentDialog(main) {
+  if (window.location.href.includes('/cookie-consent/')
+    || (main.getAttribute('data-fragment-path') && main.getAttribute('data-fragment-path').includes('/cookie-consent/'))) {
+    main.classList.add('consent');
+    const cmpSections = [...main.children];
     const section = document.createElement('div');
-    section.append(buildBlock('consent-management', cookieConsentPath));
+    const ccBlock = document.createElement('div');
+    ccBlock.append(...cmpSections);
+    section.append(buildBlock('cookie-consent', ccBlock));
     main.append(section);
   }
 }
+
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -75,8 +86,8 @@ function autolinkModals(main) {
  */
 function buildAutoBlocks(main) {
   try {
-    buildCookieConsent(main);
     buildHeroBlock(main);
+    buildCookieConsentDialog(main);
     autolinkModals(main);
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -105,6 +116,7 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+  cookieConsent();
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
