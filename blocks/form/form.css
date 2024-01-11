@@ -72,7 +72,11 @@
   gap: 16px;
 }
 
-
+.form .field-wrapper.form-radio-wrapper > label,
+.form .field-wrapper.form-checkbox-wrapper > label,
+.form .field-wrapper.form-toggle-wrapper > label {
+  order: 1;
+}
 
 .form .form-toggle-wrapper .switch {
   position: relative;

@@ -108,12 +108,17 @@ const createSelect = async (fd) => {
   return { field: select, fieldWrapper };
 };
 
+const createConfirmation = (fd, form) => {
+  form.dataset.confirmation = new URL(fd.Value).pathname;
+
+  return {};
+};
+
 const createSubmit = (fd) => {
   const button = document.createElement('button');
   button.textContent = fd.Label || fd.Name;
   button.classList.add('button');
   button.type = 'submit';
-  button.dataset.redirect = new URL(fd.Extra).pathname;
 
   const fieldWrapper = createFieldWrapper(fd);
   fieldWrapper.append(button);
@@ -205,16 +210,17 @@ const FIELD_CREATOR_FUNCTIONS = {
   'text-area': createTextArea,
   toggle: createToggle,
   submit: createSubmit,
+  confirmation: createConfirmation,
   fieldset: createFieldset,
   checkbox: createCheckbox,
   radio: createRadio,
 };
 
-export default async function createField(fd) {
+export default async function createField(fd, form) {
   fd.Id = fd.Id || generateFieldId(fd);
   const type = fd.Type.toLowerCase();
   const createFieldFunc = FIELD_CREATOR_FUNCTIONS[type] || createInput;
-  const { fieldWrapper } = await createFieldFunc(fd);
+  const fieldElements = await createFieldFunc(fd, form);
 
-  return fieldWrapper;
+  return fieldElements.fieldWrapper;
 }

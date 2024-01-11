@@ -10,9 +10,11 @@ async function createForm(formHref) {
   // eslint-disable-next-line prefer-destructuring
   form.dataset.action = pathname.split('.json')[0];
 
-  const fields = await Promise.all(json.data.map((fd) => createField(fd)));
+  const fields = await Promise.all(json.data.map((fd) => createField(fd, form)));
   fields.forEach((field) => {
-    form.append(field);
+    if (field) {
+      form.append(field);
+    }
   });
 
   // group fields into fieldsets
@@ -69,8 +71,8 @@ async function handleSubmit(form) {
     });
     if (response.ok) {
       sampleRUM('form:submit', { source: '.form', target: form.dataset.action });
-      if (submit.dataset.redirect) {
-        window.location.href = submit.dataset.redirect;
+      if (form.dataset.confirmation) {
+        window.location.href = form.dataset.confirmation;
       }
     } else {
       const error = await response.text();
