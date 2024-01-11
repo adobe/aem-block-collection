@@ -198,7 +198,7 @@ const createCheckbox = (fd) => {
 
 const createRadio = (fd) => {
   const { field, fieldWrapper } = createInput(fd);
-  if (!field.value) field.value = 'on';
+  if (!field.value) field.value = fd.Label || 'on';
 
   return { field, fieldWrapper };
 };
