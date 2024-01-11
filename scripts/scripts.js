@@ -167,7 +167,7 @@ function loadDelayed() {
 }
 
 async function loadPage() {
-  cookieConsent();
+  await cookieConsent();
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
