@@ -23,7 +23,7 @@ export default async function decorate(block) {
   
   [...block.children].forEach((child, i) => {
     const row = document.createElement('tr');
-    if (header && !i) thead.append(row);
+    if (header && i === 0) thead.append(row);
     else tbody.append(row);
     [...child.children].forEach((col) => {
       const cell = buildCell(header ? i : i + 1);
