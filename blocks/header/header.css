@@ -279,6 +279,13 @@ header nav#nav .nav-tools {
   grid-area: tools;
 }
 
+header nav#nav .nav-tools .button {
+  background: none;
+  border: none;
+  padding: 10px;
+  margin: 0;
+}
+
 /* breadcrumbs */
 header .breadcrumbs {
   display: none;

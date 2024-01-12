@@ -121,11 +121,11 @@ function clearSearchResults(block) {
 
 function clearSearch(block) {
   clearSearchResults(block);
-  if (window.history.pushState) {
+  if (window.history.replaceState) {
     const url = new URL(window.location.href);
     url.search = '';
     searchParams.delete('q');
-    window.history.pushState({}, '', url.toString());
+    window.history.replaceState({}, '', url.toString());
   }
 }
 
@@ -191,10 +191,10 @@ function filterData(searchTerms, data) {
 async function handleSearch(e, block, config) {
   const searchValue = e.target.value;
   searchParams.set('q', searchValue);
-  if (window.history.pushState) {
+  if (window.history.replaceState) {
     const url = new URL(window.location.href);
     url.search = searchParams.toString();
-    window.history.pushState({}, '', url.toString());
+    window.history.replaceState({}, '', url.toString());
   }
 
   if (searchValue.length < 3) {
