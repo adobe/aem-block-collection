@@ -282,7 +282,7 @@ header nav#nav .nav-tools {
 header nav#nav .nav-tools .button {
   background: none;
   border: none;
-  padding: 0;
+  padding: 10px;
   margin: 0;
 }
 
