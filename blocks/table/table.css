@@ -51,3 +51,8 @@
 .table.bordered table td {
   border: 1px solid;
 }
+
+/* no header variant */
+.table.no-header table tbody tr {
+  border-top: 1px solid;
+}
