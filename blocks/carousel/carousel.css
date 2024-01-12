@@ -86,8 +86,6 @@
 .carousel .carousel-navigation-buttons span {
   border: 0;
   clip: rect(0 0 0 0);
-  /* stylelint-disable-next-line property-no-vendor-prefix */
-  -webkit-clip-path: inset(50%);
   clip-path: inset(50%);
   height: 1px;
   margin: -1px;
