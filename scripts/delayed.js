@@ -4,12 +4,27 @@ import { sampleRUM } from './aem.js';
 // Core Web Vitals RUM collection
 sampleRUM('cwv');
 
-// add more delayed functionality here
+const martechMap = {
+  CC_ANALYTICS: ['WebSDK', 'GA'],
+  CC_MARKETING: ['AdobeDataCollection', 'GTM'],
+};
+// eslint-disable-next-line max-len
+const getConsentCategories = () => (window.hlx && Array.isArray(window.hlx.consent) ? window.hlx.consent : []);
+
+function loadMartech() {
+  getConsentCategories().forEach((category) => {
+    //Load martech from map
+  });
+}
+
+loadMartech();
+
 document.addEventListener('consent', () => {
   // eslint-disable-next-line max-len
-  const consentedCategories = window.hlx && Array.isArray(window.hlx.consent) ? window.hlx.consent : [];
+  loadMartech();
+});
 
-  if (consentedCategories.includes('CC_ANALYTICS')) {
-    // LOAD ANALYTICS MARTECH
-  }
+document.addEventListener('consent-updated', () => {
+  // Reload page??
+  loadMartech();
 });
