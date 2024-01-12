@@ -1,24 +1,27 @@
-import { readBlockConfig } from '../../scripts/aem.js';
+import {
+  readBlockConfig,
+  fetchPlaceholders,
+} from '../../scripts/aem.js';
 import { manageConsentUpdate } from '../../scripts/scripts.js';
 
-function consentButtonsPanel() {
+function consentButtonsPanelHTML(placeholders) {
   return document.createRange().createContextualFragment(`
     <div class='consent-controls'>
       <div class='consent-select-preferences'>
-        <a class="consent-select-preferences-link" href='#'>Select my preferences</a>
+        <a class="consent-select-preferences-link" href='#'>${placeholders.consentSelectPreferences || 'Select my preferences'}</a>
       </div>
       <div class='consent-buttons'>
-        <button class="consent-button decline secondary">Decline All</button>
-        <button class="consent-button accept primary">Accept All</button>
+        <button class="consent-button decline secondary">${placeholders.consentDeclineAll || 'Decline All'}</button>
+        <button class="consent-button accept primary">${placeholders.consentAcceptAll || 'Accept All'}</button>
       </div>
     </div>`);
 }
 
-function consentCategoriesButtonsPanel() {
+function consentCategoriesButtonsPanelHTML(placeholders) {
   return document.createRange().createContextualFragment(`
     <div class='consent-buttons-preferences'>
-      <button class="consent-button decline secondary">Decline All</button>
-      <button class="consent-button only-selected primary">Save my preferences</button>
+      <button class="consent-button decline secondary">${placeholders.consentDeclineAll || 'Decline All'}</button>
+      <button class="consent-button only-selected primary">${placeholders.consentSavePrefernces || 'Save my preferences'}</button>
     </div>`);
 }
 
@@ -51,8 +54,11 @@ function consentUpdated(mode, block) {
 }
 
 function toggleCategoriesPanel(block) {
-  block.querySelector('.consent-info-panel').style.display = 'none';
-  block.querySelector('.consent-categories-panel').style.display = 'block';
+  // only toggle if we are in the dialog, otherwise show the 2 panels
+  if (block.closest('dialog')) {
+    block.querySelector('.consent-info-panel').style.display = 'none';
+    block.querySelector('.consent-categories-panel').style.display = 'block';
+  }
 }
 function addListeners(block) {
   block.querySelector('.consent-select-preferences-link').addEventListener('click', () => toggleCategoriesPanel(block));
@@ -62,6 +68,7 @@ function addListeners(block) {
 }
 
 export default function decorate(block) {
+  const placeholders = fetchPlaceholders();
   // eslint-disable-next-line max-len
   const selectedCategories = (window.hlx && Array.isArray(window.hlx.consent)) ? window.hlx.consent : [];
   const cmpSections = [...block.querySelectorAll('h2')].map((title) => title.parentElement);
@@ -69,7 +76,7 @@ export default function decorate(block) {
   const ccInfoSection = document.createElement('div');
   ccInfoSection.classList = 'consent-info-panel';
   ccInfoSection.append(cookiesInfoContent);
-  ccInfoSection.append(consentButtonsPanel());
+  ccInfoSection.append(consentButtonsPanelHTML(placeholders));
 
   const ccCategoriesSection = document.createElement('div');
   ccCategoriesSection.classList = 'consent-categories-panel';
@@ -106,10 +113,10 @@ export default function decorate(block) {
   });
 
   const ccCategoriesSectionTitle = document.createElement('div');
-  ccCategoriesSectionTitle.innerHTML = '<h2>Cookie Settings</h2>';
+  ccCategoriesSectionTitle.innerHTML = `<h2>${placeholders.consentCookieSettings || 'Cookie Settings'}</h2>`;
   ccCategoriesSection.append(ccCategoriesSectionTitle);
   ccCategoriesSection.append(ccCategoriesDetails);
-  ccCategoriesSection.append(consentCategoriesButtonsPanel());
+  ccCategoriesSection.append(consentCategoriesButtonsPanelHTML(placeholders));
   block.firstElementChild.remove();
   block.append(ccInfoSection);
   block.append(ccCategoriesSection);

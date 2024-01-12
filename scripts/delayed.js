@@ -5,3 +5,11 @@ import { sampleRUM } from './aem.js';
 sampleRUM('cwv');
 
 // add more delayed functionality here
+document.addEventListener('consent', () => {
+  // eslint-disable-next-line max-len
+  const consentedCategories = window.hlx && Array.isArray(window.hlx.consent) ? window.hlx.consent : [];
+
+  if (consentedCategories.includes('CC_ANALYTICS')) {
+    // LOAD ANALYTICS MARTECH
+  }
+});

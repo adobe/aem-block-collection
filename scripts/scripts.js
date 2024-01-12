@@ -62,6 +62,8 @@ export async function showCookieConsentDialog() {
   if (ccPath && ccPath.startsWith('/') && ccPath.indexOf('/cookie-consent/')) {
     const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
     await openModal(ccPath);
+    // remove modal close button.
+    // Cookie consent can only be closed by the Accept/Decline buttons.
     document.querySelector('dialog > .close-button').remove();
   }
 }
@@ -88,10 +90,17 @@ async function initCookieConsent() {
   }
 }
 
+/**
+ * Builds cookie consent block when:
+ * We are looking at the cookie-consent definition page, to validate the content
+ * When we are actually showing the cookie consent in a dialog.
+ * Grabs the cookie consent info text and all the cookie category sections
+ * and makes them part of the cookie consent block.
+ * @param {Element} main The container element
+ */
 function buildCookieConsentDialog(main) {
-  if (window.location.href.includes('/cookie-consent/')
+  if ((window.location.href.includes('/cookie-consent/') && !(main.getAttribute('data-fragment-path')))
     || (main.getAttribute('data-fragment-path') && main.getAttribute('data-fragment-path').includes('/cookie-consent/'))) {
-    main.classList.add('consent');
     const cmpSections = [...main.children];
     const section = document.createElement('div');
     const ccBlock = document.createElement('div');
@@ -100,7 +109,6 @@ function buildCookieConsentDialog(main) {
     main.append(section);
   }
 }
-
 
 /**
  * Builds hero block and prepends to main in a new section.

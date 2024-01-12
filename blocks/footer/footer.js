@@ -27,7 +27,3 @@ export default async function decorate(block) {
 
   block.append(footer);
 }
-
-async function cookiePreferences() {
-  return await showCookieConsentDialog()
-}
