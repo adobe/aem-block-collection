@@ -41,6 +41,11 @@
   text-align: left;
 }
 
+/* no header variant */
+.table.no-header table tbody tr {
+  border-top: 1px solid;
+}
+
 /* striped variant */
 .table.striped tbody tr:nth-child(odd) {
   background-color: var(--overlay-background-color);
@@ -50,9 +55,4 @@
 .table.bordered table th,
 .table.bordered table td {
   border: 1px solid;
-}
-
-/* no header variant */
-.table.no-header table tbody tr {
-  border-top: 1px solid;
 }

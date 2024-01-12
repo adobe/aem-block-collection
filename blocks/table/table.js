@@ -20,7 +20,7 @@ export default async function decorate(block) {
     table.append(thead);
   }
   table.append(tbody);
-  
+
   [...block.children].forEach((child, i) => {
     const row = document.createElement('tr');
     if (header && i === 0) thead.append(row);
