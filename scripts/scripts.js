@@ -136,7 +136,8 @@ async function loadPage() {
 (async function daPreview() {
   const { searchParams } = new URL(window.location.href);
   if (searchParams.get('dapreview') === 'on') {
-    const { default: livePreview } = await import('https://da.live/scripts/dapreview.js');
+    await import('https://milo.adobe.com/libs/utils/utils.js');
+    // const { default: livePreview } = await import('https://da.live/scripts/dapreview.js');
     livePreview(loadPage);
   }
 }());
