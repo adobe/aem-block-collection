@@ -50,7 +50,7 @@ header nav#nav[aria-expanded="true"] {
 
 header nav#nav p {
   margin: 0;
-  line-height: 1;
+  /* line-height: 1; BOILERPLATE DOESN'T HAVE a P tag in header, */
 }
 
 header nav#nav a:any-link {
