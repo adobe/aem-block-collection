@@ -1,3 +1,7 @@
+body.modal-open {
+  overflow: hidden;
+}
+
 .modal dialog {
   --dialog-border-radius: 16px;
 

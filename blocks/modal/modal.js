@@ -38,7 +38,10 @@ export async function createModal(contentNodes) {
   await loadBlock(block);
   decorateIcons(closeButton);
 
-  dialog.addEventListener('close', () => block.remove());
+  dialog.addEventListener('close', () => {
+    document.body.classList.remove('modal-open');
+    block.remove();
+  });
 
   block.append(dialog);
   return {
@@ -48,6 +51,8 @@ export async function createModal(contentNodes) {
       // Google Chrome restores the scroll position when the dialog is reopened,
       // so we need to reset it.
       setTimeout(() => { dialogContent.scrollTop = 0; }, 0);
+
+      document.body.classList.add('modal-open');
     },
   };
 }
