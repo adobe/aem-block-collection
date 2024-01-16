@@ -37,8 +37,11 @@
   --heading-font-size-s: 20px;
   --heading-font-size-xs: 18px;
 
-  /* nav height */
+  /* header */
   --nav-height: 64px;
+  --breadcrumbs-height: 35px;
+  --header-height: var(--nav-height);
+  --breadcrumbs-font-size: 14px;
 }
 
 @font-face {
@@ -69,12 +72,18 @@ body {
   display: none;
 }
 
+@media screen and (min-width: 900px) {
+  body.breadcrumbs-enabled {
+    --header-height: calc(var(--nav-height) + var(--breadcrumbs-height));
+  }
+}
+
 body.appear {
   display: block;
 }
 
 header {
-  height: var(--nav-height);
+  height: var(--header-height);
 }
 
 h1,
@@ -88,7 +97,7 @@ h6 {
   line-height: 1.25;
   margin-top: 1em;
   margin-bottom: 0.5em;
-  scroll-margin: calc(var(--nav-height) + 1em);
+  scroll-margin: calc(var(--header-height) + 1em);
 }
 
 h1 { font-size: var(--heading-font-size-xxl); }
