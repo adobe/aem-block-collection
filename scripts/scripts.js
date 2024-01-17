@@ -128,6 +128,9 @@ async function loadLazy(doc) {
   if (!isIframed) {
     loadHeader(doc.querySelector('header'));
     loadFooter(doc.querySelector('footer'));
+  } else {
+    doc.querySelector('header').remove();
+    doc.querySelector('footer').remove();
   }
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
