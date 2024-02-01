@@ -17,7 +17,8 @@ This specific repo has been _slightly_ modified to be compatible with Dark Alley
 2. Follow the steps.
 
 ### 3. Local development
+1. Clone your new repo to your computer.
 1. Install the AEM CLI using your terminal: `sudo npm install -g @adobe/aem-cli`
-1. Start Helix Pages Proxy: `hlx up` (opens your browser at `http://localhost:3000`)
-1. Open the `{repo}` directory in your favorite IDE and start coding :)
-1. **Recommended:** Install common support packages like linting and testing: `npm i`.
+1. Start the AEM CLI: `aem up`.
+1. Open the `{repo}` folder in your favorite code editor and buil something.
+1. **Recommended:** Install common npm packages like linting and testing: `npm i`.
