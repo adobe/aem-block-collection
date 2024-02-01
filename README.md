@@ -1,21 +1,23 @@
 # Block Collection
 
-This project contains code that is featured in the [AEM Block Collection](https://www.aem.live/developer/block-collection#block-collection-1) documentation.
+This project provides a foundation for starting an AEM Edge Delivery Services project. It includes many common blocks and features a project might need.
 
-## Environments
-- Preview: https://main--aem-block-collection--adobe.hlx.page/
-- Live: https://main--aem-block-collection--adobe.hlx.live/
+## Dark Alley compatible
 
-## Installation
+This specific repo has been _slightly_ modified to be compatible with Dark Alley's live preview.
 
-```sh
-npm i
-```
+## Getting started
 
-## Local development
+### 1. Github
+1. Use this template to make a new repo.
+1. Install [AEM Code Sync](https://github.com/apps/aem-code-sync).
 
-1. Create a new repository based on the `aem-block-collection` template and add a mountpoint in the `fstab.yaml`
-1. Add the [helix-bot](https://github.com/apps/helix-bot) to the repository
-1. Install the [Helix CLI](https://github.com/adobe/helix-cli): `npm install -g @adobe/helix-cli`
+### 2. Dark Alley content
+1. Browse to https://da.live/start.
+2. Follow the steps.
+
+### 3. Local development
+1. Install the AEM CLI using your terminal: `sudo npm install -g @adobe/aem-cli`
 1. Start Helix Pages Proxy: `hlx up` (opens your browser at `http://localhost:3000`)
 1. Open the `{repo}` directory in your favorite IDE and start coding :)
+1. **Recommended:** Install common support packages like linting and testing: `npm i`.
