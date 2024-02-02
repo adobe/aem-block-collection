@@ -17,9 +17,9 @@ import {
  * @param {string} path The path to the fragment
  * @returns {HTMLElement} The root element of the fragment
  */
-export async function loadFragment(pathname) {
-  if (pathname) {
-    const resp = await fetch(`${pathname}.plain.html`);
+export async function loadFragment(path) {
+  if (path && path.startsWith('/')) {
+    const resp = await fetch(`${path}.plain.html`);
     if (resp.ok) {
       const main = document.createElement('main');
       main.innerHTML = await resp.text();
@@ -44,18 +44,12 @@ export async function loadFragment(pathname) {
 export default async function decorate(block) {
   const link = block.querySelector('a');
   const path = link ? link.getAttribute('href') : block.textContent.trim();
-
-  try {
-    const pathname = path.startsWith('/') ? path : new URL(path).href;
-    const fragment = await loadFragment(pathname);
-    if (fragment) {
-      const fragmentSection = fragment.querySelector(':scope .section');
-      if (fragmentSection) {
-        block.closest('.section').classList.add(...fragmentSection.classList);
-        block.closest('.fragment').replaceWith(...fragment.childNodes);
-      }
+  const fragment = await loadFragment(path);
+  if (fragment) {
+    const fragmentSection = fragment.querySelector(':scope .section');
+    if (fragmentSection) {
+      block.closest('.section').classList.add(...fragmentSection.classList);
+      block.closest('.fragment').replaceWith(...fragment.childNodes);
     }
-  } catch {
-    // die silently
   }
 }
