@@ -6,16 +6,19 @@ This project contains code that is featured in the [AEM Block Collection](https:
 - Preview: https://main--aem-block-collection--adobe.hlx.page/
 - Live: https://main--aem-block-collection--adobe.hlx.live/
 
-## Installation
+## Get Started
 
-```sh
-npm i
-```
+### 1. On GitHub
+1. Use the `adobe/aem-block-collection` template to create a new repo.
+1. Add [AEM Code Sync](https://github.com/apps/aem-code-sync) to the new repo.
+1. In the new repo, add a mountpoint in the `fstab.yaml`.
 
-## Local development
+### 2. Sidekick
+[Install & configure sidekick](https://www.aem.live/tools/sidekick/) for previewing and publishing content.
 
-1. Create a new repository based on the `aem-block-collection` template and add a mountpoint in the `fstab.yaml`
-1. Add the [helix-bot](https://github.com/apps/helix-bot) to the repository
-1. Install the [Helix CLI](https://github.com/adobe/helix-cli): `npm install -g @adobe/helix-cli`
-1. Start Helix Pages Proxy: `hlx up` (opens your browser at `http://localhost:3000`)
-1. Open the `{repo}` directory in your favorite IDE and start coding :)
+### 3. Local development
+1. Clone the new repo to your computer.
+1. Install the AEM CLI using your terminal: `npm install -g @adobe/aem-cli`
+1. Start the AEM CLI: `aem up`.
+1. Open the `{repo}` folder in your favorite code editor and start coding.
+1. **Recommended:** Install common npm packages like linting and testing: `npm i`.
