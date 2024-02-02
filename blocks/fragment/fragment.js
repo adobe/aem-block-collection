@@ -46,7 +46,7 @@ export default async function decorate(block) {
   const path = link ? link.getAttribute('href') : block.textContent.trim();
 
   try {
-    const pathname = path.startsWith('/') ? path : new URL(path).pathname;
+    const pathname = path.startsWith('/') ? path : new URL(path).href;
     const fragment = await loadFragment(pathname);
     if (fragment) {
       const fragmentSection = fragment.querySelector(':scope .section');
