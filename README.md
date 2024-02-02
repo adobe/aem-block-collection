@@ -2,6 +2,8 @@
 
 This project contains code that is featured in the [AEM Block Collection](https://www.aem.live/developer/block-collection#block-collection-1) documentation.
 
+You can see a demo of all the blocks and copy their content structure using [this library](https://main--aem-block-collection--adobe.hlx.live/tools/sidekick/library.html).
+
 ## Environments
 - Preview: https://main--aem-block-collection--adobe.hlx.page/
 - Live: https://main--aem-block-collection--adobe.hlx.live/
