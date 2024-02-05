@@ -114,7 +114,7 @@ function createMinimalBanner(content, buttons) {
   if (buttons.toLowerCase().includes('deny_all'))
     div2.append(declineCategoriesButtonsPanelHTML());
   if (buttons.toLowerCase().includes('more_info'))
-     div2.append(consentCategoriesmoreinfo());
+     div.querySelector('p').append(consentCategoriesmoreinfo());
   div.append(div2);
   //div.querySelector('#show-preferences').addEventListener('click', '');
   //div.querySelector('#accept-all').addEventListener('click', '');
