@@ -87,12 +87,12 @@ function categoryHeaderHTML(title, code, optional, selected) {
   </div>`;
 }
 
-function createMinimalBanner() {
+function createMinimalBanner(content) {
   const div = document.createElement('div');
-  div.innerHTML('<p>We use cookies to improve your browsing experience</p><a id="show-preferences">Learn more</a><a id="accept-all">Accept</a>');
+  div.append(content);
   div.classList.add('cconsent', 'minimal');
-  div.querySelector('#show-preferences').addEventListener('click', '');
-  div.querySelector('#accept-all').addEventListener('click', '');
+  //div.querySelector('#show-preferences').addEventListener('click', '');
+  //div.querySelector('#accept-all').addEventListener('click', '');
   return div;
 }
 
@@ -164,6 +164,7 @@ function getStylingOptions(dataset) {
     showCloseButton: dataset.closeButton && ['false', 'no'].includes(dataset.closeButton.toLowerCase().trim()),
     position: dataset.position ? dataset.position.toLowerCase().trim() : 'center',
     closeOnClick: dataset.closeOnClickOutside && ['false', 'no'].includes(dataset.closeOnClickOutside.toLowerCase().trim()),
+    style: dataset.style,
   };
 }
 // eslint-disable-next-line import/prefer-default-export
@@ -178,19 +179,21 @@ export async function showDialog(path, consentUpdateCallback) {
 
   const cmpSections = [...fragment.querySelectorAll('div.section')];
 
-  const ccInfoPanel = cmpSections.shift();
-  ccInfoPanel.classList = 'consent-info-panel';
-  ccInfoPanel.append(consentButtonsPanelHTML(placeholders));
-  const ccCategoriesPanel = generateCategoriesPanel(cmpSections, selectedCategories, placeholders);
-
-  fragment.append(ccInfoPanel);
-  fragment.append(ccCategoriesPanel);
-
-  const stylingOptions = getStylingOptions(ccInfoPanel.dataset);
-  if (stylingOptions.style && stylingOptions.style.toLowerCase().trim() === 'minimal') {
-    const minimalDialog = createMinimalBanner();
+  const firstSection = cmpSections.shift();
+  if (firstSection.classList.contains('minimal')) {
+    const minimalDialog = createMinimalBanner(firstSection);
+    document.querySelector('main').append(minimalDialog);
+  } else {
+    const ccInfoPanel = firstSection;
+    ccInfoPanel.classList = 'consent-info-panel';
+    ccInfoPanel.append(consentButtonsPanelHTML(placeholders));
+    // eslint-disable-next-line max-len
+    const ccCategoriesPanel = generateCategoriesPanel(cmpSections, selectedCategories, placeholders);
+    fragment.append(ccInfoPanel);
+    fragment.append(ccCategoriesPanel);
+    const stylingOptions = getStylingOptions(firstSection.dataset);
+    const { dialogContainer, show } = await createDialog(fragment.childNodes, stylingOptions);
+    addListeners(dialogContainer, consentUpdateCallback);
+    show();
   }
-  const { dialogContainer, show } = await createDialog(fragment.childNodes, stylingOptions);
-  addListeners(dialogContainer, consentUpdateCallback);
-  show();
 }

@@ -116,7 +116,7 @@ function buildCookieConsent(main) {
  * Grabs the cookie consent info text and all the cookie category sections
  * and makes them part of the cookie consent block.
  * @param {Element} main The container element
- */
+
 function buildCookieConsentDialog(main) {
   if ((window.location.href.includes('/cookie-consent/') && !(main.getAttribute('data-fragment-path')))
     || (main.getAttribute('data-fragment-path') && main.getAttribute('data-fragment-path').includes('/cookie-consent/'))) {
@@ -126,6 +126,7 @@ function buildCookieConsentDialog(main) {
     main.prepend(section);
   }
 }
+*/
 
 /**
  * Builds hero block and prepends to main in a new section.
