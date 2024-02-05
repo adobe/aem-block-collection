@@ -15,7 +15,9 @@ import {
 } from './aem.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
+/*
 const LOCAL_STORAGE_AEM_CONSENT = 'aem-consent';
+
 
 function userCookiePreferences(categories) {
   // eslint-disable-next-line max-len
@@ -29,7 +31,7 @@ function userCookiePreferences(categories) {
   window.hlx.consent = categories;
   return categories;
 }
-
+*/
 /**
  * updates consent categories in local storage,
  * triggers downstream consent-update event,
@@ -74,7 +76,7 @@ export async function showCookieConsentDialog() {
  * track in RUM, and continue execution.
  * If preferences are not available in localStorage, show consent dialog.
 
- */
+
 async function initCookieConsent() {
   const ccPath = getMetadata('cookie-consent');
   if (!ccPath) {
@@ -89,6 +91,23 @@ async function initCookieConsent() {
     showCookieConsentDialog();
   }
 }
+ */
+
+function buildCookieConsent(main) {
+  const ccPath = getMetadata('cookie-consent');
+  if (!ccPath || (window.hlx && window.hlx.consent)) {
+    // consent not configured for page or already initialized
+    return;
+  }
+  window.hlx = window.hlx || [];
+  window.hlx.consent = { status: 'pending' };
+  const blockHTML = `<div>${ccPath}</div>`;
+  const section = document.createElement('div');
+  const ccBlock = document.createElement('div');
+  ccBlock.innerHTML = blockHTML;
+  section.append(buildBlock('cookie-consent', ccBlock));
+  main.append(section);
+}
 
 /**
  * Builds cookie consent block when:
@@ -101,12 +120,10 @@ async function initCookieConsent() {
 function buildCookieConsentDialog(main) {
   if ((window.location.href.includes('/cookie-consent/') && !(main.getAttribute('data-fragment-path')))
     || (main.getAttribute('data-fragment-path') && main.getAttribute('data-fragment-path').includes('/cookie-consent/'))) {
-    const cmpSections = [...main.children];
     const section = document.createElement('div');
     const ccBlock = document.createElement('div');
-    ccBlock.append(...cmpSections);
     section.append(buildBlock('cookie-consent', ccBlock));
-    main.append(section);
+    main.prepend(section);
   }
 }
 
@@ -156,7 +173,7 @@ function autolinkModals(main) {
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
-    buildCookieConsentDialog(main);
+    buildCookieConsent(main);
     autolinkModals(main);
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -236,7 +253,6 @@ function loadDelayed() {
 }
 
 async function loadPage() {
-  initCookieConsent();
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();

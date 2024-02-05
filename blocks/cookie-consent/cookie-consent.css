@@ -1,16 +1,83 @@
-.modal-content .consent-info-panel {
+.cconsent {
+  font-size: var(--body-font-size-s);
+}
+
+.cconsent h2 {
+  font-size: var(--heading-font-size-m);
+}
+
+.cconsent dialog {
+  --dialog-border-radius: 16px;
+  overscroll-behavior: none;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: var(--dialog-border-radius);
+  left: 20px;
+  right: 20px;
+  width: clamp(300px, 80%, 700px);
+}
+
+.cconsent dialog::backdrop {
+  background-color: rgb(0 0 0 / 50%);
+}
+
+.cconsent.bottom dialog {
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  margin: 0px;
+  inset-block-start: auto;
+  border-radius: 0px;
+  position: fixed;
+  padding: 30px;
+  max-width: calc(100% - 6px - 2em);
+  max-height: calc(100% - 6px - 2em);
+}
+
+.cconsent.nomodal.center dialog {
+  inset-block-start: 0;
+  inset-block-end: 0;
+  border-radius: 0px;
+  position: fixed;
+  padding: 30px;
+}
+
+.cconsent .close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 100%;
+  max-height: 54px;
+  border-radius: 0 var(--dialog-border-radius) 0 0;
+  background-color: unset;
+  text-overflow: clip;
+  margin: 0;
+  border: none;
+  padding-right: 30px;
+}
+
+.cconsent.bottom .close-button {
+  right: 20px;
+}
+
+.cconsent dialog .section {
+  padding: 0;
+}
+
+.cconsent .consent-info-panel {
   display: block;
 }
 
-.modal-content .consent-categories-panel {
+.cconsent .consent-categories-panel {
   display: none;
 }
 
-.consent-categories-panel .accordion {
+.cconsent .consent-categories-panel .accordion {
   margin-top: 40px;
 }
 
-.consent-categories-panel .consent-buttons-preferences {
+.cconsent .consent-categories-panel .consent-buttons-preferences {
   padding-top: 40px;
   width: 100%;
   display: flex;
