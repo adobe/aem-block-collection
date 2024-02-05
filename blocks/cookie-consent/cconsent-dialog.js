@@ -74,17 +74,17 @@ function consentCategoriesButtonsPanelHTML(placeholders) {
 
 function acceptCategoriesButtonsPanelHTML() {
   return document.createRange().createContextualFragment(`
-  <button class="consent-button accept primary">Accept All</button>`);
+  <button class="consent-button accept primary">${placeholders.consentAcceptAll || 'Accept All'}</button>`);
 }
 
 function declineCategoriesButtonsPanelHTML() {
   return document.createRange().createContextualFragment(`
-  <button class="consent-button accept primary">Decline All</button>`);
+  <button class="consent-button decline primary">${placeholders.consentDeclineAll || 'Decline All'}</button>`);
 }
 
 function consentCategoriesmoreinfo() {
   return document.createRange().createContextualFragment(`
-<a href=/more_information/> More Information</a>`);
+<a href=/more_information/> ${placeholders.moreInformation || 'More Information'}</a>`);
 }
 
 function categoryHeaderHTML(title, code, optional, selected) {
@@ -102,7 +102,7 @@ function categoryHeaderHTML(title, code, optional, selected) {
   </div>`;
 }
 
-function createMinimalBanner(content, buttons) {
+function createMinimalBanner(content, buttons, placeholders) {
   const div = document.createElement('div');
   div.append(...content);
   //div.append(content);
@@ -110,11 +110,11 @@ function createMinimalBanner(content, buttons) {
   const div2 = document.createElement('div');
   //div2.append(buttons);
   if (buttons.toLowerCase().includes('accept_all'))
-    div2.append(acceptCategoriesButtonsPanelHTML());
+    div2.append(acceptCategoriesButtonsPanelHTML(placeholders));
   if (buttons.toLowerCase().includes('deny_all'))
-    div2.append(declineCategoriesButtonsPanelHTML());
+    div2.append(declineCategoriesButtonsPanelHTML(placeholders));
   if (buttons.toLowerCase().includes('more_info'))
-     div.querySelector('p').append(consentCategoriesmoreinfo());
+     div.querySelector('p').append(consentCategoriesmoreinfo(placeholders));
   div.append(div2);
   //div.querySelector('#show-preferences').addEventListener('click', '');
   //div.querySelector('#accept-all').addEventListener('click', '');
@@ -211,6 +211,7 @@ export async function showDialog(path, consentUpdateCallback) {
     console.log(firstSection);
     //console.log(firstSection.getAttribute('data-buttons'));
     document.querySelector('main').append(minimalDialog);
+    addListeners(dialogContainer, consentUpdateCallback); //???
   } else {
     const ccInfoPanel = firstSection;
     ccInfoPanel.classList = 'consent-info-panel';
