@@ -72,6 +72,21 @@ function consentCategoriesButtonsPanelHTML(placeholders) {
     </div>`);
 }
 
+function acceptCategoriesButtonsPanelHTML() {
+  return document.createRange().createContextualFragment(`
+  <button class="consent-button accept primary">${placeholders.consentAcceptAll || 'Accept All'}</button>`);
+}
+
+function declineCategoriesButtonsPanelHTML() {
+  return document.createRange().createContextualFragment(`
+  <button class="consent-button decline primary">${placeholders.consentDeclineAll || 'Decline All'}</button>`);
+}
+
+function consentCategoriesmoreinfo() {
+  return document.createRange().createContextualFragment(`
+<a href=/more_information/> ${placeholders.moreInformation || 'More Information'}</a>`);
+}
+
 function categoryHeaderHTML(title, code, optional, selected) {
   return `
   <div>
@@ -87,10 +102,20 @@ function categoryHeaderHTML(title, code, optional, selected) {
   </div>`;
 }
 
-function createMinimalBanner(content) {
+function createMinimalBanner(content, buttons, placeholders) {
   const div = document.createElement('div');
-  div.append(content);
+  div.append(...content);
+  //div.append(content);
   div.classList.add('cconsent', 'minimal');
+  const div2 = document.createElement('div');
+  //div2.append(buttons);
+  if (buttons.toLowerCase().includes('accept_all'))
+    div2.append(acceptCategoriesButtonsPanelHTML(placeholders));
+  if (buttons.toLowerCase().includes('deny_all'))
+    div2.append(declineCategoriesButtonsPanelHTML(placeholders));
+  if (buttons.toLowerCase().includes('more_info'))
+     div.querySelector('p').append(consentCategoriesmoreinfo(placeholders));
+  div.append(div2);
   //div.querySelector('#show-preferences').addEventListener('click', '');
   //div.querySelector('#accept-all').addEventListener('click', '');
   return div;
@@ -181,8 +206,12 @@ export async function showDialog(path, consentUpdateCallback) {
 
   const firstSection = cmpSections.shift();
   if (firstSection.classList.contains('minimal')) {
-    const minimalDialog = createMinimalBanner(firstSection);
+    const minimalDialog = createMinimalBanner(firstSection.childNodes, firstSection.getAttribute('data-buttons'),placeholders);
+    //console.log(minimalDialog);
+    console.log(firstSection);
+    //console.log(firstSection.getAttribute('data-buttons'));
     document.querySelector('main').append(minimalDialog);
+    addListeners(dialogContainer, consentUpdateCallback); //???
   } else {
     const ccInfoPanel = firstSection;
     ccInfoPanel.classList = 'consent-info-panel';
