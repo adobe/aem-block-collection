@@ -51,7 +51,8 @@ async function createDialog(contentNodes, { modal, position, showCloseButton, cl
 
 /** DIALOG METHODS */
 
-function consentButtonsPanelHTML(placeholders) {
+function consentButtonsPanelHTML() {
+  const placeholders = fetchPlaceholders();
   return document.createRange().createContextualFragment(`
     <div class='consent-controls'>
       <div class='consent-select-preferences'>
@@ -64,7 +65,8 @@ function consentButtonsPanelHTML(placeholders) {
     </div>`);
 }
 
-function consentCategoriesButtonsPanelHTML(placeholders) {
+function consentCategoriesButtonsPanelHTML() {
+  const placeholders = fetchPlaceholders();
   return document.createRange().createContextualFragment(`
     <div class='consent-buttons-preferences'>
       <button class="consent-button decline secondary">${placeholders.consentDeclineAll || 'Decline All'}</button>
@@ -73,18 +75,21 @@ function consentCategoriesButtonsPanelHTML(placeholders) {
 }
 
 function acceptCategoriesButtonsPanelHTML() {
+  const placeholders = fetchPlaceholders();
   return document.createRange().createContextualFragment(`
   <button class="consent-button accept primary">${placeholders.consentAcceptAll || 'Accept All'}</button>`);
 }
 
 function declineCategoriesButtonsPanelHTML() {
+  const placeholders = fetchPlaceholders();
   return document.createRange().createContextualFragment(`
   <button class="consent-button decline primary">${placeholders.consentDeclineAll || 'Decline All'}</button>`);
 }
 
 function consentCategoriesmoreinfo() {
+  const placeholders = fetchPlaceholders();
   return document.createRange().createContextualFragment(`
-<a href=/more_information/> ${placeholders.moreInformation || 'More Information'}</a>`);
+    <a href="#" class="more-info">${placeholders.moreInformation || 'More Information'}</a>`);
 }
 
 function categoryHeaderHTML(title, code, optional, selected) {
@@ -102,7 +107,7 @@ function categoryHeaderHTML(title, code, optional, selected) {
   </div>`;
 }
 
-function createMinimalBanner(content, buttons, placeholders) {
+function createMinimalBanner(content, buttons) {
   const div = document.createElement('div');
   div.append(...content);
   //div.append(content);
@@ -110,18 +115,17 @@ function createMinimalBanner(content, buttons, placeholders) {
   const div2 = document.createElement('div');
   //div2.append(buttons);
   if (buttons.toLowerCase().includes('accept_all'))
-    div2.append(acceptCategoriesButtonsPanelHTML(placeholders));
+    div2.append(acceptCategoriesButtonsPanelHTML());
   if (buttons.toLowerCase().includes('deny_all'))
-    div2.append(declineCategoriesButtonsPanelHTML(placeholders));
+    div2.append(declineCategoriesButtonsPanelHTML());
   if (buttons.toLowerCase().includes('more_info'))
-     div.querySelector('p').append(consentCategoriesmoreinfo(placeholders));
+     div.querySelector('p').append(consentCategoriesmoreinfo());
   div.append(div2);
-  //div.querySelector('#show-preferences').addEventListener('click', '');
-  //div.querySelector('#accept-all').addEventListener('click', '');
   return div;
 }
 
-function generateCategoriesPanel(consentSections, selectedCategories, placeholders) {
+function generateCategoriesPanel(consentSections, selectedCategories) {
+  const placeholders = fetchPlaceholders();
   const ccCategoriesSection = document.createElement('div');
   ccCategoriesSection.classList = 'consent-categories-panel';
   const ccCategoriesDetails = document.createElement('div');
@@ -161,10 +165,16 @@ function generateCategoriesPanel(consentSections, selectedCategories, placeholde
   return ccCategoriesSection;
 }
 
-function consentUpdated(mode, dialogContainer, consentUpdateCallback) {
-  const selectedCategories = [...document.querySelectorAll('input[type=checkbox][data-cc-code]')]
-    .filter((cat) => mode === 'ALL' || (mode === 'NONE' && cat.disabled) || (mode === 'SELECTED' && cat.checked))
-    .map((cat) => cat.value);
+function consentUpdated(mode, dialogContainer, consentUpdateCallback, categoriesMap) {
+  let selectedCategories;
+  if (categoriesMap) {
+    selectedCategories = categoriesMap.filter((cat) => (mode === 'ALL' || !cat.optional))
+      .map((cat) => cat.code);
+  } else {
+    selectedCategories = [dialogContainer.querySelectorAll('input[type=checkbox][data-cc-code]')]
+      .filter((cat) => mode === 'ALL' || (mode === 'NONE' && cat.disabled) || (mode === 'SELECTED' && cat.checked))
+      .map((cat) => cat.value);
+  }
   // invoke the consent update logic
   consentUpdateCallback(selectedCategories);
   // close the dialog
@@ -178,9 +188,33 @@ function toggleCategoriesPanel(dialogContainer) {
 
 function addListeners(dialogContainer, consentUpdateCallback) {
   dialogContainer.querySelector('.consent-select-preferences-link').addEventListener('click', () => toggleCategoriesPanel(dialogContainer, consentUpdateCallback));
-  dialogContainer.querySelector('.consent-button.accept').addEventListener('click', () => consentUpdated('ALL', dialogContainer, consentUpdateCallback));
-  dialogContainer.querySelectorAll('.consent-button.decline').forEach((b) => b.addEventListener('click', () => consentUpdated('NONE', dialogContainer, consentUpdateCallback)));
-  dialogContainer.querySelector('.consent-button.only-selected').addEventListener('click', () => consentUpdated('SELECTED', dialogContainer, consentUpdateCallback));
+  dialogContainer.querySelector('.consent-button.accept').addEventListener('click', () => consentUpdated('ALL', dialogContainer, consentUpdateCallback, dialogContainer));
+  dialogContainer.querySelectorAll('.consent-button.decline').forEach((b) => b.addEventListener('click', () => consentUpdated('NONE', dialogContainer, consentUpdateCallback, dialogContainer)));
+  dialogContainer.querySelector('.consent-button.only-selected').addEventListener('click', () => consentUpdated('SELECTED', dialogContainer, consentUpdateCallback, dialogContainer));
+}
+
+function addListenersMinimal(container, consentUpdateCallback, cmpSections) {
+  // eslint-disable-next-line max-len
+  const categoriesMap = cmpSections.filter((category) => category.dataset && category.dataset.code && category.dataset.optional)
+    // eslint-disable-next-line max-len
+    .map((category) => ({ code: category.dataset.code, optional: ['yes', 'true'].includes(category.dataset.optional.toLowerCase().trim()) }));
+
+  const acceptAll = container.querySelector('.cconsent.minimal .accept');
+  const rejectAll = container.querySelector('.cconsent.minimal .decline');
+  const moreInformation = container.querySelector('.cconsent.minimal .more-info');
+
+  if (acceptAll) {
+    acceptAll.addEventListener('click', () => consentUpdated('ALL', container, consentUpdateCallback, categoriesMap));
+  }
+  if (rejectAll) {
+    rejectAll.addEventListener('click', () => consentUpdated('NONE', container, consentUpdateCallback, categoriesMap));
+  }
+  if (moreInformation) {
+    moreInformation.addEventListener('click', () => {
+      buildAndShowDialog(cmpSections.shift(), cmpSections, consentUpdateCallback);
+      container.remove();
+    });
+  }
 }
 
 function getStylingOptions(dataset) {
@@ -192,37 +226,34 @@ function getStylingOptions(dataset) {
     style: dataset.style,
   };
 }
+
+async function buildAndShowDialog(infoSection, categoriesSections, consentUpdateCallback) {
+  // eslint-disable-next-line max-len
+  const selectedCategories = (window.hlx && window.hlx.consent) ? window.hlx.consent.categories : [];
+  const ccInfoPanel = infoSection;
+  ccInfoPanel.classList = 'consent-info-panel';
+  ccInfoPanel.append(consentButtonsPanelHTML());
+  // eslint-disable-next-line max-len
+  const ccCategoriesPanel = generateCategoriesPanel(categoriesSections, selectedCategories);
+  const stylingOptions = getStylingOptions(infoSection.dataset);
+  // eslint-disable-next-line max-len
+  const { dialogContainer, show } = await createDialog([ccInfoPanel, ccCategoriesPanel], stylingOptions);
+  addListeners(dialogContainer, consentUpdateCallback);
+  show();
+}
 // eslint-disable-next-line import/prefer-default-export
 export async function showDialog(path, consentUpdateCallback) {
   const fragment = await loadFragment(path);
   if (!fragment) {
     return;
   }
-  const placeholders = fetchPlaceholders();
-  // eslint-disable-next-line max-len
-  const selectedCategories = (window.hlx && window.hlx.consent) ? window.hlx.consent.categories : [];
-
   const cmpSections = [...fragment.querySelectorAll('div.section')];
-
   const firstSection = cmpSections.shift();
   if (firstSection.classList.contains('minimal')) {
-    const minimalDialog = createMinimalBanner(firstSection.childNodes, firstSection.getAttribute('data-buttons'),placeholders);
-    //console.log(minimalDialog);
-    console.log(firstSection);
-    //console.log(firstSection.getAttribute('data-buttons'));
+    const minimalDialog = createMinimalBanner(firstSection.childNodes, firstSection.getAttribute('data-buttons'));
     document.querySelector('main').append(minimalDialog);
-    addListeners(dialogContainer, consentUpdateCallback); //???
+    addListenersMinimal(minimalDialog, consentUpdateCallback, cmpSections);
   } else {
-    const ccInfoPanel = firstSection;
-    ccInfoPanel.classList = 'consent-info-panel';
-    ccInfoPanel.append(consentButtonsPanelHTML(placeholders));
-    // eslint-disable-next-line max-len
-    const ccCategoriesPanel = generateCategoriesPanel(cmpSections, selectedCategories, placeholders);
-    fragment.append(ccInfoPanel);
-    fragment.append(ccCategoriesPanel);
-    const stylingOptions = getStylingOptions(firstSection.dataset);
-    const { dialogContainer, show } = await createDialog(fragment.childNodes, stylingOptions);
-    addListeners(dialogContainer, consentUpdateCallback);
-    show();
+    buildAndShowDialog(firstSection, cmpSections);
   }
 }
