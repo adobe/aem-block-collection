@@ -47,9 +47,9 @@
   bottom: 0;
   width: 100%;
   text-align: center;
-  background-color: var(--dark-color);
+  background-color: rgba(180, 176, 176, 0.9);
   z-index: 10;
-  border-radius: 23px;
+  padding-top: 15px;
 }
 
 .cconsent.minimal button{

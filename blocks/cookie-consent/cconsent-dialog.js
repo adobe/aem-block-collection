@@ -119,8 +119,27 @@ function createMinimalBanner(content, buttons) {
   if (buttons.toLowerCase().includes('deny_all'))
     div2.append(declineCategoriesButtonsPanelHTML());
   if (buttons.toLowerCase().includes('more_info'))
-     div.querySelector('p').append(consentCategoriesmoreinfo());
+    div.querySelector('p').append(consentCategoriesmoreinfo());
   div.append(div2);
+  //creation of close button
+  let closeButton;
+  closeButton = document.createElement('button');
+  closeButton.classList.add('close-button');
+  closeButton.setAttribute('aria-label', 'Close');
+  closeButton.type = 'button';
+  closeButton.innerHTML = '<span class="icon icon-close"></span>';
+  closeButton.addEventListener('click', () => div.remove());
+  decorateIcons(closeButton);
+  div.append(closeButton);
+  // close dialog on clicks outside the dialog. https://stackoverflow.com/a/70593278/79461
+  div.addEventListener('click', (event) => {
+    const dialogDimensions = div.getBoundingClientRect();
+    if (event.clientX < dialogDimensions.left || event.clientX > dialogDimensions.right
+      || event.clientY < dialogDimensions.top || event.clientY > dialogDimensions.bottom) {
+      div.remove();
+    }
+  });
+
   return div;
 }
 
