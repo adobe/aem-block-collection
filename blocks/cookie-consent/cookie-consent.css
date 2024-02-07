@@ -265,3 +265,30 @@ input:checked + .slider::before {
   border-top: 1px solid var(--dark-color);
   background-color: var(--background-color);
 }
+
+@media screen and (min-width: 900px) {
+  .cconsent.minimal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .cconsent.minimal p {
+    margin: 0; 
+  }
+
+  .cconsent.minimal .more-info {
+    margin-right: 0.5em; 
+  }
+
+  .cconsent.minimal .cconsent-button {
+    margin: 0;
+  }
+
+  button {
+    font-weight: unset;
+  }
+}
+
