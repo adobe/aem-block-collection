@@ -52,10 +52,23 @@
   padding-top: 15px;
 }
 
-.cconsent.minimal button{
-font-size: var(--body-font-size-s);
-margin-top: 0px;
+.cconsent.minimal button {
+  font-size: var(--body-font-size-s);
+  margin-top: 0px;
 }
+
+.cconsent.minimal button.primary {
+  color: var(--link-color);
+}
+
+.cconsent.minimal button.secondary {
+  color: var(--light-color);
+}
+
+.cconsent.minimal .more-info {
+  color: var(--link-color);
+}
+
 
 .cconsent .close-button {
   position: absolute;
@@ -120,6 +133,12 @@ margin-top: 0px;
 
 .consent-category-desc {
   font-size: var(--body-font-size-s);
+}
+
+.cconsent.minimal .cconsent-button {
+  padding: 10px;
+  border: none;
+  background: none;
 }
 
 /* TOGGLE SWITCH */
