@@ -48,6 +48,6 @@ export default function decorate(block) {
     manageConsentRead(selectedCategories);
   } else {
     block.remove();
-    import('./cconsent-dialog.js').then((ccdialog) => ccdialog.showDialog(path, manageConsentUpdate));
+    import('./cconsent-dialog.js').then((ccdialog) => ccdialog.showConsentBanner(path, manageConsentUpdate));
   }
 }

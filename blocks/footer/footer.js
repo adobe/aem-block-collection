@@ -15,12 +15,7 @@ export default async function decorate(block) {
   // load footer fragment
   const footerPath = footerMeta.footer || '/footer';
   const fragment = await loadFragment(footerPath);
-  if (getMetadata('cookie-consent')) {
-    fragment.querySelector('a[title="Cookie preferences"]').addEventListener('click', (e) => {
-      showCookieConsentDialog();
-      e.preventDefault();
-    });
-  }
+
   // decorate footer DOM
   const footer = document.createElement('div');
   while (fragment.firstElementChild) footer.append(fragment.firstElementChild);

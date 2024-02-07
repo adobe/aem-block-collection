@@ -3,54 +3,23 @@ import {
   decorateIcons, fetchPlaceholders,
 } from '../../scripts/aem.js';
 
-async function createDialog(contentNodes, { modal, position, showCloseButton, closeOnClick }) {
-  const dialog = document.createElement('dialog');
-  const dialogContent = document.createElement('div');
-  dialogContent.classList.add('dialog-content');
-  dialogContent.append(...contentNodes);
-  dialog.append(dialogContent);
-
-  let closeButton;
-  if (showCloseButton) {
-    closeButton = document.createElement('button');
-    closeButton.classList.add('close-button');
-    closeButton.setAttribute('aria-label', 'Close');
-    closeButton.type = 'button';
-    closeButton.innerHTML = '<span class="icon icon-close"></span>';
-    closeButton.addEventListener('click', () => dialog.close());
-    dialog.append(closeButton);
+function consentUpdated(mode, dialogContainer, consentUpdateCallback, categoriesMap) {
+  let selectedCategories;
+  if (categoriesMap) {
+    selectedCategories = categoriesMap.filter((cat) => (mode === 'ALL' || !cat.optional))
+      .map((cat) => cat.code);
+  } else {
+    selectedCategories = [...dialogContainer.querySelectorAll('input[type=checkbox][data-cc-code]')]
+      .filter((cat) => mode === 'ALL' || (mode === 'NONE' && cat.disabled) || (mode === 'SELECTED' && cat.checked))
+      .map((cat) => cat.value);
   }
-
-  if (closeOnClick) {
-    // close dialog on clicks outside the dialog. https://stackoverflow.com/a/70593278/79461
-    dialog.addEventListener('click', (event) => {
-      const dialogDimensions = dialog.getBoundingClientRect();
-      if (event.clientX < dialogDimensions.left || event.clientX > dialogDimensions.right
-        || event.clientY < dialogDimensions.top || event.clientY > dialogDimensions.bottom) {
-        dialog.close();
-      }
-    });
-  }
-
-  const dialogContainer = document.createElement('div');
-  dialog.addEventListener('close', () => dialogContainer.remove());
-  dialogContainer.classList.add('cconsent', position);
-  if (!modal) {
-    dialogContainer.classList.add('nomodal');
-  }
-  document.querySelector('main').append(dialogContainer);
-
-  if (closeButton) {
-    decorateIcons(closeButton);
-  }
-
-  dialogContainer.append(dialog);
-
-  return { dialogContainer, show: () => (modal ? dialog.showModal() : dialog.show()) };
+  // invoke the consent update logic
+  consentUpdateCallback(selectedCategories);
+  // close the dialog
+  dialogContainer.remove();
 }
 
-/** DIALOG METHODS */
-
+/** FULL DIALOG functions */
 function consentButtonsPanelHTML() {
   const placeholders = fetchPlaceholders();
   return document.createRange().createContextualFragment(`
@@ -74,24 +43,6 @@ function consentCategoriesButtonsPanelHTML() {
     </div>`);
 }
 
-function acceptCategoriesButtonsPanelHTML() {
-  const placeholders = fetchPlaceholders();
-  return document.createRange().createContextualFragment(`
-  <button class="consent-button accept primary">${placeholders.consentAcceptAll || 'Accept All'}</button>`);
-}
-
-function declineCategoriesButtonsPanelHTML() {
-  const placeholders = fetchPlaceholders();
-  return document.createRange().createContextualFragment(`
-  <button class="consent-button decline primary">${placeholders.consentDeclineAll || 'Decline All'}</button>`);
-}
-
-function consentCategoriesmoreinfo() {
-  const placeholders = fetchPlaceholders();
-  return document.createRange().createContextualFragment(`
-    <a href="#" class="more-info">${placeholders.moreInformation || 'More Information'}</a>`);
-}
-
 function categoryHeaderHTML(title, code, optional, selected) {
   return `
   <div>
@@ -107,40 +58,26 @@ function categoryHeaderHTML(title, code, optional, selected) {
   </div>`;
 }
 
-function createMinimalBanner(content, buttons) {
-  const div = document.createElement('div');
-  div.append(...content);
-  //div.append(content);
-  div.classList.add('cconsent', 'minimal');
-  const div2 = document.createElement('div');
-  //div2.append(buttons);
-  if (buttons.toLowerCase().includes('accept_all'))
-    div2.append(acceptCategoriesButtonsPanelHTML());
-  if (buttons.toLowerCase().includes('deny_all'))
-    div2.append(declineCategoriesButtonsPanelHTML());
-  if (buttons.toLowerCase().includes('more_info'))
-    div.querySelector('p').append(consentCategoriesmoreinfo());
-  div.append(div2);
-  //creation of close button
-  let closeButton;
-  closeButton = document.createElement('button');
+function addCloseButton(banner) {
+  const closeButton = document.createElement('button');
   closeButton.classList.add('close-button');
   closeButton.setAttribute('aria-label', 'Close');
   closeButton.type = 'button';
   closeButton.innerHTML = '<span class="icon icon-close"></span>';
-  closeButton.addEventListener('click', () => div.remove());
+  closeButton.addEventListener('click', () => (banner.close ? banner.close() : banner.remove()));
+  banner.append(closeButton);
   decorateIcons(closeButton);
-  div.append(closeButton);
+}
+
+function closeOnClickOutside(dialog) {
   // close dialog on clicks outside the dialog. https://stackoverflow.com/a/70593278/79461
-  div.addEventListener('click', (event) => {
-    const dialogDimensions = div.getBoundingClientRect();
+  dialog.addEventListener('click', (event) => {
+    const dialogDimensions = dialog.getBoundingClientRect();
     if (event.clientX < dialogDimensions.left || event.clientX > dialogDimensions.right
       || event.clientY < dialogDimensions.top || event.clientY > dialogDimensions.bottom) {
-      div.remove();
+      dialog.close();
     }
   });
-
-  return div;
 }
 
 function generateCategoriesPanel(consentSections, selectedCategories) {
@@ -184,22 +121,6 @@ function generateCategoriesPanel(consentSections, selectedCategories) {
   return ccCategoriesSection;
 }
 
-function consentUpdated(mode, dialogContainer, consentUpdateCallback, categoriesMap) {
-  let selectedCategories;
-  if (categoriesMap) {
-    selectedCategories = categoriesMap.filter((cat) => (mode === 'ALL' || !cat.optional))
-      .map((cat) => cat.code);
-  } else {
-    selectedCategories = [dialogContainer.querySelectorAll('input[type=checkbox][data-cc-code]')]
-      .filter((cat) => mode === 'ALL' || (mode === 'NONE' && cat.disabled) || (mode === 'SELECTED' && cat.checked))
-      .map((cat) => cat.value);
-  }
-  // invoke the consent update logic
-  consentUpdateCallback(selectedCategories);
-  // close the dialog
-  dialogContainer.remove();
-}
-
 function toggleCategoriesPanel(dialogContainer) {
   dialogContainer.querySelector('.consent-info-panel').style.display = 'none';
   dialogContainer.querySelector('.consent-categories-panel').style.display = 'block';
@@ -207,11 +128,62 @@ function toggleCategoriesPanel(dialogContainer) {
 
 function addListeners(dialogContainer, consentUpdateCallback) {
   dialogContainer.querySelector('.consent-select-preferences-link').addEventListener('click', () => toggleCategoriesPanel(dialogContainer, consentUpdateCallback));
-  dialogContainer.querySelector('.consent-button.accept').addEventListener('click', () => consentUpdated('ALL', dialogContainer, consentUpdateCallback, dialogContainer));
-  dialogContainer.querySelectorAll('.consent-button.decline').forEach((b) => b.addEventListener('click', () => consentUpdated('NONE', dialogContainer, consentUpdateCallback, dialogContainer)));
-  dialogContainer.querySelector('.consent-button.only-selected').addEventListener('click', () => consentUpdated('SELECTED', dialogContainer, consentUpdateCallback, dialogContainer));
+  dialogContainer.querySelector('.consent-button.accept').addEventListener('click', () => consentUpdated('ALL', dialogContainer, consentUpdateCallback));
+  dialogContainer.querySelectorAll('.consent-button.decline').forEach((b) => b.addEventListener('click', () => consentUpdated('NONE', dialogContainer, consentUpdateCallback)));
+  dialogContainer.querySelector('.consent-button.only-selected').addEventListener('click', () => consentUpdated('SELECTED', dialogContainer, consentUpdateCallback));
 }
 
+function getStylingOptions(ds) {
+  const trueStrs = ['true', 'yes'];
+  return {
+    modal: ds.modal ? trueStrs.includes(ds.modal.toLowerCase().trim()) : true,
+    showCloseButton: ds.closeButton && trueStrs.includes(ds.closeButton.toLowerCase().trim()),
+    position: ds.position ? ds.position.toLowerCase().trim() : 'center',
+    // eslint-disable-next-line max-len
+    closeOnClick: ds.closeOnClickOutside && trueStrs.includes(ds.closeOnClickOutside.toLowerCase().trim()),
+  };
+}
+
+function buildAndShowDialog(infoSection, categoriesSections, consentUpdateCallback) {
+  // eslint-disable-next-line max-len
+  const selectedCategories = (window.hlx && window.hlx.consent) ? window.hlx.consent.categories : [];
+  // eslint-disable-next-line object-curly-newline
+  const { modal, position, showCloseButton, closeOnClick } = getStylingOptions(infoSection.dataset);
+  infoSection.classList = 'consent-info-panel';
+  infoSection.append(consentButtonsPanelHTML());
+  const ccCategoriesPanel = generateCategoriesPanel(categoriesSections, selectedCategories);
+
+  const dialog = document.createElement('dialog');
+  const dialogContent = document.createElement('div');
+  dialogContent.classList.add('dialog-content');
+  dialogContent.append(infoSection, ccCategoriesPanel);
+  dialog.append(dialogContent);
+
+  if (showCloseButton) {
+    addCloseButton(dialog);
+  }
+  if (closeOnClick) {
+    closeOnClickOutside(dialog);
+  }
+
+  const dialogContainer = document.createElement('div');
+  dialog.addEventListener('close', () => dialogContainer.remove());
+  dialogContainer.classList.add('cconsent', position);
+  if (!modal) {
+    dialogContainer.classList.add('nomodal');
+  }
+  document.querySelector('main').append(dialogContainer);
+  dialogContainer.append(dialog);
+
+  addListeners(dialogContainer, consentUpdateCallback);
+  if (modal) {
+    dialog.showModal();
+  } else {
+    dialog.show();
+  }
+}
+
+/** MINIMAL BANNER functions */
 function addListenersMinimal(container, consentUpdateCallback, cmpSections) {
   // eslint-disable-next-line max-len
   const categoriesMap = cmpSections.filter((category) => category.dataset && category.dataset.code && category.dataset.optional)
@@ -228,7 +200,7 @@ function addListenersMinimal(container, consentUpdateCallback, cmpSections) {
   if (rejectAll) {
     rejectAll.addEventListener('click', () => consentUpdated('NONE', container, consentUpdateCallback, categoriesMap));
   }
-  if (moreInformation) {
+  if (moreInformation && cmpSections) {
     moreInformation.addEventListener('click', () => {
       buildAndShowDialog(cmpSections.shift(), cmpSections, consentUpdateCallback);
       container.remove();
@@ -236,32 +208,31 @@ function addListenersMinimal(container, consentUpdateCallback, cmpSections) {
   }
 }
 
-function getStylingOptions(dataset) {
-  return {
-    modal: dataset.modal ? ['true', 'yes'].includes(dataset.modal.toLowerCase().trim()) : true,
-    showCloseButton: dataset.closeButton && ['false', 'no'].includes(dataset.closeButton.toLowerCase().trim()),
-    position: dataset.position ? dataset.position.toLowerCase().trim() : 'center',
-    closeOnClick: dataset.closeOnClickOutside && ['false', 'no'].includes(dataset.closeOnClickOutside.toLowerCase().trim()),
-    style: dataset.style,
-  };
-}
+function createMinimalBanner(content, buttonString) {
+  const buttonsArray = buttonString.toLowerCase().split(',').map((s) => s.trim());
+  const placeholders = fetchPlaceholders();
+  const div = document.createElement('div');
+  div.classList.add('cconsent', 'minimal');
+  div.append(...content);
+  const acceptAllButton = `<button class="cconsent-button accept primary">${placeholders.consentAcceptAll || 'Accept All'}</button>`;
+  const rejectAllButton = `<button class="cconsent-button decline secondary">${placeholders.consentDeclineAll || 'Decline All'}</button>`;
+  const moreInfoLink = `<a class="more-info">${placeholders.moreInformation || 'More Information'}</a>`;
+  if (buttonsArray.includes('more_info')) {
+    div.querySelector('p').append(document.createRange().createContextualFragment(moreInfoLink));
+  }
+  const buttonsHTML = `${buttonsArray.includes('accept_all') ? acceptAllButton : ''}${buttonsArray.includes('deny_all') ? rejectAllButton : ''}`;
+  if (buttonsHTML) {
+    const buttonsDiv = document.createElement('div');
+    buttonsDiv.innerHTML = buttonsHTML;
+    div.append(buttonsDiv);
+  }
 
-async function buildAndShowDialog(infoSection, categoriesSections, consentUpdateCallback) {
-  // eslint-disable-next-line max-len
-  const selectedCategories = (window.hlx && window.hlx.consent) ? window.hlx.consent.categories : [];
-  const ccInfoPanel = infoSection;
-  ccInfoPanel.classList = 'consent-info-panel';
-  ccInfoPanel.append(consentButtonsPanelHTML());
-  // eslint-disable-next-line max-len
-  const ccCategoriesPanel = generateCategoriesPanel(categoriesSections, selectedCategories);
-  const stylingOptions = getStylingOptions(infoSection.dataset);
-  // eslint-disable-next-line max-len
-  const { dialogContainer, show } = await createDialog([ccInfoPanel, ccCategoriesPanel], stylingOptions);
-  addListeners(dialogContainer, consentUpdateCallback);
-  show();
+  addCloseButton(div);
+  return div;
 }
+/** END MINIMAL BANNER */
 // eslint-disable-next-line import/prefer-default-export
-export async function showDialog(path, consentUpdateCallback) {
+export async function showConsentBanner(path, consentUpdateCallback) {
   const fragment = await loadFragment(path);
   if (!fragment) {
     return;
