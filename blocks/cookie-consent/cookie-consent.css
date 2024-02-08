@@ -47,14 +47,22 @@
   bottom: 0;
   width: 100%;
   text-align: center;
-  background-color: rgba(180, 176, 176, 0.9);
+  background-color: rgba(180, 176, 176, 0.95);
   z-index: 10;
   padding-top: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cconsent.cconsent.minimal .default-content-wrapper p:first-child{
+  padding: 10px;
 }
 
 .cconsent.minimal button {
   font-size: var(--body-font-size-s);
-  margin-top: 0px;
 }
 
 .cconsent.minimal button.primary {
@@ -265,30 +273,3 @@ input:checked + .slider::before {
   border-top: 1px solid var(--dark-color);
   background-color: var(--background-color);
 }
-
-@media screen and (min-width: 900px) {
-  .cconsent.minimal {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-  
-  .cconsent.minimal p {
-    margin: 0; 
-  }
-
-  .cconsent.minimal .more-info {
-    margin-right: 0.5em; 
-  }
-
-  .cconsent.minimal .cconsent-button {
-    margin: 0;
-  }
-
-  button {
-    font-weight: unset;
-  }
-}
-
