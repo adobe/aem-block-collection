@@ -86,22 +86,30 @@
   column-gap: 10px;
 }
 
-.consent-controls {
+.consent .consent-controls {
   display: flex;
+  gap: 10px 10px;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 
-.consent-button {
+.consent .consent-controls .consent-buttons {
+  gap: 10px 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.consent .consent-button {
   font-size: var(--body-font-size-s);
   margin: 0px;
 }
 
-.consent-category-header {
+.consent .consent-category-header {
   display: flex;
   justify-content: space-between;
 }
 
-.consent-category {
+.consent .consent-category {
   padding-top: 10px;
 }
 
@@ -156,14 +164,14 @@
 }
 
 /* TOGGLE SWITCH */
-.consent-category-switch {
+.consent .consent-category-switch {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 /* The switch - the box around the slider */
-.switch {
+.consent .switch {
   position: relative;
   display: inline-block;
   width: 60px;
@@ -171,14 +179,14 @@
 }
 
 /* Hide default HTML checkbox */
-.switch input {
+.consent .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
 /* The slider */
-.slider {
+.consent .slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -189,7 +197,7 @@
   transition: 0.4s;
 }
 
-.slider::before {
+.consent .slider::before {
   position: absolute;
   content: "";
   height: 26px;
@@ -200,38 +208,38 @@
   transition: 0.4s;
 }
 
-input:checked+.slider {
+.consent input:checked+.slider {
   background-color: #2196f3;
 }
 
-input:focus+.slider {
+.consent input:focus+.slider {
   box-shadow: 0 0 9px 3px #015396;
 }
 
-input:checked+.slider::before {
+.consent input:checked+.slider::before {
   transform: translateX(26px);
 }
 
 /* Rounded sliders */
-.slider.round {
+.consent .slider.round {
   border-radius: 34px;
 }
 
-.slider.round::before {
+.consent .slider.round::before {
   border-radius: 50%;
 }
 
 /*** COPIED FROM ACCORDION ***/
-.accordion details {
+.consent .accordion details {
   border: 1px solid var(--dark-color);
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-.accordion details+details {
+.consent .accordion details+details {
   margin-top: 16px;
 }
 
-.accordion details summary {
+.consent .accordion details summary {
   position: relative;
   padding: 0 16px;
   padding-right: 48px;
@@ -241,20 +249,20 @@ input:checked+.slider::before {
   transition: background-color 0.2s;
 }
 
-.accordion details[open] summary {
+.consent .accordion details[open] summary {
   background-color: var(--light-color);
 }
 
-.accordion details summary:focus,
-.accordion details summary:hover {
+.consent .accordion details summary:focus,
+.consent .accordion details summary:hover {
   background-color: var(--dark-color);
 }
 
-.accordion details summary::-webkit-details-marker {
+.consent .accordion details summary::-webkit-details-marker {
   display: none;
 }
 
-.accordion details summary::after {
+.consent .accordion details summary::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -267,15 +275,15 @@ input:checked+.slider::before {
   transition: transform 0.2s;
 }
 
-.accordion details[open] summary::after {
+.consent .accordion details[open] summary::after {
   transform: translateY(-50%) rotate(-45deg);
 }
 
-.accordion details .accordion-item-body {
+.consent .accordion details .accordion-item-body {
   padding: 0 16px;
 }
 
-.accordion details[open] .accordion-item-body {
+.consent .accordion details[open] .accordion-item-body {
   border-top: 1px solid var(--dark-color);
   background-color: var(--background-color);
 }

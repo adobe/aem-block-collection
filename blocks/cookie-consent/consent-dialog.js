@@ -14,6 +14,7 @@ function consentUpdated(mode, dialogContainer, consentUpdateCallback, categories
       .filter((cat) => mode === 'ALL' || (mode === 'NONE' && cat.disabled) || (mode === 'SELECTED' && cat.checked))
       .map((cat) => cat.value);
   }
+
   // invoke the consent update logic
   consentUpdateCallback(selectedCategories);
   // close the dialog
@@ -128,7 +129,10 @@ function toggleCategoriesPanel(dialogContainer) {
 }
 
 function addListeners(dialogContainer, consentUpdateCallback) {
-  dialogContainer.querySelector('.consent-select-preferences-link').addEventListener('click', () => toggleCategoriesPanel(dialogContainer, consentUpdateCallback));
+  const preferencesLink = dialogContainer.querySelector('.consent-select-preferences-link');
+  if (preferencesLink) {
+    preferencesLink.addEventListener('click', () => toggleCategoriesPanel(dialogContainer, consentUpdateCallback));
+  }
   dialogContainer.querySelector('.consent-button.accept').addEventListener('click', () => consentUpdated('ALL', dialogContainer, consentUpdateCallback));
   dialogContainer.querySelectorAll('.consent-button.decline').forEach((b) => b.addEventListener('click', () => consentUpdated('NONE', dialogContainer, consentUpdateCallback)));
   dialogContainer.querySelector('.consent-button.only-selected').addEventListener('click', () => consentUpdated('SELECTED', dialogContainer, consentUpdateCallback));
@@ -158,8 +162,8 @@ function buildAndShowDialog(infoSection, categoriesSections, consentUpdateCallba
 
   if (displayCategories) {
     ccCategoriesPanel.style.display = 'block';
-    infoSection.querySelector('.consent-select-preferences').style.visibility = 'hidden';
-    ccCategoriesPanel.querySelector('.consent-button.decline').style.display = 'none';
+    infoSection.querySelector('.consent-select-preferences').innerHTML = '';
+    ccCategoriesPanel.querySelector('.consent-button.decline').remove();
   }
 
   const dialog = document.createElement('dialog');
