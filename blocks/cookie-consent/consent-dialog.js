@@ -176,7 +176,7 @@ function buildAndShowDialog(infoSection, categoriesSections, consentUpdateCallba
 
   const dialogContainer = document.createElement('div');
   dialog.addEventListener('close', () => dialogContainer.remove());
-  dialogContainer.classList.add('cconsent', position);
+  dialogContainer.classList.add('consent', position);
   if (!modal) {
     dialogContainer.classList.add('nomodal');
   }
@@ -193,9 +193,9 @@ function buildAndShowDialog(infoSection, categoriesSections, consentUpdateCallba
 
 /** MINIMAL BANNER functions */
 function addListenersMinimal(container, consentUpdateCallback, categoriesMap, cmpSections) {
-  const acceptAll = container.querySelector('.cconsent.minimal .accept');
-  const rejectAll = container.querySelector('.cconsent.minimal .decline');
-  const moreInformation = container.querySelector('.cconsent.minimal .more-info');
+  const acceptAll = container.querySelector('.consent.minimal .accept');
+  const rejectAll = container.querySelector('.consent.minimal .decline');
+  const moreInformation = container.querySelector('.consent.minimal .more-info');
 
   if (acceptAll) {
     acceptAll.addEventListener('click', () => consentUpdated('ALL', container, consentUpdateCallback, categoriesMap));
@@ -242,10 +242,10 @@ function createMinimalBanner(section) {
   const buttonsArray = buttonString.toLowerCase().split(',').map((s) => s.trim());
   const placeholders = fetchPlaceholders();
   const div = document.createElement('div');
-  div.classList.add('cconsent', 'minimal');
+  div.classList.add('consent', 'minimal');
   div.append(...content);
-  const acceptAllButton = `<button class="cconsent-button accept primary">${placeholders.consentAcceptAll || 'Accept All'}</button>`;
-  const rejectAllButton = `<button class="cconsent-button decline secondary">${placeholders.consentDeclineAll || 'Decline All'}</button>`;
+  const acceptAllButton = `<button class="consent-button accept primary">${placeholders.consentAcceptAll || 'Accept All'}</button>`;
+  const rejectAllButton = `<button class="consent-button decline secondary">${placeholders.consentDeclineAll || 'Decline All'}</button>`;
   const moreInfoLink = `<a class="more-info">${placeholders.moreInformation || 'More Information'}</a>`;
   if (buttonsArray.includes('more_info')) {
     div.querySelector('p').append(document.createRange().createContextualFragment(moreInfoLink));
@@ -253,7 +253,7 @@ function createMinimalBanner(section) {
   const buttonsHTML = `${buttonsArray.includes('accept_all') ? acceptAllButton : ''}${buttonsArray.includes('deny_all') ? rejectAllButton : ''}`;
   if (buttonsHTML) {
     const buttonsDiv = document.createElement('div');
-    buttonsDiv.classList = 'buttons';
+    buttonsDiv.classList = 'controls';
     buttonsDiv.innerHTML = buttonsHTML;
     div.append(buttonsDiv);
   }

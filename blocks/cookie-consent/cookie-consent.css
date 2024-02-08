@@ -1,12 +1,12 @@
-.cconsent {
+.consent {
   font-size: var(--body-font-size-s);
 }
 
-.cconsent h2 {
+.consent h2 {
   font-size: var(--heading-font-size-m);
 }
 
-.cconsent dialog {
+.consent dialog {
   --dialog-border-radius: 16px;
   overscroll-behavior: none;
   padding: 30px;
@@ -17,11 +17,11 @@
   width: clamp(300px, 80%, 700px);
 }
 
-.cconsent dialog::backdrop {
+.consent dialog::backdrop {
   background-color: rgb(0 0 0 / 50%);
 }
 
-.cconsent.bottom dialog {
+.consent.bottom dialog {
   bottom: 0px;
   left: 0px;
   width: 100%;
@@ -34,7 +34,7 @@
   max-height: calc(100% - 6px - 2em);
 }
 
-.cconsent.nomodal.center dialog {
+.consent.nomodal.center dialog {
   inset-block-start: 0;
   inset-block-end: 0;
   border-radius: 0px;
@@ -42,49 +42,7 @@
   padding: 30px;
 }
 
-.cconsent.minimal {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  background-color: rgba(180, 176, 176, 0.95);
-  z-index: 10;
-  padding-top: 15px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.cconsent.cconsent.minimal .default-content-wrapper p:first-child{
-  padding: 5px;
-  margin: 5px;
-  border: 0px;
-}
-
-.cconsent.minimal button {
-  font-size: var(--body-font-size-s);
-  padding: 5px;
-  border: 0px;
-}
-
-
-
-.cconsent.minimal button.primary {
-  color: var(--link-color);
-}
-
-.cconsent.minimal button.secondary {
-  color: var(--light-color);
-}
-
-.cconsent.minimal .more-info {
-  color: var(--link-color);
-}
-
-
-.cconsent .close-button {
+.consent .close-button {
   position: absolute;
   top: 0;
   right: 0;
@@ -97,29 +55,30 @@
   margin: 0;
   border: none;
   padding-right: 30px;
+  padding-left: 0px;
 }
 
-.cconsent.bottom .close-button {
+.consent.bottom .close-button {
   right: 20px;
 }
 
-.cconsent dialog .section {
+.consent dialog .section {
   padding: 0;
 }
 
-.cconsent .consent-info-panel {
+.consent .consent-info-panel {
   display: block;
 }
 
-.cconsent .consent-categories-panel {
+.consent .consent-categories-panel {
   display: none;
 }
 
-.cconsent .consent-categories-panel .accordion {
+.consent .consent-categories-panel .accordion {
   margin-top: 40px;
 }
 
-.cconsent .consent-categories-panel .consent-buttons-preferences {
+.consent .consent-categories-panel .consent-buttons-preferences {
   padding-top: 40px;
   width: 100%;
   display: flex;
@@ -133,7 +92,7 @@
 }
 
 .consent-button {
-  font-size: var(--body-font-size-m);
+  font-size: var(--body-font-size-s);
   margin: 0px;
 }
 
@@ -146,15 +105,54 @@
   padding-top: 10px;
 }
 
-.consent-category-desc {
-  font-size: var(--body-font-size-s);
+.consent.minimal {
+  position: fixed;
+  bottom: 3px;
+  width: 100%;
+  text-align: center;
+  background-color: rgba(180, 176, 176, 0.95);
+  z-index: 10;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-.cconsent.minimal .cconsent-button {
+.consent.minimal .default-content-wrapper {
+  padding-right: 20px;
+}
+
+.consent.minimal .default-content-wrapper p {
+  padding: 5px;
+  margin: 5px;
+  border: 0px;
+}
+
+.consent.minimal .controls {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.consent.minimal .consent-button {
   padding: 5px;
   margin: 5px;
   border: none;
   background: none;
+  font-weight: normal;
+}
+
+.consent.minimal .consent-button.primary {
+  color: var(--link-color);
+}
+
+.consent.minimal .consent-button.secondary {
+  color: var(--light-color);
+}
+
+.consent.minimal .more-info {
+  color: var(--link-color);
 }
 
 /* TOGGLE SWITCH */
@@ -202,15 +200,15 @@
   transition: 0.4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: #2196f3;
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px #2196f3;
 }
 
-input:checked + .slider::before {
+input:checked+.slider::before {
   transform: translateX(26px);
 }
 
@@ -229,7 +227,7 @@ input:checked + .slider::before {
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-.accordion details + details {
+.accordion details+details {
   margin-top: 16px;
 }
 
