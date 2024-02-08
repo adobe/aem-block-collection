@@ -58,12 +58,18 @@
 }
 
 .cconsent.cconsent.minimal .default-content-wrapper p:first-child{
-  padding: 10px;
+  padding: 5px;
+  margin: 5px;
+  border: 0px;
 }
 
 .cconsent.minimal button {
   font-size: var(--body-font-size-s);
+  padding: 5px;
+  border: 0px;
 }
+
+
 
 .cconsent.minimal button.primary {
   color: var(--link-color);
@@ -128,6 +134,7 @@
 
 .consent-button {
   font-size: var(--body-font-size-m);
+  margin: 0px;
 }
 
 .consent-category-header {
@@ -144,7 +151,8 @@
 }
 
 .cconsent.minimal .cconsent-button {
-  padding: 10px;
+  padding: 5px;
+  margin: 5px;
   border: none;
   background: none;
 }
