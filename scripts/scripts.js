@@ -59,8 +59,8 @@ async function loadFonts() {
   }
 }
 
-function autolinkModals(main) {
-  main.addEventListener('click', async (e) => {
+function autolinkModals(element) {
+  element.addEventListener('click', async (e) => {
     const origin = e.target.closest('a');
 
     if (origin && origin.href && origin.href.includes('/modals/')) {
@@ -107,6 +107,10 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+  if (getMetadata('breadcrumbs').toLowerCase() === 'true') {
+    document.body.classList.add('breadcrumbs-enabled');
+  }
+
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
@@ -129,6 +133,8 @@ async function loadEager(doc) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
+  autolinkModals(doc);
+
   const main = doc.querySelector('main');
   await loadBlocks(main);
 
