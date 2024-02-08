@@ -24,7 +24,7 @@ function userCookiePreferences(categories) {
  * tracks the selection in RUM
  * @param {Array} selCategories
  */
-function manageConsentUpdate(selCategories) {
+export function manageConsentUpdate(selCategories) {
   const newCategories = Array.isArray(selCategories) ? selCategories : [selCategories];
   userCookiePreferences(newCategories);
   sampleRUM('consentupdate', newCategories);

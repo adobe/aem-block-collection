@@ -192,12 +192,7 @@ function buildAndShowDialog(infoSection, categoriesSections, consentUpdateCallba
 }
 
 /** MINIMAL BANNER functions */
-function addListenersMinimal(container, consentUpdateCallback, cmpSections) {
-  // eslint-disable-next-line max-len
-  const categoriesMap = cmpSections.filter((category) => category.dataset && category.dataset.code && category.dataset.optional)
-    // eslint-disable-next-line max-len
-    .map((category) => ({ code: category.dataset.code, optional: ['yes', 'true'].includes(category.dataset.optional.toLowerCase().trim()) }));
-
+function addListenersMinimal(container, consentUpdateCallback, categoriesMap, cmpSections) {
   const acceptAll = container.querySelector('.cconsent.minimal .accept');
   const rejectAll = container.querySelector('.cconsent.minimal .decline');
   const moreInformation = container.querySelector('.cconsent.minimal .more-info');
@@ -216,7 +211,34 @@ function addListenersMinimal(container, consentUpdateCallback, cmpSections) {
   }
 }
 
-function createMinimalBanner(content, buttonString) {
+function getCategoriesInMinimalBanner(minimalSection, categoriesSections) {
+  if (minimalSection.getAttribute('data-required-cookies') || minimalSection.getAttribute('data-optional-cookies')) {
+    const categories = [];
+    if (minimalSection.getAttribute('data-required-cookies')) {
+      minimalSection.getAttribute('data-required-cookies').split(',')
+        .map((c) => c.trim())
+        .forEach((c) => categories.push({ code: c, optional: false }));
+    }
+
+    if (minimalSection.getAttribute('data-optional-cookies')) {
+      minimalSection.getAttribute('data-optional-cookies').split(',')
+        .map((c) => c.trim())
+        .forEach((c) => categories.push({ code: c, optional: true }));
+    }
+    return categories;
+  }
+
+  if (categoriesSections && categoriesSections.length) {
+    return categoriesSections
+      .filter((category) => category.dataset && category.dataset.code && category.dataset.optional)
+      .map((category) => ({ code: category.dataset.code, optional: ['yes', 'true'].includes(category.dataset.optional.toLowerCase().trim()) }));
+  }
+  return [{ code: 'CC_ESSENTIAL', optional: false }];
+}
+
+function createMinimalBanner(section) {
+  const content = section.childNodes;
+  const buttonString = section.getAttribute('data-buttons') || 'accept_all';
   const buttonsArray = buttonString.toLowerCase().split(',').map((s) => s.trim());
   const placeholders = fetchPlaceholders();
   const div = document.createElement('div');
@@ -249,9 +271,10 @@ export async function showConsentBanner(path, consentUpdateCallback) {
   const cmpSections = [...fragment.querySelectorAll('div.section')];
   const firstSection = cmpSections.shift();
   if (firstSection.classList.contains('minimal')) {
-    const minimalDialog = createMinimalBanner(firstSection.childNodes, firstSection.getAttribute('data-buttons'));
+    const minimalDialog = createMinimalBanner(firstSection);
     document.querySelector('main').append(minimalDialog);
-    addListenersMinimal(minimalDialog, consentUpdateCallback, cmpSections);
+    const categoriesMap = getCategoriesInMinimalBanner(firstSection, cmpSections);
+    addListenersMinimal(minimalDialog, consentUpdateCallback, categoriesMap, cmpSections);
   } else {
     buildAndShowDialog(firstSection, cmpSections);
   }
