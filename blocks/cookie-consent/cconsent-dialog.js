@@ -141,17 +141,25 @@ function getStylingOptions(ds) {
     position: ds.position ? ds.position.toLowerCase().trim() : 'center',
     // eslint-disable-next-line max-len
     closeOnClick: ds.closeOnClickOutside && trueStrs.includes(ds.closeOnClickOutside.toLowerCase().trim()),
+    // eslint-disable-next-line max-len
+    displayCategories: ds.displayCategories && trueStrs.includes(ds.displayCategories.toLowerCase().trim()),
   };
 }
 
 function buildAndShowDialog(infoSection, categoriesSections, consentUpdateCallback) {
   // eslint-disable-next-line max-len
   const selectedCategories = (window.hlx && window.hlx.consent) ? window.hlx.consent.categories : [];
-  // eslint-disable-next-line object-curly-newline
-  const { modal, position, showCloseButton, closeOnClick } = getStylingOptions(infoSection.dataset);
+  // eslint-disable-next-line object-curly-newline, max-len
+  const { modal, position, showCloseButton, closeOnClick, displayCategories } = getStylingOptions(infoSection.dataset);
   infoSection.classList = 'consent-info-panel';
   infoSection.append(consentButtonsPanelHTML());
   const ccCategoriesPanel = generateCategoriesPanel(categoriesSections, selectedCategories);
+
+  if (displayCategories) {
+    ccCategoriesPanel.style.display = 'block';
+    infoSection.querySelector('.consent-select-preferences').style.visibility = 'hidden';
+    ccCategoriesPanel.querySelector('.consent-button.decline').style.display = 'none';
+  }
 
   const dialog = document.createElement('dialog');
   const dialogContent = document.createElement('div');
@@ -223,6 +231,7 @@ function createMinimalBanner(content, buttonString) {
   const buttonsHTML = `${buttonsArray.includes('accept_all') ? acceptAllButton : ''}${buttonsArray.includes('deny_all') ? rejectAllButton : ''}`;
   if (buttonsHTML) {
     const buttonsDiv = document.createElement('div');
+    buttonsDiv.classList = 'buttons';
     buttonsDiv.innerHTML = buttonsHTML;
     div.append(buttonsDiv);
   }
