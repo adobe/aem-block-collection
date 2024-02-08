@@ -7,7 +7,6 @@
 }
 
 .consent dialog {
-  --dialog-border-radius: 16px;
   overscroll-behavior: none;
   padding: 30px;
   border: 1px solid #ccc;
@@ -22,12 +21,12 @@
 }
 
 .consent.bottom dialog {
-  bottom: 0px;
-  left: 0px;
+  bottom: 0;
+  left: 0;
   width: 100%;
-  margin: 0px;
+  margin: 0;
   inset-block-start: auto;
-  border-radius: 0px;
+  border-radius: 0;
   position: fixed;
   padding: 30px;
   max-width: calc(100% - 6px - 2em);
@@ -37,7 +36,7 @@
 .consent.nomodal.center dialog {
   inset-block-start: 0;
   inset-block-end: 0;
-  border-radius: 0px;
+  border-radius: 0;
   position: fixed;
   padding: 30px;
 }
@@ -55,7 +54,7 @@
   margin: 0;
   border: none;
   padding-right: 30px;
-  padding-left: 0px;
+  padding-left: 0;
 }
 
 .consent.bottom .close-button {
@@ -101,7 +100,7 @@
 
 .consent .consent-button {
   font-size: var(--body-font-size-s);
-  margin: 0px;
+  margin: 0;
 }
 
 .consent .consent-category-header {
@@ -118,14 +117,13 @@
   bottom: 3px;
   width: 100%;
   text-align: center;
-  background-color: rgba(180, 176, 176, 0.95);
+  background-color: rgb(180 176 176 / 95%);
   z-index: 10;
   padding: 10px 0;
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
 }
 
 .consent.minimal .default-content-wrapper {
@@ -135,7 +133,7 @@
 .consent.minimal .default-content-wrapper p {
   padding: 5px;
   margin: 5px;
-  border: 0px;
+  border: 0;
 }
 
 .consent.minimal .controls {
@@ -208,15 +206,15 @@
   transition: 0.4s;
 }
 
-.consent input:checked+.slider {
+.consent input:checked + .slider {
   background-color: #2196f3;
 }
 
-.consent input:focus+.slider {
+.consent input:focus + .slider {
   box-shadow: 0 0 9px 3px #015396;
 }
 
-.consent input:checked+.slider::before {
+.consent input:checked + .slider::before {
   transform: translateX(26px);
 }
 
@@ -235,7 +233,7 @@
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-.consent .accordion details+details {
+.consent .accordion details + details {
   margin-top: 16px;
 }
 
