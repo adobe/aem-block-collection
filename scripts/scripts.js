@@ -16,6 +16,22 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
+function buildCookieConsent(main) {
+  const ccPath = getMetadata('cookie-consent');
+  if (!ccPath || (window.hlx && window.hlx.consent)) {
+    // consent not configured for page or already initialized
+    return;
+  }
+  window.hlx = window.hlx || [];
+  window.hlx.consent = { status: 'pending' };
+  const blockHTML = `<div>${ccPath}</div>`;
+  const section = document.createElement('div');
+  const ccBlock = document.createElement('div');
+  ccBlock.innerHTML = blockHTML;
+  section.append(buildBlock('cookie-consent', ccBlock));
+  main.append(section);
+}
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -62,6 +78,7 @@ function autolinkModals(element) {
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
+    buildCookieConsent(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
