@@ -9,6 +9,7 @@ function consentUpdated(mode, dialogContainer, consentUpdateCallback, categories
     selectedCategories = categoriesMap.filter((cat) => (mode === 'ALL' || !cat.optional))
       .map((cat) => cat.code);
   } else {
+    // category list is not passed as a parameter, we get it from the checkboxes
     selectedCategories = [...dialogContainer.querySelectorAll('input[type=checkbox][data-cc-code]')]
       .filter((cat) => mode === 'ALL' || (mode === 'NONE' && cat.disabled) || (mode === 'SELECTED' && cat.checked))
       .map((cat) => cat.value);
@@ -276,6 +277,6 @@ export async function showConsentBanner(path, consentUpdateCallback) {
     const categoriesMap = getCategoriesInMinimalBanner(firstSection, cmpSections);
     addListenersMinimal(minimalDialog, consentUpdateCallback, categoriesMap, cmpSections);
   } else {
-    buildAndShowDialog(firstSection, cmpSections);
+    buildAndShowDialog(firstSection, cmpSections, consentUpdateCallback);
   }
 }
