@@ -53,7 +53,7 @@ function categoryHeaderHTML(title, code, optional, selected) {
     <label class="switch">
       <input type="checkbox" data-cc-code="${code}" value="${code}"
               ${!optional || selected ? ' checked ' : ''}
-              ${!optional ? 'disabled' : '' }  tabindex=0 />
+              ${!optional ? 'disabled' : ''}  tabindex=0 />
       <span class="slider round"></span>
     </label>
   </div>`;
