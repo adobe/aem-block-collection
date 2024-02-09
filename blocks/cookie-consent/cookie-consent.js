@@ -51,3 +51,11 @@ export default function decorate(block) {
     import('./consent-dialog.js').then((ccdialog) => ccdialog.showConsentBanner(path, manageConsentUpdate));
   }
 }
+
+/**
+ * shows the consent dialog to update the preferences once they have been selected
+ * @param {String} path to the document with the dialog information
+ */
+export function showUpdateConsentDialog(path) {
+  import('./consent-dialog.js').then((ccdialog) => ccdialog.showConsentBannerForUpdate(path, manageConsentUpdate));
+}

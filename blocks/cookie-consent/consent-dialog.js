@@ -284,3 +284,23 @@ export async function showConsentBanner(path, consentUpdateCallback) {
     buildAndShowDialog(firstSection, cmpSections, consentUpdateCallback);
   }
 }
+
+/**
+ * shows the consent banner to update the preferences
+ * ignoring the minimal setup if present
+ * @param {*} path
+ * @param {*} consentUpdateCallback
+ * @returns
+ */
+export async function showConsentBannerForUpdate(path, consentUpdateCallback) {
+  const fragment = await loadFragment(path);
+  if (!fragment) {
+    return;
+  }
+  const cmpSections = [...fragment.querySelectorAll('div.section')];
+  const firstSection = cmpSections.shift();
+  if (firstSection.classList.contains('minimal') && cmpSections.length) {
+    const infoSection = cmpSections.shift();
+    buildAndShowDialog(infoSection, cmpSections, consentUpdateCallback);
+  }
+}
