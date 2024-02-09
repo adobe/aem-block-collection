@@ -299,8 +299,10 @@ export async function showConsentBannerForUpdate(path, consentUpdateCallback) {
   }
   const cmpSections = [...fragment.querySelectorAll('div.section')];
   const firstSection = cmpSections.shift();
-  if (firstSection.classList.contains('minimal') && cmpSections.length) {
+  if (firstSection.classList.contains('minimal') && cmpSections.length > 0) {
     const infoSection = cmpSections.shift();
     buildAndShowDialog(infoSection, cmpSections, consentUpdateCallback);
+  } else {
+    buildAndShowDialog(firstSection, cmpSections, consentUpdateCallback);
   }
 }

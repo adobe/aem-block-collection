@@ -4,18 +4,17 @@ import {
 
 const LOCAL_STORAGE_AEM_CONSENT = 'aem-consent';
 
-function userCookiePreferences(categories) {
+function getStoredPreference() {
   // eslint-disable-next-line max-len
   const storage = localStorage.getItem(LOCAL_STORAGE_AEM_CONSENT) ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_AEM_CONSENT)) : {};
-  if (!categories) {
-    window.hlx.consent.categories = categories;
-    return storage.categories;
-  }
+  return storage.categories;
+}
+
+function setStoredPreference(categories) {
+  // eslint-disable-next-line max-len
+  const storage = localStorage.getItem(LOCAL_STORAGE_AEM_CONSENT) ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_AEM_CONSENT)) : {};
   storage.categories = categories;
   localStorage.setItem(LOCAL_STORAGE_AEM_CONSENT, JSON.stringify(storage));
-  window.hlx = window.hlx || [];
-  window.hlx.consent.categories = categories;
-  return categories;
 }
 
 /**
@@ -24,15 +23,21 @@ function userCookiePreferences(categories) {
  * tracks the selection in RUM
  * @param {Array} selCategories
  */
-export function manageConsentUpdate(selCategories) {
+function manageConsentUpdate(selCategories) {
   const newCategories = Array.isArray(selCategories) ? selCategories : [selCategories];
-  userCookiePreferences(newCategories);
+  window.hlx = window.hlx || {};
+  window.hlx.consent.status = 'done';
+  window.hlx.consent.categories = newCategories;
+  setStoredPreference(newCategories);
   sampleRUM('consentupdate', newCategories);
   const consentUpdateEvent = new CustomEvent('consent-updated', newCategories);
   dispatchEvent(consentUpdateEvent);
 }
 
 function manageConsentRead(categories) {
+  window.hlx = window.hlx || {};
+  window.hlx.consent.status = 'done';
+  window.hlx.consent.categories = categories;
   sampleRUM('consent', categories);
   const consentReadEvent = new CustomEvent('consent', categories);
   dispatchEvent(consentReadEvent);
@@ -41,10 +46,8 @@ function manageConsentRead(categories) {
 export default function decorate(block) {
   block.closest('.section').remove();
   const path = block.textContent.trim();
-  const selectedCategories = userCookiePreferences();
+  const selectedCategories = getStoredPreference();
   if (selectedCategories && selectedCategories.length > 0) {
-    window.hlx = window.hlx || {};
-    window.hlx.consent.categories = selectedCategories;
     manageConsentRead(selectedCategories);
   } else {
     block.remove();
