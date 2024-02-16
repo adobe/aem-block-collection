@@ -48,17 +48,18 @@ export default function decorate(block) {
   const path = block.textContent.trim();
   const selectedCategories = getStoredPreference();
   if (selectedCategories && selectedCategories.length > 0) {
+    // If user already has the consent stored in the browser don't show any banner
     manageConsentRead(selectedCategories);
   } else {
-    block.remove();
-    import('./consent-dialog.js').then((ccdialog) => ccdialog.showConsentBanner(path, manageConsentUpdate));
+    import('./consent-banner.js').then((ccBanner) => ccBanner.showConsentBanner(path, manageConsentUpdate));
   }
+  block.remove();
 }
 
 /**
  * shows the consent dialog to update the preferences once they have been selected
  * @param {String} path to the document with the dialog information
  */
-export function showUpdateConsentDialog(path) {
-  import('./consent-dialog.js').then((ccdialog) => ccdialog.showConsentBannerForUpdate(path, manageConsentUpdate));
+export function showUpdateConsent(path) {
+  import('./consent-banner.js').then((ccdialog) => ccdialog.showConsentBannerForUpdate(path, manageConsentUpdate));
 }

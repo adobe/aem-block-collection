@@ -1,19 +1,19 @@
-import { loadFragment } from '../fragment/fragment.js';
 import {
   decorateIcons, fetchPlaceholders,
 } from '../../scripts/aem.js';
 
-function consentUpdated(mode, dialogContainer, consentUpdateCallback, categoriesMap) {
-  let selectedCategories;
-  if (categoriesMap) {
-    selectedCategories = categoriesMap.filter((cat) => (mode === 'ALL' || !cat.optional))
-      .map((cat) => cat.code);
-  } else {
-    // category list is not passed as a parameter, we get it from the checkboxes
-    selectedCategories = [...dialogContainer.querySelectorAll('input[type=checkbox][data-cc-code]')]
-      .filter((cat) => mode === 'ALL' || (mode === 'NONE' && cat.disabled) || (mode === 'SELECTED' && cat.checked))
-      .map((cat) => cat.value);
-  }
+/**
+ *
+ * @param {String} mode type of consent selected { ALL | NONE | SELECTED }
+ * @param {Element} dialogContainer
+ * @param {*} consentUpdateCallback
+ * @param {*} categoriesMap
+ */
+function consentUpdated(mode, dialogContainer, consentUpdateCallback) {
+  // category list is not passed as a parameter, we get it from the checkboxes
+  const selectedCategories = [...dialogContainer.querySelectorAll('input[type=checkbox][data-cc-code]')]
+    .filter((cat) => mode === 'ALL' || (mode === 'NONE' && cat.disabled) || (mode === 'SELECTED' && cat.checked))
+    .map((cat) => cat.value);
 
   // invoke the consent update logic
   consentUpdateCallback(selectedCategories);
@@ -25,14 +25,9 @@ function consentUpdated(mode, dialogContainer, consentUpdateCallback, categories
 function consentButtonsPanelHTML() {
   const placeholders = fetchPlaceholders();
   return document.createRange().createContextualFragment(`
-    <div class='consent-controls'>
-      <div class='consent-select-preferences'>
-        <a class="consent-select-preferences-link" href='#'>${placeholders.consentSelectPreferences || 'Select my preferences'}</a>
-      </div>
-      <div class='consent-buttons'>
-        <button class="consent-button decline secondary">${placeholders.consentDeclineAll || 'Decline All'}</button>
-        <button class="consent-button accept primary">${placeholders.consentAcceptAll || 'Accept All'}</button>
-      </div>
+    <div class='consent-buttons'>
+      <button class="consent-button decline secondary">${placeholders.consentDeclineAll || 'Decline All'}</button>
+      <button class="consent-button accept primary">${placeholders.consentAcceptAll || 'Accept All'}</button>
     </div>`);
 }
 
@@ -40,7 +35,6 @@ function consentCategoriesButtonsPanelHTML() {
   const placeholders = fetchPlaceholders();
   return document.createRange().createContextualFragment(`
     <div class='consent-buttons-preferences'>
-      <button class="consent-button decline secondary">${placeholders.consentDeclineAll || 'Decline All'}</button>
       <button class="consent-button only-selected primary">${placeholders.consentSavePrefernces || 'Save my preferences'}</button>
     </div>`);
 }
@@ -69,17 +63,6 @@ function addCloseButton(banner) {
   closeButton.addEventListener('click', () => (banner.close ? banner.close() : banner.remove()));
   banner.append(closeButton);
   decorateIcons(closeButton);
-}
-
-function closeOnClickOutside(dialog) {
-  // close dialog on clicks outside the dialog. https://stackoverflow.com/a/70593278/79461
-  dialog.addEventListener('click', (event) => {
-    const dialogDimensions = dialog.getBoundingClientRect();
-    if (event.clientX < dialogDimensions.left || event.clientX > dialogDimensions.right
-      || event.clientY < dialogDimensions.top || event.clientY > dialogDimensions.bottom) {
-      dialog.close();
-    }
-  });
 }
 
 function generateCategoriesPanel(consentSections, selectedCategories) {
@@ -123,186 +106,45 @@ function generateCategoriesPanel(consentSections, selectedCategories) {
   return ccCategoriesSection;
 }
 
-function toggleCategoriesPanel(dialogContainer) {
-  dialogContainer.querySelector('.consent-info-panel').style.display = 'none';
-  dialogContainer.querySelector('.consent-categories-panel').style.display = 'block';
-}
-
 function addListeners(dialogContainer, consentUpdateCallback) {
-  const preferencesLink = dialogContainer.querySelector('.consent-select-preferences-link');
-  if (preferencesLink) {
-    preferencesLink.addEventListener('click', () => toggleCategoriesPanel(dialogContainer, consentUpdateCallback));
-  }
   dialogContainer.querySelector('.consent-button.accept').addEventListener('click', () => consentUpdated('ALL', dialogContainer, consentUpdateCallback));
-  dialogContainer.querySelectorAll('.consent-button.decline').forEach((b) => b.addEventListener('click', () => consentUpdated('NONE', dialogContainer, consentUpdateCallback)));
+  dialogContainer.querySelector('.consent-button.decline').addEventListener('click', () => consentUpdated('NONE', dialogContainer, consentUpdateCallback));
   dialogContainer.querySelector('.consent-button.only-selected').addEventListener('click', () => consentUpdated('SELECTED', dialogContainer, consentUpdateCallback));
 }
 
-function getStylingOptions(ds) {
-  const trueStrs = ['true', 'yes'];
-  return {
-    modal: ds.modal ? trueStrs.includes(ds.modal.toLowerCase().trim()) : true,
-    showCloseButton: ds.closeButton && trueStrs.includes(ds.closeButton.toLowerCase().trim()),
-    position: ds.position ? ds.position.toLowerCase().trim() : 'center',
-    // eslint-disable-next-line max-len
-    closeOnClick: ds.closeOnClickOutside && trueStrs.includes(ds.closeOnClickOutside.toLowerCase().trim()),
-    // eslint-disable-next-line max-len
-    displayCategories: ds.displayCategories && trueStrs.includes(ds.displayCategories.toLowerCase().trim()),
-  };
-}
-
-function buildAndShowDialog(infoSection, categoriesSections, consentUpdateCallback) {
+/**
+ * Shows a modal dialog with detail information about the different
+ * categories of cookies the website uses, and enables the users
+ * to select individually the different categories they want to
+ * allow or reject
+ * @param {*} categoriesSections array of div sections containing the categories.
+ * The first section is considered the introduction, the rest are considered
+ * a category of cookies each
+ * @param {Function} consentUpdateCallback callback to invoke when consent is updated
+ */
+// eslint-disable-next-line import/prefer-default-export
+export function buildAndShowDialog(categoriesSections, consentUpdateCallback) {
   // eslint-disable-next-line max-len
   const selectedCategories = (window.hlx && window.hlx.consent) ? window.hlx.consent.categories : [];
   // eslint-disable-next-line object-curly-newline, max-len
-  const { modal, position, showCloseButton, closeOnClick, displayCategories } = getStylingOptions(infoSection.dataset);
+  const infoSection = categoriesSections.shift();
   infoSection.classList = 'consent-info-panel';
   infoSection.append(consentButtonsPanelHTML());
   const ccCategoriesPanel = generateCategoriesPanel(categoriesSections, selectedCategories);
-
-  if (displayCategories) {
-    ccCategoriesPanel.style.display = 'block';
-    infoSection.querySelector('.consent-select-preferences').innerHTML = '';
-    ccCategoriesPanel.querySelector('.consent-button.decline').remove();
-  }
-
   const dialog = document.createElement('dialog');
   const dialogContent = document.createElement('div');
   dialogContent.classList.add('dialog-content');
   dialogContent.append(infoSection, ccCategoriesPanel);
   dialog.append(dialogContent);
 
-  if (showCloseButton) {
-    addCloseButton(dialog);
-  }
-  if (closeOnClick) {
-    closeOnClickOutside(dialog);
-  }
+  addCloseButton(dialog);
 
   const dialogContainer = document.createElement('div');
+  dialogContainer.classList = 'consent';
   dialog.addEventListener('close', () => dialogContainer.remove());
-  dialogContainer.classList.add('consent', position);
-  if (!modal) {
-    dialogContainer.classList.add('nomodal');
-  }
   document.querySelector('main').append(dialogContainer);
   dialogContainer.append(dialog);
 
   addListeners(dialogContainer, consentUpdateCallback);
-  if (modal) {
-    dialog.showModal();
-  } else {
-    dialog.show();
-  }
-}
-
-/** MINIMAL BANNER functions */
-function addListenersMinimal(container, consentUpdateCallback, categoriesMap, cmpSections) {
-  const acceptAll = container.querySelector('.consent.minimal .accept');
-  const rejectAll = container.querySelector('.consent.minimal .decline');
-  const moreInformation = container.querySelector('.consent.minimal .more-info');
-
-  if (acceptAll) {
-    acceptAll.addEventListener('click', () => consentUpdated('ALL', container, consentUpdateCallback, categoriesMap));
-  }
-  if (rejectAll) {
-    rejectAll.addEventListener('click', () => consentUpdated('NONE', container, consentUpdateCallback, categoriesMap));
-  }
-  if (moreInformation && cmpSections) {
-    moreInformation.addEventListener('click', () => {
-      buildAndShowDialog(cmpSections.shift(), cmpSections, consentUpdateCallback);
-      container.remove();
-    });
-  }
-}
-
-function getCategoriesInMinimalBanner(minimalSection, categoriesSections) {
-  if (minimalSection.getAttribute('data-required-cookies') || minimalSection.getAttribute('data-optional-cookies')) {
-    const categories = [];
-    if (minimalSection.getAttribute('data-required-cookies')) {
-      minimalSection.getAttribute('data-required-cookies').split(',')
-        .map((c) => c.trim())
-        .forEach((c) => categories.push({ code: c, optional: false }));
-    }
-
-    if (minimalSection.getAttribute('data-optional-cookies')) {
-      minimalSection.getAttribute('data-optional-cookies').split(',')
-        .map((c) => c.trim())
-        .forEach((c) => categories.push({ code: c, optional: true }));
-    }
-    return categories;
-  }
-
-  if (categoriesSections && categoriesSections.length) {
-    return categoriesSections
-      .filter((category) => category.dataset && category.dataset.code && category.dataset.optional)
-      .map((category) => ({ code: category.dataset.code, optional: ['yes', 'true'].includes(category.dataset.optional.toLowerCase().trim()) }));
-  }
-  return [{ code: 'CC_ESSENTIAL', optional: false }];
-}
-
-function createMinimalBanner(section) {
-  const content = section.childNodes;
-  const buttonString = section.getAttribute('data-buttons') || 'accept_all';
-  const buttonsArray = buttonString.toLowerCase().split(',').map((s) => s.trim());
-  const placeholders = fetchPlaceholders();
-  const div = document.createElement('div');
-  div.classList.add('consent', 'minimal');
-  div.append(...content);
-  const acceptAllButton = `<button class="consent-button accept primary">${placeholders.consentAcceptAll || 'Accept All'}</button>`;
-  const rejectAllButton = `<button class="consent-button decline secondary">${placeholders.consentDeclineAll || 'Decline All'}</button>`;
-  const moreInfoLink = `<a class="more-info">${placeholders.moreInformation || 'More Information'}</a>`;
-  if (buttonsArray.includes('more_info')) {
-    div.querySelector('p').append(document.createRange().createContextualFragment(moreInfoLink));
-  }
-  const buttonsHTML = `${buttonsArray.includes('accept_all') ? acceptAllButton : ''}${buttonsArray.includes('deny_all') ? rejectAllButton : ''}`;
-  if (buttonsHTML) {
-    const buttonsDiv = document.createElement('div');
-    buttonsDiv.classList = 'controls';
-    buttonsDiv.innerHTML = buttonsHTML;
-    div.append(buttonsDiv);
-  }
-
-  addCloseButton(div);
-  return div;
-}
-/** END MINIMAL BANNER */
-// eslint-disable-next-line import/prefer-default-export
-export async function showConsentBanner(path, consentUpdateCallback) {
-  const fragment = await loadFragment(path);
-  if (!fragment) {
-    return;
-  }
-  const cmpSections = [...fragment.querySelectorAll('div.section')];
-  const firstSection = cmpSections.shift();
-  if (firstSection.classList.contains('minimal')) {
-    const minimalDialog = createMinimalBanner(firstSection);
-    document.querySelector('main').append(minimalDialog);
-    const categoriesMap = getCategoriesInMinimalBanner(firstSection, cmpSections);
-    addListenersMinimal(minimalDialog, consentUpdateCallback, categoriesMap, cmpSections);
-  } else {
-    buildAndShowDialog(firstSection, cmpSections, consentUpdateCallback);
-  }
-}
-
-/**
- * shows the consent banner to update the preferences
- * ignoring the minimal setup if present
- * @param {*} path
- * @param {*} consentUpdateCallback
- * @returns
- */
-export async function showConsentBannerForUpdate(path, consentUpdateCallback) {
-  const fragment = await loadFragment(path);
-  if (!fragment) {
-    return;
-  }
-  const cmpSections = [...fragment.querySelectorAll('div.section')];
-  const firstSection = cmpSections.shift();
-  if (firstSection.classList.contains('minimal') && cmpSections.length > 0) {
-    const infoSection = cmpSections.shift();
-    buildAndShowDialog(infoSection, cmpSections, consentUpdateCallback);
-  } else {
-    buildAndShowDialog(firstSection, cmpSections, consentUpdateCallback);
-  }
+  dialog.showModal();
 }

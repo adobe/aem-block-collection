@@ -1,6 +1,6 @@
-import { getMetadata } from '../../scripts/aem.js';
+import { getMetadata, fetchPlaceholders } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-
+import { showUpdateConsent } from '../cookie-consent/cookie-consent.js';
 /**
  * loads and decorates the footer
  * @param {Element} block The footer block element
@@ -12,6 +12,13 @@ export default async function decorate(block) {
   // load footer fragment
   const footerPath = footerMeta.footer || '/footer';
   const fragment = await loadFragment(footerPath);
+  if (getMetadata('cookie-consent')) {
+    const consentLinkText = fetchPlaceholders()['cookie-preferences-link'] || 'Cookie preferences';
+    fragment.querySelector(`a[title="${consentLinkText}"]`).addEventListener('click', (e) => {
+      showUpdateConsent(getMetadata('cookie-consent'));
+      e.preventDefault();
+    });
+  }
 
   // decorate footer DOM
   const footer = document.createElement('div');
