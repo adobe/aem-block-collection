@@ -2,9 +2,30 @@
   font-size: var(--body-font-size-s);
 }
 
+.consent .consent-button {
+  font-size: var(--body-font-size-s);
+  margin: 0;
+}
+
+.consent .close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 100%;
+  max-height: 54px;
+  border-radius: 0 var(--dialog-border-radius) 0 0;
+  background-color: unset;
+  text-overflow: clip;
+  margin: 0;
+  border: none;
+  padding-right: 30px;
+  padding-left: 0;
+}
+
 .consent.banner {
   position: fixed;
-  bottom: 3px;
+  bottom: 0;
   width: 100%;
   text-align: center;
   background-color: rgb(180 176 176 / 95%);
@@ -24,11 +45,6 @@
   padding: 5px;
   margin: 5px;
   border: 0;
-}
-
-.consent.banner .controls {
-  padding-left: 20px;
-  padding-right: 20px;
 }
 
 .consent.banner .consent-button {
@@ -51,11 +67,6 @@
   color: var(--link-color);
 }
 
-
-.consent h2 {
-  font-size: var(--heading-font-size-m);
-}
-
 .consent dialog {
   overscroll-behavior: none;
   padding: 30px;
@@ -70,31 +81,19 @@
   background-color: rgb(0 0 0 / 50%);
 }
 
-.consent .close-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 20px;
-  height: 100%;
-  max-height: 54px;
-  border-radius: 0 var(--dialog-border-radius) 0 0;
-  background-color: unset;
-  text-overflow: clip;
-  margin: 0;
-  border: none;
-  padding-right: 30px;
-  padding-left: 0;
+.consent dialog h2 {
+  font-size: var(--heading-font-size-m);
 }
 
 .consent dialog .section {
   padding: 0;
 }
 
-.consent .consent-categories-panel .accordion {
+.consent dialog .consent-categories-panel .accordion {
   margin-top: 40px;
 }
 
-.consent .consent-categories-panel .consent-buttons-preferences {
+.consent dialog .consent-categories-panel .consent-buttons-preferences {
   padding-top: 40px;
   width: 100%;
   display: flex;
@@ -102,27 +101,20 @@
   column-gap: 10px;
 }
 
-.consent .consent-buttons {
+.consent dialog .consent-buttons {
   gap: 10px 10px;
   display: flex;
   justify-content: flex-end;
 }
 
-.consent .consent-button {
-  font-size: var(--body-font-size-s);
-  margin: 0;
-}
-
-.consent .consent-category-header {
+.consent dialog .consent-category-header {
   display: flex;
   justify-content: space-between;
 }
 
-.consent .consent-category {
+.consent dialog .consent-category {
   padding-top: 10px;
 }
-
-
 
 /* TOGGLE SWITCH */
 .consent .consent-category-switch {

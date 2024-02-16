@@ -127,6 +127,7 @@ async function getSectionsFromConsentFragment(consentName) {
   const path = `${BASE_CONSENT_PATH}/${consentName}`;
   const fragment = await loadFragment(path);
   if (!fragment) {
+    // eslint-disable-next-line no-console
     console.debug('could not find consent fragment in path ', path);
     return [];
   }
