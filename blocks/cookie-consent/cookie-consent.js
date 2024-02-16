@@ -45,13 +45,14 @@ function manageConsentRead(categories) {
 
 export default function decorate(block) {
   block.closest('.section').remove();
-  const path = block.textContent.trim();
+  const consentName = block.textContent.trim();
   const selectedCategories = getStoredPreference();
   if (selectedCategories && selectedCategories.length > 0) {
     // If user already has the consent stored in the browser don't show any banner
     manageConsentRead(selectedCategories);
   } else {
-    import('./consent-banner.js').then((ccBanner) => ccBanner.showConsentBanner(path, manageConsentUpdate));
+    sampleRUM('showconsent', consentName);
+    import('./consent-banner.js').then((ccBanner) => ccBanner.showConsentBanner(consentName, manageConsentUpdate));
   }
   block.remove();
 }
