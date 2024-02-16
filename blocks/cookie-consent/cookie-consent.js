@@ -29,7 +29,7 @@ function manageConsentUpdate(selCategories) {
   window.hlx.consent.status = 'done';
   window.hlx.consent.categories = newCategories;
   setStoredPreference(newCategories);
-  sampleRUM('consentupdate', newCategories);
+  sampleRUM('consentupdate', { source: newCategories });
   const consentUpdateEvent = new CustomEvent('consent-updated', newCategories);
   dispatchEvent(consentUpdateEvent);
 }
@@ -38,7 +38,7 @@ function manageConsentRead(categories) {
   window.hlx = window.hlx || {};
   window.hlx.consent.status = 'done';
   window.hlx.consent.categories = categories;
-  sampleRUM('consent', categories);
+  sampleRUM('consent', { source: categories });
   const consentReadEvent = new CustomEvent('consent', categories);
   dispatchEvent(consentReadEvent);
 }
@@ -51,7 +51,7 @@ export default function decorate(block) {
     // If user already has the consent stored in the browser don't show any banner
     manageConsentRead(selectedCategories);
   } else {
-    sampleRUM('showconsent', consentName);
+    sampleRUM('showconsent', { source: consentName });
     import('./consent-banner.js').then((ccBanner) => ccBanner.showConsentBanner(consentName, manageConsentUpdate));
   }
   block.remove();
