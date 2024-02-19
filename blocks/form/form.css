@@ -13,7 +13,7 @@
   padding: 0;
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   .form fieldset {
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
@@ -104,10 +104,7 @@
 .form .toggle-wrapper .slider {
   position: absolute;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background-color: var(--dark-color);
   transition: 0.4s;
   border-radius: 30px;
