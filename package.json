@@ -1,8 +1,8 @@
 {
-  "name": "@adobe/helix-project-boilerplate",
+  "name": "@adobe/aem-block-collection",
   "private": true,
   "version": "1.0.0",
-  "description": "Starter project for Adobe Helix",
+  "description": "Block collection for AEM",
   "scripts": {
     "lint:js": "eslint .",
     "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css'",
@@ -10,27 +10,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adobe/helix-project-boilerplate.git"
+    "url": "git+https://github.com/adobe/aem-block-collection.git"
   },
   "author": "Adobe",
   "license": "Apache License 2.0",
   "bugs": {
-    "url": "https://github.com/adobe/helix-project-boilerplate/issues"
+    "url": "https://github.com/adobe/aem-block-collection/issues"
   },
-  "homepage": "https://github.com/adobe/helix-project-boilerplate#readme",
+  "homepage": "https://github.com/adobe/aem-block-collection#readme",
   "devDependencies": {
-    "@babel/core": "7.18.6",
-    "@babel/eslint-parser": "7.18.2",
-    "chai": "4.3.6",
-    "eslint": "8.19.0",
+    "@babel/core": "7.23.7",
+    "@babel/eslint-parser": "7.23.3",
+    "chai": "5.0.0",
+    "eslint": "8.56.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-import": "2.26.0",
-    "@esm-bundle/chai": "4.3.4-fix.0",
-    "@web/test-runner": "0.13.31",
-    "@web/test-runner-commands": "0.6.3",
-    "sinon": "14.0.0",
-    "stylelint": "14.9.1",
-    "stylelint-config-prettier": "9.0.3",
-    "stylelint-config-standard": "25.0.0"
+    "eslint-plugin-import": "2.29.1",
+    "stylelint": "16.1.0",
+    "stylelint-config-standard": "36.0.0"
   }
 }
