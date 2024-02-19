@@ -329,7 +329,7 @@ header .breadcrumbs ol li:last-of-type {
   opacity: 1;
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (width >= 900px) {
   header .breadcrumbs {
     display: block;
   }
