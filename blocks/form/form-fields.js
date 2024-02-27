@@ -94,7 +94,7 @@ const createSelect = async (fd) => {
     } else {
       options = fd.Options.split(',').map((opt) => ({
         text: opt.trim(),
-        value: opt.trim().toLowerCase(),
+        value: opt.trim(),
       }));
     }
 
