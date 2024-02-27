@@ -72,7 +72,7 @@ body {
   display: none;
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (width >= 900px) {
   body.breadcrumbs-enabled {
     --header-height: calc(var(--nav-height) + var(--breadcrumbs-height));
   }
