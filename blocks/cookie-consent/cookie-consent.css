@@ -1,13 +1,87 @@
-.consent {
-  font-size: var(--body-font-size-s);
+:root {
+  --consent-banner-background-color: #202124;
+  --consent-banner-font-size-s: 12px;
+  --consent-banner-font-size-l: 14px;
+  --consent-banner-text-color: #eee;
+  --consent-banner-link-color: var(--link-color);
 }
 
-.consent .consent-button {
+.consent.banner {
+  font-size: var(--consent-banner-font-size-s);
+  color: var(--consent-banner-text-color);
+  background-color: var(--consent-banner-background-color);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  justify-content: left;
+  flex-flow: row wrap;
+  margin: 16px;
+  border-radius: 4px;
+  box-shadow: 0 3px 5px -1px rgb(0 0 0 / 20%), 0 6px 10px 0 rgb(0 0 0 / 14%), 0 1px 18px 0 rgb(0 0 0 / 12%);
+  flex-wrap: wrap;
+}
+
+@media (width >= 600px) {
+  .consent.banner {
+    font-size: var(--consent-banner-font-size-l);
+    text-align: center;
+  justify-content: center;
+  }
+}
+
+.consent.banner .default-content-wrapper {
+  padding-right: 20px;
+}
+
+.consent.banner .default-content-wrapper p {
+  padding: 5px;
+  margin: 5px;
+  border: 0;
+}
+
+.consent.banner .consent-button {
+  font-size: var(--consent-banner-font-size);
+  padding: 5px;
+  margin: 5px;
+  border: none;
+  background: none;
+  font-weight: normal;
+}
+
+.consent.banner .consent-button.primary {
+  color: var(--consent-banner-link-color);
+}
+
+.consent.banner .consent-button.secondary {
+  color: var(--consent-banner-link-color);
+}
+
+.consent.banner .more-info {
+  color: var(--consent-banner-link-color);
+}
+
+.consent dialog {
+  font-size: var(--body-font-size-s);
+  overscroll-behavior: none;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: var(--dialog-border-radius);
+  left: 20px;
+  right: 20px;
+  width: clamp(300px, 80%, 700px);
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.consent dialog .consent-button {
   font-size: var(--body-font-size-s);
   margin: 0;
 }
 
-.consent .close-button {
+.consent dialog .close-button {
   position: absolute;
   top: 0;
   right: 0;
@@ -23,59 +97,6 @@
   padding-left: 0;
 }
 
-.consent.banner {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  background-color: rgb(180 176 176 / 95%);
-  z-index: 10;
-  padding: 10px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-flow: row wrap;
-}
-
-.consent.banner .default-content-wrapper {
-  padding-right: 20px;
-}
-
-.consent.banner .default-content-wrapper p {
-  padding: 5px;
-  margin: 5px;
-  border: 0;
-}
-
-.consent.banner .consent-button {
-  padding: 5px;
-  margin: 5px;
-  border: none;
-  background: none;
-  font-weight: normal;
-}
-
-.consent.banner .consent-button.primary {
-  color: var(--link-color);
-}
-
-.consent.banner .consent-button.secondary {
-  color: var(--light-color);
-}
-
-.consent.banner .more-info {
-  color: var(--link-color);
-}
-
-.consent dialog {
-  overscroll-behavior: none;
-  padding: 30px;
-  border: 1px solid #ccc;
-  border-radius: var(--dialog-border-radius);
-  left: 20px;
-  right: 20px;
-  width: clamp(300px, 80%, 700px);
-}
 
 .consent dialog::backdrop {
   background-color: rgb(0 0 0 / 50%);

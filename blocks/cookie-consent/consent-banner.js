@@ -1,22 +1,11 @@
 import {
   fetchPlaceholders,
-  decorateIcons,
 } from '../../scripts/aem.js';
 
 import { loadFragment } from '../fragment/fragment.js';
 import { buildAndShowDialog } from './consent-dialog.js';
 
 const BASE_CONSENT_PATH = '/block-collection/cookie-consent';
-function addCloseButton(banner) {
-  const closeButton = document.createElement('button');
-  closeButton.classList.add('close-button');
-  closeButton.setAttribute('aria-label', 'Close');
-  closeButton.type = 'button';
-  closeButton.innerHTML = '<span class="icon icon-close"></span>';
-  closeButton.addEventListener('click', () => (banner.close ? banner.close() : banner.remove()));
-  banner.append(closeButton);
-  decorateIcons(closeButton);
-}
 
 function addListeners(bannerDiv, consentUpdateCallback, arrayCategories, categoriesSections) {
   const acceptAll = bannerDiv.querySelector('.consent.banner .accept');
@@ -94,7 +83,7 @@ function createBanner(bannerSection) {
   div.append(...content);
   const acceptAllButton = `<button class="consent-button accept primary">${placeholders.consentAcceptAll || 'Accept All'}</button>`;
   const rejectAllButton = `<button class="consent-button decline secondary">${placeholders.consentDeclineAll || 'Decline All'}</button>`;
-  const moreInfoLink = `<a class="more-info">${placeholders.moreInformation || 'More Information'}</a>`;
+  const moreInfoLink = `&nbsp;<a class="more-info">${placeholders.moreInformation || 'More Information'}</a>`;
   if (buttonsArray.includes('more_info')) {
     div.querySelector('p').append(document.createRange().createContextualFragment(moreInfoLink));
   }
@@ -106,7 +95,6 @@ function createBanner(bannerSection) {
     div.append(buttonsDiv);
   }
 
-  addCloseButton(div);
   return div;
 }
 
