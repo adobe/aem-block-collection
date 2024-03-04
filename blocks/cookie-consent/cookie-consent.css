@@ -3,7 +3,7 @@
   --consent-banner-font-size-s: 12px;
   --consent-banner-font-size-l: 14px;
   --consent-banner-text-color: #eee;
-  --consent-banner-link-color: var(--link-color);
+  --consent-banner-link-color: var(--background-color);
 }
 
 .consent.banner {
