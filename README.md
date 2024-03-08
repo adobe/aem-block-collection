@@ -1,6 +1,6 @@
 # Block Collection
 
-This project contains code that is featured in the [AEM Block Collection](https://www.aem.live/developer/block-collection#bslock-collection-1) documentation.
+This project contains code that is featured in the [AEM Block Collection](https://www.aem.live/developer/block-collection#block-collection-1) documentation.
 
 ## Environments
 - Preview: https://main--aem-block-collection--adobe.hlx.page/
