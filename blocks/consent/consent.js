@@ -1,5 +1,6 @@
 import {
   sampleRUM,
+  buildBlock,
 } from '../../scripts/aem.js';
 
 const LOCAL_STORAGE_AEM_CONSENT = 'aem-consent';
@@ -25,9 +26,9 @@ function setStoredPreference(categories) {
  */
 function manageConsentUpdate(selCategories) {
   const newCategories = Array.isArray(selCategories) ? selCategories : [selCategories];
-  window.hlx = window.hlx || {};
-  window.hlx.consent.status = 'done';
-  window.hlx.consent.categories = newCategories;
+  window.consent = window.consent || {};
+  window.consent.status = 'done';
+  window.consent.categories = newCategories;
   setStoredPreference(newCategories);
   sampleRUM('consentupdate', { source: newCategories });
   const consentUpdateEvent = new CustomEvent('consent-updated', newCategories);
@@ -35,14 +36,26 @@ function manageConsentUpdate(selCategories) {
 }
 
 function manageConsentRead(categories) {
-  window.hlx = window.hlx || {};
-  window.hlx.consent.status = 'done';
-  window.hlx.consent.categories = categories;
+  window.consent = window.consent || {};
+  window.consent.status = 'done';
+  window.consent.categories = categories;
   sampleRUM('consent', { source: categories });
   const consentReadEvent = new CustomEvent('consent', categories);
   dispatchEvent(consentReadEvent);
 }
 
+export function init(consentName) {
+  const selectedCategories = getStoredPreference();
+  if (selectedCategories && selectedCategories.length > 0) {
+    // If user already has the consent stored in the browser don't show any banner
+    manageConsentRead(selectedCategories);
+  } else {
+    sampleRUM('showconsent', { source: consentName });
+    import('./consent-banner.js').then((ccBanner) => ccBanner.showConsentBanner(consentName, manageConsentUpdate));
+  }
+}
+
+/*
 export default function decorate(block) {
   block.closest('.section').remove();
   const consentName = block.textContent.trim();
@@ -56,7 +69,7 @@ export default function decorate(block) {
   }
   block.remove();
 }
-
+*/
 /**
  * shows the consent dialog to update the preferences once they have been selected
  * @param {String} path to the document with the dialog information

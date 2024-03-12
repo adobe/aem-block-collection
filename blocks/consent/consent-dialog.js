@@ -125,7 +125,7 @@ function addListeners(dialogContainer, consentUpdateCallback) {
 // eslint-disable-next-line import/prefer-default-export
 export function buildAndShowDialog(categoriesSections, consentUpdateCallback) {
   // eslint-disable-next-line max-len
-  const selectedCategories = (window.hlx && window.hlx.consent) ? window.hlx.consent.categories : [];
+  const selectedCategories = window.consent ? window.consent.categories : [];
   // eslint-disable-next-line object-curly-newline, max-len
   const infoSection = categoriesSections.shift();
   infoSection.classList = 'consent-info-panel';

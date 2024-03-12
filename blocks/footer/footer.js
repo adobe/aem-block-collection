@@ -1,6 +1,6 @@
 import { getMetadata, fetchPlaceholders } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { showUpdateConsent } from '../cookie-consent/cookie-consent.js';
+import { showUpdateConsent } from '../consent/consent.js';
 /**
  * loads and decorates the footer
  * @param {Element} block The footer block element
