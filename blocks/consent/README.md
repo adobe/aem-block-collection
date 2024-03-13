@@ -11,8 +11,7 @@ Consent block provides a minimalistic, performant and non-intrusive cookie conse
 * When consent preferences are updated or read from the browser, a custom event is triggered. Martech loaders can listen to this events to decide what to load or not load, based on user preferences.
 
 ## Cookie Consent Flow
-
-![Cookie Consent flow](https://github.com/adobe/aem-block-collection/assets/43381734/4cba7f11-51f5-436f-a02f-f7e372661ee5)
+![Cookie Consent flow (1)](https://github.com/adobe/aem-block-collection/assets/43381734/53583ee0-da46-4f1a-91f4-39411305bf47)
 
 
 ## Content of the banner
@@ -36,6 +35,7 @@ Metadata properties:
 
 * banner displayed:
 
+![Screenshot 2024-03-13 at 09 08 27](https://github.com/adobe/aem-block-collection/assets/43381734/7b70dfe8-1d79-432e-8e74-f09af016bab7)
 
 
 
