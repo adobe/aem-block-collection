@@ -4,6 +4,7 @@
   --consent-banner-font-size-l: 14px;
   --consent-banner-text-color: #eee;
   --consent-banner-link-color: var(--background-color);
+
   font-size: var(--consent-banner-font-size-s);
   color: var(--consent-banner-text-color);
   background-color: var(--consent-banner-background-color);
@@ -26,7 +27,7 @@
   .consent.banner {
     font-size: var(--consent-banner-font-size-l);
     text-align: center;
-  justify-content: center;
+    justify-content: center;
   }
 }
 
@@ -93,7 +94,6 @@
   padding-right: 30px;
   padding-left: 0;
 }
-
 
 .consent dialog::backdrop {
   background-color: rgb(0 0 0 / 50%);
