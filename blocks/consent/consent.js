@@ -1,9 +1,17 @@
 import {
   sampleRUM,
-  buildBlock,
+  loadCSS,
 } from '../../scripts/aem.js';
 
 const LOCAL_STORAGE_AEM_CONSENT = 'aem-consent';
+
+// This is not a traditional block, so there is no decorate function.
+// Instead the init() function is to be invoked.
+// For projects based on the boilerplate, the init() method is invoked
+// directly from scripts.js in the lazy phase, if the page has
+// configured a `cookie-consent` metadata field.
+// The block can be invoked from other blocks to update the consent preferences
+// using the function showContentForUpdate()
 
 function getStoredPreference() {
   // eslint-disable-next-line max-len
@@ -44,6 +52,13 @@ function manageConsentRead(categories) {
   dispatchEvent(consentReadEvent);
 }
 
+/**
+ * Inits the consent for a page.
+ * Checks if the user has selected cookie preferences in the local storage.
+ * If not it displays the consent banner passed as a parameter.
+ * @param {String} consentName name of the consent banner configuration file
+ * which is normally located in /cookie-consent/consentName
+ */
 export function init(consentName) {
   const selectedCategories = getStoredPreference();
   if (selectedCategories && selectedCategories.length > 0) {
@@ -51,29 +66,19 @@ export function init(consentName) {
     manageConsentRead(selectedCategories);
   } else {
     sampleRUM('showconsent', { source: consentName });
+    loadCSS(`${window.hlx.codeBasePath}/blocks/consent/consent.css`);
     import('./consent-banner.js').then((ccBanner) => ccBanner.showConsentBanner(consentName, manageConsentUpdate));
   }
 }
 
-/*
-export default function decorate(block) {
-  block.closest('.section').remove();
-  const consentName = block.textContent.trim();
-  const selectedCategories = getStoredPreference();
-  if (selectedCategories && selectedCategories.length > 0) {
-    // If user already has the consent stored in the browser don't show any banner
-    manageConsentRead(selectedCategories);
-  } else {
-    sampleRUM('showconsent', { source: consentName });
-    import('./consent-banner.js').then((ccBanner) => ccBanner.showConsentBanner(consentName, manageConsentUpdate));
-  }
-  block.remove();
-}
-*/
 /**
- * shows the consent dialog to update the preferences once they have been selected
- * @param {String} path to the document with the dialog information
+ * shows the consent banner to update the preferences.
+ * If config has category details, it will directly show the categoty details dialog.
+ * Otherwise it will show the minimal banner.
+ * @param {String} consentName name of the consent banner configuration file.
+ * which is normally located in /cookie-consent/consentName
  */
-export function showUpdateConsent(path) {
-  import('./consent-banner.js').then((ccdialog) => ccdialog.showConsentBannerForUpdate(path, manageConsentUpdate));
+export function showConsentForUpdate(consentName) {
+  loadCSS(`${window.hlx.codeBasePath}/blocks/consent/consent.css`);
+  import('./consent-banner.js').then((ccdialog) => ccdialog.showConsentBannerForUpdate(consentName, manageConsentUpdate));
 }
