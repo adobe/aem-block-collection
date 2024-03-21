@@ -85,6 +85,12 @@ export function showConsentForUpdate(consentName) {
   import('./consent-banner.js').then((ccdialog) => ccdialog.showConsentBannerForUpdate(consentName, manageConsentUpdate));
 }
 
+/**
+ * Updates the Cookie Preference link inside the provided element:
+ * on click, the link will open the consent dialog
+ * if the 'cookie-consent' metadata is set on the page.
+ * @param {Element} el the DOM element in which the consent preference link is to be set up
+ */
 export function setupConsentPreferenceLink(el = document) {
   if (getMetadata('cookie-consent')) {
     const consentLinkText = fetchPlaceholders()['cookie-preferences-link'] || 'Cookie preferences';

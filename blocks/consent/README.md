@@ -11,7 +11,7 @@ Consent block provides a minimalistic, performant and non-intrusive cookie conse
 * When consent preferences are updated or read from the browser, a custom event is triggered. Martech loaders can listen to this events to decide what to load or not load, based on user preferences.
 
 ## Cookie Consent Flow
-![Cookie Consent flow (1)](https://github.com/adobe/aem-block-collection/assets/43381734/53583ee0-da46-4f1a-91f4-39411305bf47)
+![Cookie Consent flow](https://github.com/adobe/aem-block-collection/assets/43381734/53583ee0-da46-4f1a-91f4-39411305bf47)
 
 
 ## Content of the banner
@@ -31,11 +31,11 @@ Metadata properties:
 *Samples*:
 * configuration:
 
-![Screenshot 2024-02-16 at 16 31 43](https://github.com/adobe/aem-block-collection/assets/43381734/e8e52be7-1cf5-4820-8384-76ff228be061)
+![Consent configuration](https://github.com/adobe/aem-block-collection/assets/43381734/e8e52be7-1cf5-4820-8384-76ff228be061)
 
 * banner displayed:
 
-![Screenshot 2024-03-13 at 09 08 27](https://github.com/adobe/aem-block-collection/assets/43381734/7b70dfe8-1d79-432e-8e74-f09af016bab7)
+![Consent banner preview](https://github.com/adobe/aem-block-collection/assets/43381734/7b70dfe8-1d79-432e-8e74-f09af016bab7)
 
 
 
@@ -57,12 +57,12 @@ The second and subsequent sections are considered to be cookie categories. And e
 *Samples*
 * configuration
 
-![Screenshot 2024-02-16 at 17 00 58](https://github.com/adobe/aem-block-collection/assets/43381734/1fba9fcf-19a8-4f0d-9e3d-741e77befefb)
+![Multiple consent configuration samples](https://github.com/adobe/aem-block-collection/assets/43381734/1fba9fcf-19a8-4f0d-9e3d-741e77befefb)
 
 
 * dialog displayed
 
-![Screenshot 2024-02-16 at 17 02 26](https://github.com/adobe/aem-block-collection/assets/43381734/72929596-0b25-450a-9332-72dea6d94204)
+![Consent dialog preview](https://github.com/adobe/aem-block-collection/assets/43381734/72929596-0b25-450a-9332-72dea6d94204)
 
 ## Update consent
 Sometimes users want to change their cookie preferences. For this purpose there is a function in the block `blocks/consent/consent.js` called `showConsentForUpdate(name)`.
@@ -70,3 +70,10 @@ Where `name` is the name of the consent configuration document. This function is
 
 * In case of *#1. Simple consent banner* this function will show the minimalistic non-intrusive banner
 * In case of *#2. Simple consent banner and categories details* this function would show the consent categories detail dialog.
+
+## Block setup
+
+Block needs to be loaded as quickly as possible and the logic to load the block or not highly depends on project needs. Here are the two elements you may want to patch in your project:
+
+- in [scripts.js](../../scripts.js), you need to load the consent block in the lazy phase to load the consent banner
+- in [header](../header/header.js), you can "patch" the Cookie Preferences link to open the consent dialog using the `setupConsentPreferenceLink` function from the block.
