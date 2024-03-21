@@ -67,6 +67,7 @@
 
 .consent.banner .more-info {
   color: var(--consent-banner-link-color);
+  cursor: pointer;
 }
 
 .consent dialog {
