@@ -1,10 +1,17 @@
-.consent.banner {
+.consent {
   --consent-banner-background-color: #202124;
   --consent-banner-font-size-s: 12px;
   --consent-banner-font-size-l: 14px;
   --consent-banner-text-color: #eee;
   --consent-banner-link-color: var(--background-color);
+  --consent-dialog-background-color: var(--background-color);
+  --consent-dialog-light-color: var(--light-color);
+  --consent-dialog-dark-color: var(--dark-color);
+  --consent-dialog-body-font-size: var(--body-font-size-s);
+  --consent-dialog-heading-font-size: var(--heading-font-size-m);
+}
 
+.consent.banner {
   font-size: var(--consent-banner-font-size-s);
   color: var(--consent-banner-text-color);
   background-color: var(--consent-banner-background-color);
@@ -60,14 +67,15 @@
 
 .consent.banner .more-info {
   color: var(--consent-banner-link-color);
+  cursor: pointer;
 }
 
 .consent dialog {
-  font-size: var(--body-font-size-s);
+  font-size: var(--consent-dialog-body-font-size);
   overscroll-behavior: none;
   padding: 30px;
   border: 1px solid #ccc;
-  border-radius: var(--dialog-border-radius);
+  border-radius: 16px;
   left: 20px;
   right: 20px;
   width: clamp(300px, 80%, 700px);
@@ -75,7 +83,7 @@
 
 /* stylelint-disable-next-line no-descending-specificity */
 .consent dialog .consent-button {
-  font-size: var(--body-font-size-s);
+  font-size: var(--consent-dialog-body-font-size);
   margin: 0;
 }
 
@@ -86,7 +94,7 @@
   width: 20px;
   height: 100%;
   max-height: 54px;
-  border-radius: 0 var(--dialog-border-radius) 0 0;
+  border-radius: 0 16px 0 0;
   background-color: unset;
   text-overflow: clip;
   margin: 0;
@@ -100,7 +108,7 @@
 }
 
 .consent dialog h2 {
-  font-size: var(--heading-font-size-m);
+  font-size: var(--consent-dialog-heading-font-size);
 }
 
 .consent dialog .section {
@@ -199,7 +207,7 @@
 
 /*** COPIED FROM ACCORDION ***/
 .consent .accordion details {
-  border: 1px solid var(--dark-color);
+  border: 1px solid var(--consent-dialog-dark-color);
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
@@ -218,12 +226,12 @@
 }
 
 .consent .accordion details[open] summary {
-  background-color: var(--light-color);
+  background-color: var(--consent-dialog-light-color);
 }
 
 .consent .accordion details summary:focus,
 .consent .accordion details summary:hover {
-  background-color: var(--dark-color);
+  background-color: var(--consent-dialog-dark-color);
 }
 
 .consent .accordion details summary::-webkit-details-marker {
@@ -252,6 +260,6 @@
 }
 
 .consent .accordion details[open] .accordion-item-body {
-  border-top: 1px solid var(--dark-color);
-  background-color: var(--background-color);
+  border-top: 1px solid var(--consent-dialog-dark-color);
+  background-color: var(--consent-dialog-background-color);
 }

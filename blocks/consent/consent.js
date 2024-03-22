@@ -1,6 +1,8 @@
 import {
   sampleRUM,
   loadCSS,
+  getMetadata,
+  fetchPlaceholders,
 } from '../../scripts/aem.js';
 
 const LOCAL_STORAGE_AEM_CONSENT = 'aem-consent';
@@ -72,7 +74,7 @@ export function init(consentName) {
 }
 
 /**
- * shows the consent banner to update the preferences.
+ * Shows the consent banner to update the preferences.
  * If config has category details, it will directly show the categoty details dialog.
  * Otherwise it will show the minimal banner.
  * @param {String} consentName name of the consent banner configuration file.
@@ -81,4 +83,20 @@ export function init(consentName) {
 export function showConsentForUpdate(consentName) {
   loadCSS(`${window.hlx.codeBasePath}/blocks/consent/consent.css`);
   import('./consent-banner.js').then((ccdialog) => ccdialog.showConsentBannerForUpdate(consentName, manageConsentUpdate));
+}
+
+/**
+ * Updates the Cookie Preference link inside the provided element:
+ * on click, the link will open the consent dialog
+ * if the 'cookie-consent' metadata is set on the page.
+ * @param {Element} el the DOM element in which the consent preference link is to be set up
+ */
+export function setupConsentPreferenceLink(el = document) {
+  if (getMetadata('cookie-consent')) {
+    const consentLinkText = fetchPlaceholders()['cookie-preferences-link'] || 'Cookie preferences';
+    el.querySelector(`a[title="${consentLinkText}"]`).addEventListener('click', (e) => {
+      showConsentForUpdate(getMetadata('cookie-consent'));
+      e.preventDefault();
+    });
+  }
 }
