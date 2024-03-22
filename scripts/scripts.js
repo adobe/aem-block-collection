@@ -56,6 +56,18 @@ function autolinkModals(element) {
 }
 
 /**
+ * Checks if consent is configured for this page
+ * and if it is configured, imports the consent block
+ * and inits it.
+ */
+function manageConsent() {
+  const ccPath = getMetadata('cookie-consent');
+  if (ccPath && !window.consent) { // consent configured for page and not yet initialized
+    import(`${window.hlx.codeBasePath}/blocks/consent/consent.js`).then((consent) => consent.init(ccPath));
+  }
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
@@ -116,10 +128,9 @@ async function loadEager(doc) {
  */
 async function loadLazy(doc) {
   autolinkModals(doc);
-
   const main = doc.querySelector('main');
   await loadBlocks(main);
-
+  manageConsent();
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();

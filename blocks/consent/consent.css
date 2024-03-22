@@ -1,0 +1,265 @@
+.consent {
+  --consent-banner-background-color: #202124;
+  --consent-banner-font-size-s: 12px;
+  --consent-banner-font-size-l: 14px;
+  --consent-banner-text-color: #eee;
+  --consent-banner-link-color: var(--background-color);
+  --consent-dialog-background-color: var(--background-color);
+  --consent-dialog-light-color: var(--light-color);
+  --consent-dialog-dark-color: var(--dark-color);
+  --consent-dialog-body-font-size: var(--body-font-size-s);
+  --consent-dialog-heading-font-size: var(--heading-font-size-m);
+}
+
+.consent.banner {
+  font-size: var(--consent-banner-font-size-s);
+  color: var(--consent-banner-text-color);
+  background-color: var(--consent-banner-background-color);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  justify-content: left;
+  flex-flow: row wrap;
+  margin: 16px;
+  border-radius: 4px;
+  box-shadow: 0 3px 5px -1px rgb(0 0 0 / 20%), 0 6px 10px 0 rgb(0 0 0 / 14%), 0 1px 18px 0 rgb(0 0 0 / 12%);
+  flex-wrap: wrap;
+}
+
+@media (width >= 600px) {
+  .consent.banner {
+    font-size: var(--consent-banner-font-size-l);
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+.consent.banner .default-content-wrapper {
+  padding-right: 20px;
+}
+
+.consent.banner .default-content-wrapper p {
+  padding: 5px;
+  margin: 5px;
+  border: 0;
+}
+
+.consent.banner .consent-button {
+  font-size: var(--consent-banner-font-size);
+  padding: 5px;
+  margin: 5px;
+  border: none;
+  background: none;
+  font-weight: normal;
+}
+
+.consent.banner .consent-button.primary {
+  color: var(--consent-banner-link-color);
+}
+
+.consent.banner .consent-button.secondary {
+  color: var(--consent-banner-link-color);
+}
+
+.consent.banner .more-info {
+  color: var(--consent-banner-link-color);
+  cursor: pointer;
+}
+
+.consent dialog {
+  font-size: var(--consent-dialog-body-font-size);
+  overscroll-behavior: none;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  left: 20px;
+  right: 20px;
+  width: clamp(300px, 80%, 700px);
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.consent dialog .consent-button {
+  font-size: var(--consent-dialog-body-font-size);
+  margin: 0;
+}
+
+.consent dialog .close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 100%;
+  max-height: 54px;
+  border-radius: 0 16px 0 0;
+  background-color: unset;
+  text-overflow: clip;
+  margin: 0;
+  border: none;
+  padding-right: 30px;
+  padding-left: 0;
+}
+
+.consent dialog::backdrop {
+  background-color: rgb(0 0 0 / 50%);
+}
+
+.consent dialog h2 {
+  font-size: var(--consent-dialog-heading-font-size);
+}
+
+.consent dialog .section {
+  padding: 0;
+}
+
+.consent dialog .consent-categories-panel .accordion {
+  margin-top: 40px;
+}
+
+.consent dialog .consent-categories-panel .consent-buttons-preferences {
+  padding-top: 40px;
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  column-gap: 10px;
+}
+
+.consent dialog .consent-buttons {
+  gap: 10px 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.consent dialog .consent-category-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.consent dialog .consent-category {
+  padding-top: 10px;
+}
+
+/* TOGGLE SWITCH */
+.consent .consent-category-switch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* The switch - the box around the slider */
+.consent .switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.consent .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.consent .slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+
+.consent .slider::before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+.consent input:checked + .slider {
+  background-color: #2196f3;
+}
+
+.consent input:focus + .slider {
+  box-shadow: 0 0 9px 3px #015396;
+}
+
+.consent input:checked + .slider::before {
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.consent .slider.round {
+  border-radius: 34px;
+}
+
+.consent .slider.round::before {
+  border-radius: 50%;
+}
+
+/*** COPIED FROM ACCORDION ***/
+.consent .accordion details {
+  border: 1px solid var(--consent-dialog-dark-color);
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.consent .accordion details + details {
+  margin-top: 16px;
+}
+
+.consent .accordion details summary {
+  position: relative;
+  padding: 0 16px;
+  padding-right: 48px;
+  cursor: pointer;
+  list-style: none;
+  overflow: auto;
+  transition: background-color 0.2s;
+}
+
+.consent .accordion details[open] summary {
+  background-color: var(--consent-dialog-light-color);
+}
+
+.consent .accordion details summary:focus,
+.consent .accordion details summary:hover {
+  background-color: var(--consent-dialog-dark-color);
+}
+
+.consent .accordion details summary::-webkit-details-marker {
+  display: none;
+}
+
+.consent .accordion details summary::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%) rotate(135deg);
+  width: 9px;
+  height: 9px;
+  border: 2px solid;
+  border-width: 2px 2px 0 0;
+  transition: transform 0.2s;
+}
+
+.consent .accordion details[open] summary::after {
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.consent .accordion details .accordion-item-body {
+  padding: 0 16px;
+}
+
+.consent .accordion details[open] .accordion-item-body {
+  border-top: 1px solid var(--consent-dialog-dark-color);
+  background-color: var(--consent-dialog-background-color);
+}

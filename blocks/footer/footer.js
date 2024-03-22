@@ -1,5 +1,6 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
+import { setupConsentPreferenceLink } from '../consent/consent.js';
 
 /**
  * loads and decorates the footer
@@ -12,6 +13,8 @@ export default async function decorate(block) {
   // load footer fragment
   const footerPath = footerMeta.footer || '/footer';
   const fragment = await loadFragment(footerPath);
+
+  setupConsentPreferenceLink(fragment);
 
   // decorate footer DOM
   const footer = document.createElement('div');
