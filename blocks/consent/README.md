@@ -76,4 +76,4 @@ Where `name` is the name of the consent configuration document. This function is
 Block needs to be loaded as quickly as possible and the logic to load the block or not highly depends on project needs. Here are the two elements you may want to patch in your project:
 
 - in [scripts.js](../../scripts.js), you need to load the consent block in the lazy phase to load the consent banner
-- in [header](../header/header.js), you can "patch" the Cookie Preferences link to open the consent dialog using the `setupConsentPreferenceLink` function from the block.
+- in [footer](../header/footer.js), you can "patch" the Cookie Preferences link to open the consent dialog using the `setupConsentPreferenceLink` function from the block.
