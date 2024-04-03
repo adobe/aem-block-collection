@@ -34,7 +34,10 @@ function getVideoElement(source, autoplay) {
   video.setAttribute('controls', '');
   video.dataset.loading = 'true';
   video.addEventListener('loadedmetadata', () => delete video.dataset.loading);
-  if (autoplay) video.setAttribute('autoplay', '');
+  if (autoplay) {
+    video.muted = true;
+    video.setAttribute('autoplay', '');
+  }
 
   const sourceEl = document.createElement('source');
   sourceEl.setAttribute('src', source);
