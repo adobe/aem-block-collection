@@ -55,8 +55,6 @@ function embedVimeo(url, autoplay, background) {
 function getVideoElement(source, autoplay, background) {
   const video = document.createElement('video');
   video.setAttribute('controls', '');
-  video.dataset.loading = 'true';
-  video.addEventListener('loadedmetadata', () => delete video.dataset.loading);
   if (autoplay) video.setAttribute('autoplay', '');
   if (background) {
     video.setAttribute('loop', '');

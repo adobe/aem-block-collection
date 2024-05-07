@@ -18,21 +18,17 @@
   max-width: 100%;
 }
 
-.video video[data-loading] {
-  /* reserve an approximate space to avoid extensive layout shifts */
-  width: 100%;
-  aspect-ratio: 16 / 9;
-}
-
 .video .video-placeholder {
   width: 100%;
   aspect-ratio: 16 / 9;
   position: relative;
 }
 
-.video[data-embed-is-loaded="true"] .video-placeholder {
+.video[data-embed-is-loaded="true"] .video-placeholder,
+.video[data-embed-is-loaded="false"] .video-placeholder + * {
   visibility: hidden;
   height: 0;
+  width: 0;
 }
 
 .video .video-placeholder > * {
