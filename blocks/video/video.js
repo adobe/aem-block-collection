@@ -59,13 +59,13 @@ function getVideoElement(source, autoplay, background) {
   video.addEventListener('loadedmetadata', () => delete video.dataset.loading);
   if (autoplay) video.setAttribute('autoplay', '');
   if (background) {
-      video.setAttribute('loop', '');
-      video.setAttribute('playsinline', '');
-      video.removeAttribute('controls');
-      video.addEventListener('canplay', () => {
-        video.muted = true;
-        video.play();
-      });
+    video.setAttribute('loop', '');
+    video.setAttribute('playsinline', '');
+    video.removeAttribute('controls');
+    video.addEventListener('canplay', () => {
+      video.muted = true;
+      video.play();
+    });
   }
 
   const sourceEl = document.createElement('source');
@@ -75,7 +75,6 @@ function getVideoElement(source, autoplay, background) {
 
   return video;
 }
-
 
 const loadVideoEmbed = (block, link, autoplay, background) => {
   if (block.dataset.embedIsLoaded === 'true') {
