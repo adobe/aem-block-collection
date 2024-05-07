@@ -24,19 +24,19 @@
   position: relative;
 }
 
-.video[data-embed-is-loaded="true"] .video-placeholder,
-.video[data-embed-is-loaded="false"] .video-placeholder + * {
-  visibility: hidden;
-  height: 0;
-  width: 0;
-}
-
 .video .video-placeholder > * {
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
   inset: 0;
+}
+
+.video[data-embed-is-loaded="true"] .video-placeholder,
+.video[data-embed-is-loaded="false"] .video-placeholder + * {
+  visibility: hidden;
+  height: 0;
+  width: 0;
 }
 
 .video .video-placeholder picture img {

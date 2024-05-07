@@ -105,15 +105,17 @@ export default async function decorate(block) {
   block.dataset.embedIsLoaded = false;
 
   const autoplay = block.classList.contains('autoplay');
-  if (!!placeholder) {
+  if (placeholder) {
     block.classList.add('placeholder');
     const wrapper = document.createElement('div');
     wrapper.className = 'video-placeholder';
     wrapper.append(placeholder);
 
     if (!autoplay) {
-      wrapper.insertAdjacentHTML('beforeend',
-        '<div class="video-placeholder-play"><button type="button" title="Play"></button></div>');
+      wrapper.insertAdjacentHTML(
+        'beforeend',
+        '<div class="video-placeholder-play"><button type="button" title="Play"></button></div>',
+      );
       wrapper.addEventListener('click', () => {
         loadVideoEmbed(block, link, true, false);
       });
