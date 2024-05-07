@@ -4,6 +4,8 @@
  * https://www.hlx.live/developer/block-collection/video
  */
 
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
 function embedYoutube(url, autoplay, background) {
   const usp = new URLSearchParams(url.search);
   let suffix = '';
@@ -62,7 +64,7 @@ function getVideoElement(source, autoplay, background) {
     video.removeAttribute('controls');
     video.addEventListener('canplay', () => {
       video.muted = true;
-      video.play();
+      if (autoplay) video.play();
     });
   }
 
@@ -123,11 +125,12 @@ export default async function decorate(block) {
     block.append(wrapper);
   }
 
-  if (!placeholder || (autoplay)) {
+  if (!placeholder || autoplay) {
     const observer = new IntersectionObserver((entries) => {
       if (entries.some((e) => e.isIntersecting)) {
         observer.disconnect();
-        loadVideoEmbed(block, link, !!placeholder || autoplay, autoplay);
+        const playOnLoad = autoplay && !prefersReducedMotion.matches;
+        loadVideoEmbed(block, link, playOnLoad, autoplay);
       }
     });
     observer.observe(block);
