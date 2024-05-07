@@ -86,11 +86,17 @@ const loadVideoEmbed = (block, link, autoplay, background) => {
   const isVimeo = link.includes('vimeo');
 
   if (isYoutube) {
-    block.append(embedYoutube(url, autoplay, background));
-    block.dataset.embedIsLoaded = true;
+    const embedWrapper = embedYoutube(url, autoplay, background);
+    block.append(embedWrapper);
+    embedWrapper.querySelector('iframe').addEventListener('load', () => {
+      block.dataset.embedIsLoaded = true;
+    });
   } else if (isVimeo) {
-    block.append(embedVimeo(url, autoplay, background));
-    block.dataset.embedIsLoaded = true;
+    const embedWrapper = embedVimeo(url, autoplay, background);
+    block.append(embedWrapper);
+    embedWrapper.querySelector('iframe').addEventListener('load', () => {
+      block.dataset.embedIsLoaded = true;
+    });
   } else {
     const videoEl = getVideoElement(link, autoplay, background);
     block.append(videoEl);
