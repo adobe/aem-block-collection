@@ -1,11 +1,10 @@
 .video {
-  width: unset;
   text-align: center;
   max-width: 800px;
   margin: 32px auto;
 }
 
-.video.lazy-loading {
+.video[data-embed-is-loaded="false"]:not(.placeholder) {
   /* reserve an approximate space to avoid extensive layout shifts */
   aspect-ratio: 16 / 9;
 }
@@ -29,6 +28,11 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   position: relative;
+}
+
+.video[data-embed-is-loaded="true"] .video-placeholder {
+  visibility: hidden;
+  height: 0;
 }
 
 .video .video-placeholder > * {
