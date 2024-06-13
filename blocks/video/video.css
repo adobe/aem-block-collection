@@ -1,11 +1,10 @@
 .video {
-  width: unset;
   text-align: center;
   max-width: 800px;
   margin: 32px auto;
 }
 
-.video.lazy-loading {
+.video[data-embed-is-loaded="false"]:not(.placeholder) {
   /* reserve an approximate space to avoid extensive layout shifts */
   aspect-ratio: 16 / 9;
 }
@@ -17,12 +16,6 @@
 
 .video video {
   max-width: 100%;
-}
-
-.video video[data-loading] {
-  /* reserve an approximate space to avoid extensive layout shifts */
-  width: 100%;
-  aspect-ratio: 16 / 9;
 }
 
 .video .video-placeholder {
@@ -37,6 +30,13 @@
   justify-content: center;
   position: absolute;
   inset: 0;
+}
+
+.video[data-embed-is-loaded="true"] .video-placeholder,
+.video[data-embed-is-loaded="false"] .video-placeholder + * {
+  visibility: hidden;
+  height: 0;
+  width: 0;
 }
 
 .video .video-placeholder picture img {
