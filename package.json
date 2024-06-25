@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Block collection for AEM",
   "scripts": {
-    "lint:js": "eslint .",
+    "lint:js": "eslint . --ext .json,.js",
     "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css'",
     "lint": "npm run lint:js && npm run lint:css"
   },
@@ -20,11 +20,13 @@
   "homepage": "https://github.com/adobe/aem-block-collection#readme",
   "devDependencies": {
     "@babel/core": "7.23.7",
-    "@babel/eslint-parser": "7.23.3",
+    "@babel/eslint-parser": "7.24.1",
     "chai": "5.0.0",
     "eslint": "8.56.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.29.1",
+    "eslint-plugin-json": "^3.1.0",
+    "eslint-plugin-xwalk": "github:adobe-rnd/eslint-plugin-xwalk#v0.1.0",
     "stylelint": "16.1.0",
     "stylelint-config-standard": "36.0.0"
   }

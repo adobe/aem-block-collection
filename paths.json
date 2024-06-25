@@ -1,0 +1,6 @@
+{
+  "mappings": [
+    "/content/aem-block-collection/:/",
+    "/content/aem-block-collection/configuration:/.helix/config.json"
+  ]
+}
