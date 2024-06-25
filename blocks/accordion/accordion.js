@@ -4,7 +4,7 @@
  * https://www.hlx.live/developer/block-collection/accordion
  */
 
-import { moveInstrumentation } from "../../scripts/scripts";
+import { moveInstrumentation } from '../../scripts/scripts.js';
 
 export default function decorate(block) {
   [...block.children].forEach((row) => {
