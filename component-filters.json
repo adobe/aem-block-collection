@@ -35,5 +35,11 @@
     "components": [
       "card"
     ]
+  },
+  {
+    "id": "accordion",
+    "components": [
+      "accordion-item"
+    ]
   }
 ]
