@@ -7,7 +7,6 @@ async function createForm(formHref, submitHref) {
   const json = await resp.json();
 
   const form = document.createElement('form');
-  // eslint-disable-next-line prefer-destructuring
   form.dataset.action = submitHref;
 
   const fields = await Promise.all(json.data.map((fd) => createField(fd, form)));
@@ -105,6 +104,14 @@ export default async function decorate(block) {
         firstInvalidEl.focus();
         firstInvalidEl.scrollIntoView({ behavior: 'smooth' });
       }
+    }
+  });
+
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+      // re-enable form submission when back button is used
+      const submit = form.querySelector('button[type="submit"]');
+      if (submit) submit.disabled = false;
     }
   });
 }
