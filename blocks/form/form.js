@@ -1,5 +1,4 @@
 import createField from './form-fields.js';
-import { sampleRUM } from '../../scripts/aem.js';
 
 async function createForm(formHref, submitHref) {
   const { pathname } = new URL(formHref);
@@ -44,13 +43,6 @@ function generatePayload(form) {
   return payload;
 }
 
-function handleSubmitError(form, error) {
-  // eslint-disable-next-line no-console
-  console.error(error);
-  form.querySelector('button[type="submit"]').disabled = false;
-  sampleRUM('form:error', { source: '.form', target: error.stack || error.message || 'unknown error' });
-}
-
 async function handleSubmit(form) {
   if (form.getAttribute('data-submitting') === 'true') return;
 
@@ -69,7 +61,6 @@ async function handleSubmit(form) {
       },
     });
     if (response.ok) {
-      sampleRUM('form:submit', { source: '.form', target: form.dataset.action });
       if (form.dataset.confirmation) {
         window.location.href = form.dataset.confirmation;
       }
@@ -78,9 +69,11 @@ async function handleSubmit(form) {
       throw new Error(error);
     }
   } catch (e) {
-    handleSubmitError(form, e);
+    // eslint-disable-next-line no-console
+    console.error(e);
   } finally {
     form.setAttribute('data-submitting', 'false');
+    submit.disabled = false;
   }
 }
 
@@ -104,14 +97,6 @@ export default async function decorate(block) {
         firstInvalidEl.focus();
         firstInvalidEl.scrollIntoView({ behavior: 'smooth' });
       }
-    }
-  });
-
-  window.addEventListener('pageshow', (event) => {
-    if (event.persisted) {
-      // re-enable form submission when back button is used
-      const submit = form.querySelector('button[type="submit"]');
-      if (submit) submit.disabled = false;
     }
   });
 }
