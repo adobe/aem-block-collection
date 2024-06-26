@@ -191,6 +191,10 @@ export default async function decorate(block) {
         }
       });
     });
+    navSections.querySelectorAll('.button-container').forEach((buttonContainer) => {
+      buttonContainer.classList.remove('button-container');
+      buttonContainer.querySelector('.button').classList.remove('button');
+    });
   }
 
   // hamburger for mobile
