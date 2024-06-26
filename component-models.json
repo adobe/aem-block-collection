@@ -1,5 +1,15 @@
 [
   {
+    "id": "page-metadata",
+    "fields": [
+      {
+        "component": "boolean",
+        "name": "breadcrumbs",
+        "label": "Show Breadcrumbs"
+      }
+    ]
+  },
+  {
     "id": "title",
     "fields": [
       {

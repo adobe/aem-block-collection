@@ -15,6 +15,7 @@ function getState(block) {
     return [...block.querySelectorAll('details[open]')]
       .map((details) => details.dataset.aueResource);
   }
+  return null;
 }
 
 function setState(block, state) {
@@ -112,7 +113,7 @@ function handleSelection(event) {
   if (resource) {
     const element = document.querySelector(`[data-aue-resource="${resource}"]`);
     const block = element.parentElement?.closest('.block[data-aue-resource]') || element?.closest('.block[data-aue-resource]');
-    
+
     if (block && block.matches('.accordion')) {
       // close all details
       block.querySelectorAll('details').forEach((details) => {

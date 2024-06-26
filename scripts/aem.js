@@ -140,7 +140,7 @@ function setup() {
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
   if (scriptEl) {
     try {
-      const scriptURL = import.meta?.url 
+      const scriptURL = import.meta?.url
         ? new URL(import.meta.url)
         : new URL(scriptEl.src, window.location);
       if (scriptURL.host === window.location.host) {
