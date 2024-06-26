@@ -140,11 +140,13 @@ function setup() {
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
   if (scriptEl) {
     try {
-      const scriptURL = new URL(scriptEl.src, window.location);
+      const scriptURL = import.meta?.url 
+        ? new URL(import.meta.url)
+        : new URL(scriptEl.src, window.location);
       if (scriptURL.host === window.location.host) {
-        [window.hlx.codeBasePath] = scriptURL.pathname.split('/scripts/scripts.js');
+        [window.hlx.codeBasePath] = scriptURL.pathname.split(/\/scripts\/(scripts|aem)\.js/);
       } else {
-        [window.hlx.codeBasePath] = scriptURL.href.split('/scripts/scripts.js');
+        [window.hlx.codeBasePath] = scriptURL.href.split(/\/scripts\/(scripts|aem)\.js/);
       }
     } catch (error) {
       // eslint-disable-next-line no-console

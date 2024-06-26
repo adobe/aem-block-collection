@@ -27,13 +27,20 @@
       "title",
       "hero",
       "cards",
-      "columns"
+      "columns",
+      "accordion"
     ]
   },
   {
     "id": "cards",
     "components": [
       "card"
+    ]
+  },
+  {
+    "id": "accordion",
+    "components": [
+      "accordion-item"
     ]
   }
 ]
