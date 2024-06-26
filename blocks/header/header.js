@@ -87,7 +87,7 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
 }
 
 function getDirectTextContent(menuItem) {
-  const menuLink = menuItem.querySelector(':scope > a');
+  const menuLink = menuItem.querySelector(':scope > :where(a,p)');
   if (menuLink) {
     return menuLink.textContent.trim();
   }
