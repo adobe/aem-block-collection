@@ -46,13 +46,12 @@
 }
 
 .video .video-placeholder-play button {
-  box-sizing: border-box;
   position: relative;
   display: block;
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 2px solid;
+  outline: 2px solid;
   padding: 0;
 }
 
