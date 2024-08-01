@@ -77,7 +77,7 @@ function getVideoElement(source, autoplay, background) {
 }
 
 const loadVideoEmbed = (block, link, autoplay, background) => {
-  if (block.dataset.embedIsLoaded === 'true') {
+  if (block.dataset.embedLoaded === 'true') {
     return;
   }
   const url = new URL(link);
@@ -89,19 +89,19 @@ const loadVideoEmbed = (block, link, autoplay, background) => {
     const embedWrapper = embedYoutube(url, autoplay, background);
     block.append(embedWrapper);
     embedWrapper.querySelector('iframe').addEventListener('load', () => {
-      block.dataset.embedIsLoaded = true;
+      block.dataset.embedLoaded = true;
     });
   } else if (isVimeo) {
     const embedWrapper = embedVimeo(url, autoplay, background);
     block.append(embedWrapper);
     embedWrapper.querySelector('iframe').addEventListener('load', () => {
-      block.dataset.embedIsLoaded = true;
+      block.dataset.embedLoaded = true;
     });
   } else {
     const videoEl = getVideoElement(link, autoplay, background);
     block.append(videoEl);
     videoEl.addEventListener('canplay', () => {
-      block.dataset.embedIsLoaded = true;
+      block.dataset.embedLoaded = true;
     });
   }
 };
@@ -110,7 +110,7 @@ export default async function decorate(block) {
   const placeholder = block.querySelector('picture');
   const link = block.querySelector('a').href;
   block.textContent = '';
-  block.dataset.embedIsLoaded = false;
+  block.dataset.embedLoaded = false;
 
   const autoplay = block.classList.contains('autoplay');
   if (placeholder) {
@@ -125,6 +125,7 @@ export default async function decorate(block) {
         '<div class="video-placeholder-play"><button type="button" title="Play"></button></div>',
       );
       wrapper.addEventListener('click', () => {
+        wrapper.remove();
         loadVideoEmbed(block, link, true, false);
       });
     }
