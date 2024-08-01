@@ -37,8 +37,17 @@
 
 .table table th,
 .table table td {
-  padding: 8px 16px;
+  padding: 0.5em;
   text-align: left;
+}
+
+.table table th p,
+.table table td p {
+  margin: 0;
+}
+
+.table table td p + p {
+  margin-top: 0.25em;
 }
 
 /* no header variant */
@@ -48,7 +57,7 @@
 
 /* striped variant */
 .table.striped tbody tr:nth-child(odd) {
-  background-color: var(--overlay-background-color);
+  background-color: var(--light-color);
 }
 
 /* bordered variant */
