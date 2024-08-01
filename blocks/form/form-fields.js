@@ -24,6 +24,9 @@ function createLabel(fd) {
   label.id = generateFieldId(fd, '-label');
   label.textContent = fd.Label || fd.Name;
   label.setAttribute('for', fd.Id);
+  if (fd.Mandatory.toLowerCase() === 'true' || fd.Mandatory.toLowerCase() === 'x') {
+    label.dataset.required = true;
+  }
   return label;
 }
 
@@ -103,7 +106,7 @@ const createSelect = async (fd) => {
 
   const fieldWrapper = createFieldWrapper(fd);
   fieldWrapper.append(select);
-  fieldWrapper.append(createLabel(fd));
+  fieldWrapper.prepend(createLabel(fd));
 
   return { field: select, fieldWrapper };
 };
@@ -133,7 +136,7 @@ const createTextArea = (fd) => {
   const label = createLabel(fd);
   field.setAttribute('aria-labelledby', label.id);
   fieldWrapper.append(field);
-  fieldWrapper.append(label);
+  fieldWrapper.prepend(label);
 
   return { field, fieldWrapper };
 };
@@ -147,7 +150,11 @@ const createInput = (fd) => {
   const label = createLabel(fd);
   field.setAttribute('aria-labelledby', label.id);
   fieldWrapper.append(field);
-  fieldWrapper.append(label);
+  if (fd.Type === 'radio' || fd.Type === 'checkbox') {
+    fieldWrapper.append(label);
+  } else {
+    fieldWrapper.prepend(label);
+  }
 
   return { field, fieldWrapper };
 };
