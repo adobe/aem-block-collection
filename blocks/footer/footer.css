@@ -13,6 +13,14 @@ footer .footer p {
   margin: 0;
 }
 
+footer .footer a:any-link {
+  color: var(--link-hover-color);
+}
+
+footer .footer a:hover {
+  color: var(--link-color);
+}
+
 @media (width >= 900px) {
   footer .footer > div {
     padding: 40px 32px 24px;
