@@ -1,0 +1,12 @@
+{
+  "project": "DA Block Collection",
+  "plugins": [
+    {
+      "id": "tags",
+      "title": "Tags",
+      "environments": ["edit"],
+      "daLibrary": true,
+      "url": "https://da.live/plugin/adobecom/bacom-sandbox/main/tools/tags"
+    }
+  ]
+}
