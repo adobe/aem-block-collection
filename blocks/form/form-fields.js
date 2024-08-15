@@ -70,7 +70,7 @@ const createSelect = async (fd) => {
     const option = document.createElement('option');
     option.text = text.trim();
     option.value = value.trim();
-    if (option.value === select.value) {
+    if (option.value === fd.Value) {
       option.setAttribute('selected', '');
     }
     select.add(option);
@@ -97,7 +97,7 @@ const createSelect = async (fd) => {
     } else {
       options = fd.Options.split(',').map((opt) => ({
         text: opt.trim(),
-        value: opt.trim().toLowerCase(),
+        value: opt.trim(),
       }));
     }
 
