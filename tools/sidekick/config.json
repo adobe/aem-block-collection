@@ -3,7 +3,7 @@
   "plugins": [
     {
       "id": "tags",
-      "title": "Tags",
+      "title": "Tag Browser",
       "environments": ["edit"],
       "daLibrary": true,
       "url": "https://da.live/plugin/adobecom/bacom-sandbox/main/tools/tags"
