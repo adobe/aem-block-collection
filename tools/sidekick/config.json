@@ -4,7 +4,7 @@
     {
       "id": "tags",
       "title": "Tag Browser",
-      "environments": ["edit"],
+      "environments": ["da-edit"],
       "daLibrary": true,
       "url": "https://main--bacom-sandbox--adobecom.hlx.live/tools/tags.html"
     }
