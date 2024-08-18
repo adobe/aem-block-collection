@@ -2,11 +2,10 @@
   "project": "DA Block Collection",
   "plugins": [
     {
-      "id": "tags",
-      "title": "Tag Browser",
+      "id": "da-plugin-demo",
+      "title": "Plugin demo",
       "environments": ["da-edit"],
-      "daLibrary": true,
-      "url": "https://main--bacom-sandbox--adobecom.hlx.live/tools/tags.html"
+      "url": "https://main--da-block-collection--aemsites.hlx.live/tools/demo/demo.html"
     }
   ]
 }
