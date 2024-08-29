@@ -21,108 +21,83 @@
  * @param {string} data.target subject of the checkpoint event,
  * for instance the href of a link, or a search term
  */
-function sampleRUM(checkpoint, data = {}) {
-  sampleRUM.defer = sampleRUM.defer || [];
-  const defer = (fnname) => {
-    sampleRUM[fnname] = sampleRUM[fnname] || ((...args) => sampleRUM.defer.push({ fnname, args }));
-  };
-  sampleRUM.drain = sampleRUM.drain
-    || ((dfnname, fn) => {
-      sampleRUM[dfnname] = fn;
-      sampleRUM.defer
-        .filter(({ fnname }) => dfnname === fnname)
-        .forEach(({ fnname, args }) => sampleRUM[fnname](...args));
-    });
-  sampleRUM.always = sampleRUM.always || [];
-  sampleRUM.always.on = (chkpnt, fn) => {
-    sampleRUM.always[chkpnt] = fn;
-  };
-  sampleRUM.on = (chkpnt, fn) => {
-    sampleRUM.cases[chkpnt] = fn;
-  };
-  defer('observe');
-  defer('cwv');
+function sampleRUM(checkpoint, data) {
+  // eslint-disable-next-line max-len
+  const timeShift = () => (window.performance ? window.performance.now() : Date.now() - window.hlx.rum.firstReadTime);
   try {
     window.hlx = window.hlx || {};
+    sampleRUM.enhance = () => {};
     if (!window.hlx.rum) {
-      const usp = new URLSearchParams(window.location.search);
-      const weight = usp.get('rum') === 'on' ? 1 : 100; // with parameter, weight is 1. Defaults to 100.
-      const id = Array.from({ length: 75 }, (_, i) => String.fromCharCode(48 + i))
-        .filter((a) => /\d|[A-Z]/i.test(a))
-        .filter(() => Math.random() * 75 > 70)
-        .join('');
-      const random = Math.random();
-      const isSelected = random * weight < 1;
-      const firstReadTime = Date.now();
-      const urlSanitizers = {
-        full: () => window.location.href,
-        origin: () => window.location.origin,
-        path: () => window.location.href.replace(/\?.*$/, ''),
-      };
+      const weight = new URLSearchParams(window.location.search).get('rum') === 'on' ? 1 : 100;
+      const id = Math.random().toString(36).slice(-4);
+      const isSelected = Math.random() * weight < 1;
       // eslint-disable-next-line object-curly-newline, max-len
       window.hlx.rum = {
         weight,
         id,
-        random,
         isSelected,
-        firstReadTime,
+        firstReadTime: window.performance ? window.performance.timeOrigin : Date.now(),
         sampleRUM,
-        sanitizeURL: urlSanitizers[window.hlx.RUM_MASK_URL || 'path'],
+        queue: [],
+        collector: (...args) => window.hlx.rum.queue.push(args),
       };
-    }
-    const { weight, id, firstReadTime } = window.hlx.rum;
-    if (window.hlx && window.hlx.rum && window.hlx.rum.isSelected) {
-      const knownProperties = [
-        'weight',
-        'id',
-        'referer',
-        'checkpoint',
-        't',
-        'source',
-        'target',
-        'cwv',
-        'CLS',
-        'FID',
-        'LCP',
-        'INP',
-      ];
-      const sendPing = (pdata = data) => {
-        // eslint-disable-next-line object-curly-newline, max-len, no-use-before-define
-        const body = JSON.stringify(
-          {
+      if (isSelected) {
+        ['error', 'unhandledrejection'].forEach((event) => {
+          window.addEventListener(event, ({ reason, error }) => {
+            const errData = { source: 'undefined error' };
+            try {
+              errData.target = (reason || error).toString();
+              errData.source = (reason || error).stack
+                .split('\n')
+                .filter((line) => line.match(/https?:\/\//))
+                .shift()
+                .replace(/at ([^ ]+) \((.+)\)/, '$1@$2')
+                .trim();
+            } catch (err) {
+              /* error structure was not as expected */
+            }
+            sampleRUM('error', errData);
+          });
+        });
+        sampleRUM.baseURL = sampleRUM.baseURL || new URL(window.RUM_BASE || '/', new URL('https://rum.hlx.page'));
+        sampleRUM.collectBaseURL = sampleRUM.collectBaseURL || sampleRUM.baseURL;
+        sampleRUM.sendPing = (ck, time, pingData = {}) => {
+          // eslint-disable-next-line max-len, object-curly-newline
+          const rumData = JSON.stringify({
             weight,
             id,
-            referer: window.hlx.rum.sanitizeURL(),
-            checkpoint,
-            t: Date.now() - firstReadTime,
-            ...data,
-          },
-          knownProperties,
-        );
-        const url = `https://rum.hlx.page/.rum/${weight}`;
-        // eslint-disable-next-line no-unused-expressions
-        navigator.sendBeacon(url, body);
-        // eslint-disable-next-line no-console
-        console.debug(`ping:${checkpoint}`, pdata);
-      };
-      sampleRUM.cases = sampleRUM.cases || {
-        cwv: () => sampleRUM.cwv(data) || true,
-        lazy: () => {
-          // use classic script to avoid CORS issues
+            referer: window.location.href,
+            checkpoint: ck,
+            t: time,
+            ...pingData,
+          });
+          const { href: url, origin } = new URL(`.rum/${weight}`, sampleRUM.collectBaseURL);
+          const body = origin === window.location.origin
+            ? new Blob([rumData], { type: 'application/json' })
+            : rumData;
+          navigator.sendBeacon(url, body);
+          // eslint-disable-next-line no-console
+          console.debug(`ping:${ck}`, pingData);
+        };
+        sampleRUM.sendPing('top', timeShift());
+
+        sampleRUM.enhance = () => {
           const script = document.createElement('script');
-          script.src = 'https://rum.hlx.page/.rum/@adobe/helix-rum-enhancer@^1/src/index.js';
+          script.src = new URL(
+            '.rum/@adobe/helix-rum-enhancer@^2/src/index.js',
+            sampleRUM.baseURL,
+          ).href;
           document.head.appendChild(script);
-          return true;
-        },
-      };
-      sendPing(data);
-      if (sampleRUM.cases[checkpoint]) {
-        sampleRUM.cases[checkpoint]();
+        };
+        if (!window.hlx.RUM_MANUAL_ENHANCE) {
+          sampleRUM.enhance();
+        }
       }
     }
-    if (sampleRUM.always[checkpoint]) {
-      sampleRUM.always[checkpoint](data);
+    if (window.hlx.rum && window.hlx.rum.isSelected && checkpoint) {
+      window.hlx.rum.collector(checkpoint, data, timeShift());
     }
+    document.dispatchEvent(new CustomEvent('rum', { detail: { checkpoint, data } }));
   } catch (error) {
     // something went wrong
   }
@@ -387,9 +362,11 @@ function wrapTextNodes(block) {
     [...el.attributes]
       // move the instrumentation from the cell to the new paragraph, also keep the class
       // in case the content is a buttton and the cell the button-container
-      .filter(({ nodeName }) => nodeName === 'class'
-        || nodeName.startsWith('data-aue')
-        || nodeName.startsWith('data-richtext'))
+      .filter(
+        ({ nodeName }) => nodeName === 'class'
+          || nodeName.startsWith('data-aue')
+          || nodeName.startsWith('data-richtext'),
+      )
       .forEach(({ nodeName, nodeValue }) => {
         wrapper.setAttribute(nodeName, nodeValue);
         el.removeAttribute(nodeName);
@@ -736,6 +713,56 @@ async function waitForLCP(lcpBlocks) {
   });
 }
 
+/**
+ * Loads all blocks in a section.
+ * @param {Element} section The section element
+ */
+
+async function loadSection(section, loadCallback) {
+  const status = section.dataset.sectionStatus;
+  if (!status || status === 'initialized') {
+    section.dataset.sectionStatus = 'loading';
+    const blocks = [...section.querySelectorAll('div.block')];
+    for (let i = 0; i < blocks.length; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await loadBlock(blocks[i]);
+    }
+    if (loadCallback) await loadCallback(section);
+    section.dataset.sectionStatus = 'loaded';
+    section.style.display = null;
+  }
+}
+
+/**
+ * Loads all sections.
+ * @param {Element} element The parent element of sections to load
+ */
+
+async function loadSections(element) {
+  const sections = [...element.querySelectorAll('div.section')];
+  for (let i = 0; i < sections.length; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    await loadSection(sections[i]);
+  }
+}
+
+/**
+ * Wait for Image.
+ * @param {Element} section section element
+ */
+async function waitForFirstImage(section) {
+  const lcpCandidate = section.querySelector('img');
+  await new Promise((resolve) => {
+    if (lcpCandidate && !lcpCandidate.complete) {
+      lcpCandidate.setAttribute('loading', 'eager');
+      lcpCandidate.addEventListener('load', resolve);
+      lcpCandidate.addEventListener('error', resolve);
+    } else {
+      resolve();
+    }
+  });
+}
+
 init();
 
 export {
@@ -762,4 +789,8 @@ export {
   toClassName,
   updateSectionsStatus,
   waitForLCP,
+  loadSection,
+  loadSections,
+  waitForFirstImage,
+  wrapTextNodes,
 };
