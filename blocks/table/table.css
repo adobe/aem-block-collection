@@ -23,12 +23,12 @@
 }
 
 .table table thead tr {
-  border-top: 2px solid;
-  border-bottom: 2px solid;
+  border-top: 2px solid #dadada;
+  border-bottom: 2px solid #dadada;
 }
 
 .table table tbody tr {
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #dadada;
 }
 
 .table table th {
@@ -37,22 +37,31 @@
 
 .table table th,
 .table table td {
-  padding: 8px 16px;
+  padding: 0.5em;
   text-align: left;
+}
+
+.table table th p,
+.table table td p {
+  margin: 0;
+}
+
+.table table td p + p {
+  margin-top: 0.25em;
 }
 
 /* no header variant */
 .table.no-header table tbody tr {
-  border-top: 1px solid;
+  border-top: 1px solid #dadada;
 }
 
 /* striped variant */
 .table.striped tbody tr:nth-child(odd) {
-  background-color: var(--overlay-background-color);
+  background-color: var(--light-color);
 }
 
 /* bordered variant */
 .table.bordered table th,
 .table.bordered table td {
-  border: 1px solid;
+  border: 1px solid #dadada;
 }
