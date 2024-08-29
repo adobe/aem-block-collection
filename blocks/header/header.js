@@ -165,6 +165,14 @@ async function buildBreadcrumbs() {
   return breadcrumbs;
 }
 
+
+/**
+ * Click event handler for nav dropdowns
+ * @param {EventListenerObject} e Event object
+ * @param {Element} navSection The containing nav dropdown section
+ * @param {Element} navToggleButton The injected toggle button for the current section
+ * @param {Element} navSections All nav dropdown sections so they don't have to be re-queried
+ */
 function handleNavDropClick(e, navSection, navToggleButton, navSections) {
   if (isDesktop.matches) {
     // prevent double event on child button
@@ -213,7 +221,7 @@ export default async function decorate(block) {
         const navButton = document.createElement('button');
         navButton.classList.add('nav-drop-toggle');
         navButton.setAttribute('aria-label', `Nav section ${index + 1} toggle`);
-        navButton.setAttribute('aria-expanded', 'false');;
+        navButton.setAttribute('aria-expanded', 'false');
         // allow clicking on both nav section and interactive toggle button
         navButton.addEventListener('click', (e) => handleNavDropClick(e, navSection, navButton, navSections));
         navSection.addEventListener('click', (e) => handleNavDropClick(e, navSection, navButton, navSections));
