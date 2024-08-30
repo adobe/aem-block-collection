@@ -2,9 +2,9 @@
 
 This project provides a foundation for starting an AEM Edge Delivery Services project. It includes many common blocks and features a project might need.
 
-## Dark Alley compatible
+## DA compatible
 
-This specific repo has been _slightly_ modified to be compatible with Dark Alley's live preview.
+This specific repo has been _slightly_ modified to be compatible with DA's live preview.
 
 ## Getting started
 
@@ -12,7 +12,7 @@ This specific repo has been _slightly_ modified to be compatible with Dark Alley
 1. Use this template to make a new repo.
 1. Install [AEM Code Sync](https://github.com/apps/aem-code-sync).
 
-### 2. Dark Alley content
+### 2. DA content
 1. Browse to https://da.live/start.
 2. Follow the steps.
 
