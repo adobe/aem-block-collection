@@ -1,7 +1,13 @@
 .quote blockquote {
   margin: 0 auto;
-  padding: 0 32px;
-  max-width: 700px;
+  padding: 0 24px;
+  max-width: 900px;
+}
+
+@media (width >= 900px) {
+  .quote blockquote {
+    padding: 0 32px;
+  }
 }
 
 .quote blockquote .quote-quotation {
@@ -9,7 +15,7 @@
 }
 
 .quote blockquote .quote-quotation > :first-child {
-  text-indent: -0.6ch;
+  text-indent: -0.5ch;
 }
 
 .quote blockquote .quote-quotation > :first-child::before,
@@ -31,4 +37,5 @@
 
 .quote blockquote .quote-attribution > :first-child::before {
   content: "—";
+  padding-right: 0.5ch;
 }

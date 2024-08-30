@@ -15,8 +15,6 @@
 
   <!--  404 Specific Content  -->
   <script type="module">
-    import { sampleRUM } from '/scripts/aem.js';
-
     window.addEventListener('load', () => {
       if (document.referrer) {
         const { origin, pathname } = new URL(document.referrer);
@@ -30,9 +28,13 @@
           btnContainer.append(backBtn);
         }
       }
-      sampleRUM('404', { source: document.referrer, target: window.location.href });
     });
   </script>
+  <script type="module">
+    import { sampleRUM } from '/scripts/aem.js';
+    sampleRUM('404', { source: document.referrer });
+  </script>
+  <link rel="stylesheet" href="/styles/styles.css">
   <style>
     main.error {
       min-height: calc(100vh - var(--header-height));
