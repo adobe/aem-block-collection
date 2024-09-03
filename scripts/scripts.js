@@ -146,15 +146,10 @@ async function loadPage() {
   loadDelayed();
 }
 
-// Side-effects
-(async function daPreview() {
-  const { searchParams } = new URL(window.location.href);
-  const daPreview = searchParams.get('dapreview');
-  if (daPreview) {
-    const origin = daPreview === 'local' ? 'http://localhost:3000' : 'https://da.live';
-    const { default: livePreview } = await import(`${origin}/scripts/dapreview.js`);
-    livePreview(loadPage);
-  }
+// DA Live Preview
+(async function loadDa() {
+  if (!new URL(window.location.href).searchParams.get('dapreview')) return;
+  import('https://da.live/scripts/dapreview.js').then(({ default: daPreview }) => daPreview(loadPage));
 }());
 
 loadPage();
