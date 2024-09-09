@@ -1,8 +1,8 @@
 {
   "project": "DA Block Collection",
-  "source": {
-    "name": "Document Authoring",
-    "format": "https://da.live/edit#/da-sites/da-tutorial{{pathname}}",
+  "editUrlFormat": {
+    "label": "Document Authoring",
+    "pattern": "https://da.live/edit#/{{org}}/{{site}}{{pathname}}"
   },
   "plugins": [
     {
