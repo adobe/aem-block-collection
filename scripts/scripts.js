@@ -59,7 +59,7 @@ function autolinkModals(doc) {
  */
 function buildAutoBlocks(main) {
   try {
-    if (!main.querySelector('.hero)) buildHeroBlock(main);
+    if (!main.querySelector('.hero')) buildHeroBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
