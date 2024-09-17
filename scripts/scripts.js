@@ -151,7 +151,7 @@ async function loadPage() {
   const daPreview = new URL(window.location.href).searchParams.get('dapreview');
   if (!daPreview) return;
   const origin = daPreview === 'local' ? 'http://localhost:3000' : 'https://da.live';
-  import('https://da.live/scripts/dapreview.js').then(({ default: daPreview }) => daPreview(loadPage));
+  import(`${origin}/scripts/dapreview.js`).then(({ default: daPreview }) => daPreview(loadPage));
 }());
 
 loadPage();
