@@ -9,5 +9,14 @@
       "environments": ["da-edit"],
       "url": "https://main--da-block-collection--aemsites.hlx.live/tools/demo/demo.html"
     }
+  ],
+  "apps": [
+    {
+      "id": "da-app-demo",
+      "title": "App demo",
+      "description": "This is a sample app using the DA SDK.",
+      "environments": ["da-edit"],
+      "url": "https://da.live/app/aemsites/da-block-collection/tools/app-demo"
+    }
   ]
 }
