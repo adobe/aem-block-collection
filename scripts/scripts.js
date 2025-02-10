@@ -12,7 +12,6 @@ import {
   loadSection,
   loadSections,
   loadCSS,
-  sampleRUM,
 } from './aem.js';
 
 /**
@@ -97,7 +96,7 @@ async function loadEager(doc) {
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
 
-  sampleRUM.enhance();
+
 
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
