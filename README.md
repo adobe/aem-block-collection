@@ -1,10 +1,18 @@
-# Block Collection
-
-This project contains code that is featured in the [AEM Block Collection](https://www.aem.live/developer/block-collection#block-collection-1) documentation.
+# Your Project's Title...
+Your project's description...
 
 ## Environments
-- Preview: https://main--aem-block-collection--adobe.hlx.page/
-- Live: https://main--aem-block-collection--adobe.hlx.live/
+- Preview: https://main--{repo}--{owner}.aem.page/
+- Live: https://main--{repo}--{owner}.aem.live/
+
+## Documentation
+
+Before using the aem-block-collection, we recommand you to go through the documentation on https://www.aem.live/docs/ and more specifically:
+1. [Developer Tutorial](https://www.aem.live/developer/tutorial)
+2. [The Anatomy of a Project](https://www.aem.live/developer/anatomy-of-a-project)
+3. [Web Performance](https://www.aem.live/developer/keeping-it-100)
+4. [Markup, Sections, Blocks, and Auto Blocking](https://www.aem.live/developer/markup-sections-blocks)
+5. [AEM Block Collection](https://www.aem.live/developer/block-collection#block-collection-1)
 
 ## Installation
 
