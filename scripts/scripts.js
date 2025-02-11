@@ -72,7 +72,6 @@ function a11yLinks(main) {
     if (link.querySelector(':scope > span[class*="icon"]')) {
       const icon = link.querySelector(':scope > span[class*="icon"]');
       label = icon.classList[1].split('-')[1];
-      console.log(label);
     }
     link.setAttribute('aria-label', label);
   });
