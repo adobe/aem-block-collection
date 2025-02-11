@@ -65,6 +65,19 @@ function buildAutoBlocks(main) {
   }
 }
 
+function a11yLinks(main) {
+  const links = main.querySelectorAll('a');
+  links.forEach((link) => {
+    let label = link.textContent;
+    if (link.querySelector(':scope > span[class*="icon"]')) {
+      const icon = link.querySelector(':scope > span[class*="icon"]');
+      label = icon.classList[1].split('-')[1];
+      console.log(label);
+    }
+    link.setAttribute('aria-label', label);
+  });
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -77,6 +90,8 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  //add aria-label to links
+  a11yLinks(main);
 }
 
 /**
