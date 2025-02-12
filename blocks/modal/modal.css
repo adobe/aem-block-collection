@@ -2,50 +2,82 @@ body.modal-open {
   overflow: hidden;
 }
 
-.modal dialog {
-  --dialog-border-radius: 16px;
+.modal dialog::backdrop {
+  background-color: rgb(19 19 19 / 75%);
+}
 
+.modal dialog {
   overscroll-behavior: none;
-  border: 1px solid #ccc;
-  border-radius: var(--dialog-border-radius);
-  width: 100vw;
+  overflow-y: hidden;
+  position: relative;
+  width: calc(100vw - 48px);
+  max-width: 900px;
+  max-height: calc(100dvh - (2 * var(--header-height)));
+  padding: 0;
+  border: 1px solid var(--dark-color);
 }
 
 .modal dialog .modal-content {
+  box-sizing: border-box;
   overflow-y: auto;
   overscroll-behavior: none;
-  max-height: calc(100dvh - 60px);
+  width: 100%;
+  max-height: calc(100dvh - (2 * var(--header-height)) - 48px);
+  padding: 24px;
+  padding-top: 0;
+  margin-top: 44px;
 }
 
-@media (width >= 600px) {
+@media (width >= 900px) {
   .modal dialog {
-    padding: 30px;
-    width: 80vw;
-    max-width: 700px;
+    width: calc(100vw - 64px);
   }
-
+  
   .modal dialog .modal-content {
-    max-height: calc(100vh - 90px);
+    max-height: calc(100dvh - (2 * var(--header-height)) - 64px);
+    padding: 32px;
+    padding-top: 0;
   }
-}
-
-.modal dialog::backdrop {
-  background-color: rgb(0 0 0 / 50%);
 }
 
 .modal .close-button {
   position: absolute;
   top: 0;
   right: 0;
-  width: 20px;
-  height: 100%;
-  max-height: 54px;
-  border-radius: 0 var(--dialog-border-radius) 0 0;
-  background-color: unset;
-  text-overflow: clip;
+  width: 44px;
+  height: 44px;
   margin: 0;
   border: none;
-  padding-right: 30px;
+  border-radius: 0;
+  padding: 0;
+  background-color: transparent;
+  color: var(--text-color);
+  line-height: 0;
+}
+
+.modal .close-button .icon.icon-close {
+  content: '';
+  width: 24px;
+  height: 24px;
+}
+
+.modal .close-button .icon.icon-close::before,
+.modal .close-button .icon.icon-close::after {
+  content: '';
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 24px;
+  height: 2px;
+  border-radius: 2px;
+  background-color: currentcolor;
+}
+
+.modal .close-button .icon.icon-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg)
 }
 
 .modal dialog .section {

@@ -1,14 +1,12 @@
 import createField from './form-fields.js';
-import { sampleRUM } from '../../scripts/aem.js';
 
-async function createForm(formHref) {
+async function createForm(formHref, submitHref) {
   const { pathname } = new URL(formHref);
   const resp = await fetch(pathname);
   const json = await resp.json();
 
   const form = document.createElement('form');
-  // eslint-disable-next-line prefer-destructuring
-  form.dataset.action = pathname.split('.json')[0];
+  form.dataset.action = submitHref;
 
   const fields = await Promise.all(json.data.map((fd) => createField(fd, form)));
   fields.forEach((field) => {
@@ -45,13 +43,6 @@ function generatePayload(form) {
   return payload;
 }
 
-function handleSubmitError(form, error) {
-  // eslint-disable-next-line no-console
-  console.error(error);
-  form.querySelector('button[type="submit"]').disabled = false;
-  sampleRUM('form:error', { source: '.form', target: error.stack || error.message || 'unknown error' });
-}
-
 async function handleSubmit(form) {
   if (form.getAttribute('data-submitting') === 'true') return;
 
@@ -70,7 +61,6 @@ async function handleSubmit(form) {
       },
     });
     if (response.ok) {
-      sampleRUM('form:submit', { source: '.form', target: form.dataset.action });
       if (form.dataset.confirmation) {
         window.location.href = form.dataset.confirmation;
       }
@@ -79,17 +69,21 @@ async function handleSubmit(form) {
       throw new Error(error);
     }
   } catch (e) {
-    handleSubmitError(form, e);
+    // eslint-disable-next-line no-console
+    console.error(e);
   } finally {
     form.setAttribute('data-submitting', 'false');
+    submit.disabled = false;
   }
 }
 
 export default async function decorate(block) {
-  const formLink = block.querySelector('a[href$=".json"]');
-  if (!formLink) return;
+  const links = [...block.querySelectorAll('a')].map((a) => a.href);
+  const formLink = links.find((link) => link.startsWith(window.location.origin) && link.endsWith('.json'));
+  const submitLink = links.find((link) => link !== formLink);
+  if (!formLink || !submitLink) return;
 
-  const form = await createForm(formLink.href);
+  const form = await createForm(formLink, submitLink);
   block.replaceChildren(form);
 
   form.addEventListener('submit', (e) => {
