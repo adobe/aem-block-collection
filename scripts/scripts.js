@@ -89,7 +89,7 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
-  //add aria-label to links
+  // add aria-label to links
   a11yLinks(main);
 }
 
