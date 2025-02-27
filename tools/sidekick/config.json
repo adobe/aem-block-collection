@@ -13,7 +13,7 @@
     {
       "id": "experimentation",
       "titleI18n": { "en": "Experimentation" },
-      "environments": [ "preview" ],
+      "environments": [ "dev", "preview" ],
       "event": "experimentation"
     },
     {
