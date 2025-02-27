@@ -6,7 +6,8 @@
     {
       "id": "da-plugin-demo",
       "title": "Plugin demo",
-      "environments": ["da-edit"],
+      "environments": ["edit"],
+      "daLibrary": true,
       "url": "https://main--da-block-collection--aemsites.hlx.live/tools/demo/demo.html"
     },
     {
@@ -14,6 +15,15 @@
       "titleI18n": { "en": "Experimentation" },
       "environments": [ "preview" ],
       "event": "experimentation"
+    },
+    {
+      "id": "aem-labs",
+      "title": "AEM Labs",
+      "environments": ["edit"],
+      "daLibrary": true,
+      "experience": "window",
+      "url": "https://labs.aem.live",
+      "icon": "https://main--da-block-collection--aemsites.aem.live/media/media_16e7a2074aac8a0f09c8c495ea7acb5fbc0adade4.png"
     }
   ],
   "apps": [
