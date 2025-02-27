@@ -8,6 +8,12 @@
       "title": "Plugin demo",
       "environments": ["da-edit"],
       "url": "https://main--da-block-collection--aemsites.hlx.live/tools/demo/demo.html"
+    },
+    {
+      "id": "experimentation",
+      "titleI18n": { "en": "Experimentation" },
+      "environments": [ "preview" ],
+      "event": "experimentation"
     }
   ],
   "apps": [

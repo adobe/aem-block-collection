@@ -140,10 +140,22 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
+async function loadSidekick() {
+  if (document.querySelector('aem-sidekick')) {
+    import('./sidekick.js');
+    return;
+  }
+
+  document.addEventListener('sidekick-ready', () => {
+    import('./sidekick.js');
+  });
+}
+
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
+  loadSidekick();
 }
 
 // DA Live Preview
@@ -153,5 +165,11 @@ async function loadPage() {
   const origin = daPreview === 'local' ? 'http://localhost:3000' : 'https://da.live';
   import(`${origin}/scripts/dapreview.js`).then(({ default: daPreview }) => daPreview(loadPage));
 }());
+
+// (async function loadEdit() {
+//   const html = document.body.outerHTML;
+//   const init = (await import('./context.js')).default;
+//   init(html);
+// }());
 
 loadPage();

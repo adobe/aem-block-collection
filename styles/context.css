@@ -1,0 +1,13 @@
+[data-edit] {
+    border: 1px solid transparent;
+    box-sizing: border-box;
+}
+
+[data-edit]:hover {
+    border: 1px solid #2680eb;
+    box-sizing: border-box;
+}
+
+[data-edit]:focus-visible {
+    outline: transparent;
+}
