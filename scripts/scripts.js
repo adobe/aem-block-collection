@@ -135,7 +135,6 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
-  // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
 }
@@ -158,17 +157,22 @@ async function loadPage() {
   loadSidekick();
 }
 
-// DA Live Preview
-(async function loadDa() {
-  if (!new URL(window.location.href).searchParams.get('dapreview')) return;
-  // eslint-disable-next-line import/no-unresolved
-  import('https://da.live/scripts/dapreview.js').then(({ default: daPreview }) => daPreview(loadPage));
-}());
+const { origin } = window.location;
+export const NX_ORIGIN = origin.includes('localhost')
+  ? 'http://localhost:6456'
+  : 'https://da.live';
 
-// (async function loadEdit() {
-//   const html = document.body.outerHTML;
-//   const init = (await import('./context.js')).default;
-//   init(html);
-// }());
+(async function loadDa() {
+  const { searchParams } = new URL(window.location.href);
+
+  /* eslint-disable import/no-unresolved */
+  if (searchParams.get('dapreview')) {
+    import('https://da.live/scripts/dapreview.js')
+      .then(({ default: daPreview }) => daPreview(loadPage));
+  }
+  if (searchParams.get('daexperiment')) {
+    import(`${NX_ORIGIN}/nx/public/plugins/exp/exp.js`);
+  }
+}());
 
 loadPage();
