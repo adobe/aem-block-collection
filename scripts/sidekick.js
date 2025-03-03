@@ -2,7 +2,7 @@
 import { NX_ORIGIN } from './scripts.js';
 
 let expMod;
-const DA_EXP = '/nx/public/plugins/exp/exp.js';
+const DA_EXP = '/public/plugins/exp/exp.js';
 
 async function toggleExp() {
   const exists = document.querySelector('#aem-sidekick-exp');
