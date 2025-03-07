@@ -181,6 +181,11 @@ header nav .nav-sections ul > li > ul > li {
   font-weight: 400;
 }
 
+header nav .nav-sections .nav-drop-toggle {
+  display: none;
+  visibility: hidden;
+}
+
 @media (width >= 900px) {
   header nav .nav-sections {
     display: block;
@@ -193,28 +198,45 @@ header nav .nav-sections ul > li > ul > li {
   }
 
   header nav .nav-sections .nav-drop {
+    align-items: center;
+    display: flex;
     position: relative;
-    padding-right: 16px;
     cursor: pointer;
   }
 
-  header nav .nav-sections .nav-drop::after {
+  header nav .nav-sections button.nav-drop-toggle {
+    align-items: center;
+    background-color: transparent;
+    border-radius: 0;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 24px;
+    line-height: inherit;
+    margin: 0 0 0 4px;
+    padding: 0;
+    position: relative;
+    right: 0;
+    top: 0;
+    visibility: visible;
+    width: 24px;
+  }
+
+  header nav .nav-sections  .nav-drop-toggle::after {
     content: '';
-    display: inline-block;
-    position: absolute;
-    top: 0.5em;
-    right: 2px;
+    display: flex;
     transform: rotate(135deg);
     width: 6px;
     height: 6px;
     border: 2px solid currentcolor;
     border-radius: 0 1px 0 0;
     border-width: 2px 2px 0 0;
+    margin-top: auto;
+    margin-bottom: auto;
   }
 
-  header nav .nav-sections .nav-drop[aria-expanded='true']::after {
-    top: unset;
-    bottom: 0.5em;
+  header nav .nav-sections .nav-drop[aria-expanded='true'] .nav-drop-toggle::after {
+    margin-top: 0.5em;
     transform: rotate(315deg);
   }
 
