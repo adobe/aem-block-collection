@@ -1,6 +1,8 @@
 # Your Project's Title...
 Your project's description...
 
+You can see a demo of all the blocks and copy their content structure using [this library](https://main--aem-block-collection--adobe.hlx.live/tools/sidekick/library.html).
+
 ## Environments
 - Preview: https://main--{repo}--{owner}.aem.page/
 - Live: https://main--{repo}--{owner}.aem.live/
