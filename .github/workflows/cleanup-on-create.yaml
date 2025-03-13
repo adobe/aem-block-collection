@@ -6,16 +6,15 @@ on:
   create:
     branches:
       - main
-  workflow_dispatch: null
+  workflow_dispatch:
 jobs:
   cleanup:
     runs-on: ubuntu-latest
     permissions:
       contents: write
       actions: write
-    if: ${{ github.event_name == 'workflow_dispatch' || ( github.ref ==
-      'refs/heads/main' && !(contains(github.event, 'head_commit') ||
-      github.event.head_commit.message == 'Initial commit' )) }}
+    # only run if commit message is "Initial commit" on main branch
+    if: ${{ github.event_name == 'workflow_dispatch' || ( github.ref == 'refs/heads/main' && !(contains(github.event, 'head_commit') || github.event.head_commit.message == 'Initial commit' )) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,20 +23,23 @@ jobs:
         with:
           node-version: 20
       - name: Remove Helper Files
-        run: |
+        run: | 
           rm -rf \
             .github/workflows/cleanup-on-create.yaml \
             CHANGELOG.md
+
       - name: Initialize README
+        # replace {repo} and {owner} with the actual values
         run: |
           sed -i.bak "s/{repo}/$(basename ${{ github.repository }})/g" README.md
           sed -i.bak "s/{owner}/$(dirname ${{ github.repository }})/g" README.md
       - name: Initialize Pull Request Template
-        run: >
-          sed -i.bak "s/{repo}/$(basename ${{ github.repository }})/g"
-          .github/pull_request_template.md
-
+        run: |
+          sed -i.bak "s/{repo}/$(basename ${{ github.repository }})/g" .github/pull_request_template.md
           sed -i.bak "s/{owner}/$(dirname ${{ github.repository }})/g" .github/pull_request_template.md
+
+
+        # commit back to the repository
       - name: Commit changes
         run: |
           git config --local user.email "helix@adobe.com"
