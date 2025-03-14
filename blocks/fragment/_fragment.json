@@ -6,7 +6,6 @@
       "plugins": {
         "xwalk": {
           "da": {
-            "name": "fragment",
             "unsafeHTML": "<div class=\"fragment\"><div><p><a href=\"\"></a></p></div></div>"
           }
         }

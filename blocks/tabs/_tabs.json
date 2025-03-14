@@ -14,7 +14,6 @@
       "id": "tabs-item",
       "plugins": {
         "da": {
-          "name": "tabs-item",
           "unsafeHTML": "<div><p></p></div><div></div>"
         }
       }
