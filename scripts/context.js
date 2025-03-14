@@ -21,6 +21,7 @@ function handleEditable(editable) {
   });
 }
 
+// eslint-disable-next-line no-unused-vars
 export default async function init(html) {
   await loadCSS('/styles/context.css');
   const editables = document.body.querySelectorAll(EDITABLE_SELECTORS);
