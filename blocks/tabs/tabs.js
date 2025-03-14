@@ -1,6 +1,32 @@
 // eslint-disable-next-line import/no-unresolved
 import { toClassName } from '../../scripts/aem.js';
 
+function handleSelection(event) {
+  const { detail } = event;
+  const resource = detail?.resource;
+  if (resource) {
+    const element = document.querySelector(`[data-aue-resource="${resource}"]`);
+    const block = element.parentElement?.closest('.block[data-aue-resource]') || element?.closest('.block[data-aue-resource]');
+    if (element === block) {
+      return;
+    }
+
+    // switch tab panels
+    block.querySelectorAll('[role=tabpanel]').forEach((panel) => {
+      panel.setAttribute('aria-hidden', true);
+    });
+    element.setAttribute('aria-hidden', false);
+
+    // switch tab buttons
+    const tab = element?.id;
+    const tablist = block.querySelector('.tabs-list');
+    tablist.querySelectorAll('button').forEach((btn) => {
+      btn.setAttribute('aria-selected', false);
+    });
+    block.querySelector(`[aria-controls=${tab}]`).setAttribute('aria-selected', true);
+  }
+}
+
 export default async function decorate(block) {
   // build tablist
   const tablist = document.createElement('div');
@@ -44,4 +70,5 @@ export default async function decorate(block) {
   });
 
   block.prepend(tablist);
+  block.addEventListener('aue:ui-select', handleSelection);
 }
