@@ -122,7 +122,6 @@
           "plugins": {
             "xwalk": {
               "da": {
-                "name": "fragment",
                 "unsafeHTML": "<div class=\"fragment\"><div><p><a href=\"\"></a></p></div></div>"
               }
             }
@@ -151,7 +150,6 @@
           "id": "tabs-item",
           "plugins": {
             "da": {
-              "name": "tabs-item",
               "unsafeHTML": "<div><p></p></div><div></div>"
             }
           }
