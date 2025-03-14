@@ -120,10 +120,8 @@
           "title": "Fragment",
           "id": "fragment",
           "plugins": {
-            "xwalk": {
-              "da": {
-                "unsafeHTML": "<div class=\"fragment\"><div><p><a href=\"\"></a></p></div></div>"
-              }
+            "da": {
+              "unsafeHTML": "<div class=\"fragment\"><div><p><a href=\"\"></a></p></div></div>"
             }
           }
         },
