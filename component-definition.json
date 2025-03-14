@@ -121,7 +121,7 @@
           "id": "fragment",
           "plugins": {
             "da": {
-              "unsafeHTML": "<div class=\"fragment\"><div><p><a href=\"\"></a></p></div></div>"
+              "unsafeHTML": "<div class=\"fragment\"><div><div><p><a href=\"\"></a></p></div></div></div>"
             }
           }
         },
