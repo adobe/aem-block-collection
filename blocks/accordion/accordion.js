@@ -11,9 +11,10 @@ function handleSelection(event) {
   if (resource) {
     const element = document.querySelector(`[data-aue-resource="${resource}"]`);
     const block = element.parentElement?.closest('.block[data-aue-resource]') || element?.closest('.block[data-aue-resource]');
-    // block.querySelectorAll('details').forEach((details) => {
-    //   details.open = state.includes(details.dataset.aueResource);
-    // });
+    block.querySelectorAll('details').forEach((details) => {
+      details.open = false;
+    });
+    element.open = true;
   }
 }
 
