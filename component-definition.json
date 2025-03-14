@@ -52,7 +52,7 @@
           "id": "accordion",
           "plugins": {
             "da": {
-              "name": "cards",
+              "name": "accordion",
               "rows": 1,
               "columns": 2
             }
@@ -63,7 +63,7 @@
           "id": "accordion-item",
           "plugins": {
             "da": {
-              "name": "card",
+              "name": "accordion-item",
               "rows": 2,
               "columns": 0
             }

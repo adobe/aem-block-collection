@@ -5,7 +5,7 @@
       "id": "accordion",
       "plugins": {
         "da": {
-          "name": "cards",
+          "name": "accordion",
           "rows": 1,
           "columns": 2
         }
@@ -16,7 +16,7 @@
       "id": "accordion-item",
       "plugins": {
         "da": {
-          "name": "card",
+          "name": "accordion-item",
           "rows": 2,
           "columns": 0
         }
@@ -28,7 +28,7 @@
       "id": "accordion-item",
       "fields": [
         {
-          "component": "text",
+          "component": "richtext",
           "valueType": "string",
           "name": "div:nth-child(1)",
           "value": "",
