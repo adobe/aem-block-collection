@@ -37,13 +37,13 @@
       {
         "component": "text",
         "valueType": "string",
-        "name": "summary",
+        "name": "div:nth-child(1)",
         "value": "",
         "label": "Summary"
       },
       {
         "component": "richtext",
-        "name": "text",
+        "name": "div:nth-child(2)",
         "value": "",
         "label": "Text",
         "valueType": "string"
