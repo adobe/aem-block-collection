@@ -142,7 +142,7 @@
           "id": "tabs",
           "plugins": {
             "da": {
-              "unsafeHTML": "<div class=\"tabs\"><div><div><p></p></div><div></div></div>"
+              "unsafeHTML": "<div class=\"tabs\"><div><div><p></p></div><div></div></div></div>"
             }
           }
         },
@@ -152,7 +152,7 @@
           "plugins": {
             "da": {
               "name": "tabs-item",
-              "unsafeHTML": "<div><div><p></p></div><div></div></div>"
+              "unsafeHTML": "<div><p></p></div><div></div>"
             }
           }
         }

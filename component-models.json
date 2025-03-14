@@ -141,13 +141,13 @@
     "fields": [
       {
         "component": "text",
-        "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)",
+        "name": "div:nth-child(1)>p:nth-child(1)",
         "valueType": "string",
         "label": "Name"
       },
       {
         "component": "richtext",
-        "name": "div:nth-child(1)>div:nth-child(2)",
+        "name": "div:nth-child(2)",
         "label": "Content",
         "valueType": "string"
       }
