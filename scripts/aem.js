@@ -443,7 +443,7 @@ function decorateSections(main) {
         wrappers[wrappers.length - 1].append(e);
       }
     });
-    
+
     wrappers.forEach((wrapper) => section.append(wrapper));
     section.classList.add('section');
     section.dataset.sectionStatus = 'initialized';
