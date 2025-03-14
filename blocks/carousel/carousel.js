@@ -1,4 +1,5 @@
 import { fetchPlaceholders } from '../../scripts/aem.js';
+import { moveInstrumentation } from '../../scripts/scripts.js';
 
 function updateActiveSlide(slide) {
   const block = slide.closest('.carousel');
@@ -142,6 +143,7 @@ export default async function decorate(block) {
 
   rows.forEach((row, idx) => {
     const slide = createSlide(row, idx, carouselId);
+    moveInstrumentation(row, slide);
     slidesWrapper.append(slide);
 
     if (slideIndicators) {
