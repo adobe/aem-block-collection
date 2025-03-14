@@ -93,6 +93,28 @@
             }
           },
           "model": "card"
+        },
+        {
+          "title": "Carousel",
+          "id": "carousel",
+          "plugins": {
+            "da": {
+              "name": "carousel",
+              "rows": 1,
+              "columns": 2
+            }
+          }
+        },
+        {
+          "title": "Carousel Slide",
+          "id": "carousel-item",
+          "plugins": {
+            "da": {
+              "name": "carousel-item",
+              "rows": 2,
+              "columns": 0
+            }
+          }
         }
       ]
     }

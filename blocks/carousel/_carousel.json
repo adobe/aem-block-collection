@@ -1,0 +1,58 @@
+{
+  "definitions": [
+    {
+      "title": "Carousel",
+      "id": "carousel",
+      "plugins": {
+        "da": {
+          "name": "carousel",
+          "rows": 1,
+          "columns": 2
+        }
+      }
+    },
+    {
+      "title": "Carousel Slide",
+      "id": "carousel-item",
+      "plugins": {
+        "da": {
+          "name": "carousel-item",
+          "rows": 2,
+          "columns": 0
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "carousel-item",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+          "label": "Background Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+          "label": "Bacgkround Alt"
+        },
+        {
+          "component": "richtext",
+          "name": "div:nth-child(2)",
+          "label": "Text",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "carousel",
+      "components": ["carousel-item"]
+    }
+  ]
+}
