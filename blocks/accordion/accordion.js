@@ -5,6 +5,18 @@
  */
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
+function handleSelection(event) {
+  const { detail } = event;
+  const resource = detail?.resource;
+  if (resource) {
+    const element = document.querySelector(`[data-aue-resource="${resource}"]`);
+    const block = element.parentElement?.closest('.block[data-aue-resource]') || element?.closest('.block[data-aue-resource]');
+    // block.querySelectorAll('details').forEach((details) => {
+    //   details.open = state.includes(details.dataset.aueResource);
+    // });
+  }
+}
+
 export default function decorate(block) {
   [...block.children].forEach((row) => {
     // decorate accordion item label
@@ -22,4 +34,6 @@ export default function decorate(block) {
     details.append(summary, body);
     row.replaceWith(details);
   });
+
+  block.addEventListener('aue:ui-select', handleSelection);
 }

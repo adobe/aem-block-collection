@@ -89,6 +89,19 @@ function createSlide(row, slideIndex, carouselId) {
   return slide;
 }
 
+function handleSelection(event) {
+  const { detail } = event;
+  const resource = detail?.resource;
+  if (resource) {
+    const element = document.querySelector(`[data-aue-resource="${resource}"]`);
+    const block = element.parentElement?.closest('.block[data-aue-resource]') || element?.closest('.block[data-aue-resource]');
+    const index = element.getAttribute('data-slide-index');
+    if (index) {
+      showSlide(block, index);
+    }
+  }
+}
+
 let carouselId = 0;
 export default async function decorate(block) {
   carouselId += 1;
@@ -147,4 +160,6 @@ export default async function decorate(block) {
   if (!isSingleSlide) {
     bindEvents(block);
   }
+
+  block.addEventListener('aue:ui-select', handleSelection);
 }
