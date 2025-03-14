@@ -1,0 +1,29 @@
+{
+  "definitions": [
+    {
+      "title": "Fragment",
+      "id": "fragment",
+      "plugins": {
+        "xwalk": {
+          "da": {
+            "name": "fragment",
+            "unsafeHTML": "<div class=\"fragment\"><div><p><a href=\"\"></a></p></div></div>"
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "fragment",
+      "fields": [
+        {
+          "component": "text",
+          "name": "div:nth-child(1)>div:nth-child(1)",
+          "label": "Fragment URL"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

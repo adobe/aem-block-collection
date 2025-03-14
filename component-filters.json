@@ -44,5 +44,11 @@
     "components": [
       "carousel-item"
     ]
+  },
+  {
+    "id": "tabs",
+    "components": [
+      "tabs-item"
+    ]
   }
 ]
