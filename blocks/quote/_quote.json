@@ -19,7 +19,8 @@
           "component": "richtext",
           "valueType": "string",
           "name": "div:nth-child(1)>div:nth-child(1)",
-          "label": "Quote"
+          "label": "Quote",
+          "required": true
         },
         {
           "component": "text",

@@ -32,14 +32,16 @@
           "valueType": "string",
           "name": "div:nth-child(1)",
           "value": "",
-          "label": "Summary"
+          "label": "Summary",
+          "required": true
         },
         {
           "component": "richtext",
           "name": "div:nth-child(2)",
           "value": "",
           "label": "Text",
-          "valueType": "string"
+          "valueType": "string",
+          "required": true
         }
       ]
     }
