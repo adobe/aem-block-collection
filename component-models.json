@@ -193,8 +193,7 @@
         "component": "text",
         "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)",
         "label": "Video URL Text",
-        "valueType": "string",
-        "required": true
+        "valueType": "string"
       },
       {
         "component": "reference",
