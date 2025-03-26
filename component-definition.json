@@ -145,6 +145,16 @@
           }
         },
         {
+          "title": "Search",
+          "id": "search",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 1
+            }
+          }
+        },
+        {
           "title": "Tabs",
           "id": "tabs",
           "plugins": {
