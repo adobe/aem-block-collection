@@ -161,6 +161,16 @@
               "unsafeHTML": "<div><div><p></p></div><div></div></div>"
             }
           }
+        },
+        {
+          "title": "Video",
+          "id": "video",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 1
+            }
+          }
         }
       ]
     }
