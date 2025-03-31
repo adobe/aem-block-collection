@@ -1,29 +1,38 @@
 {
   "definitions": [
     {
-      "title": "Fragment",
-      "id": "fragment",
+      "title": "Video",
+      "id": "video",
       "plugins": {
         "da": {
-          "unsafeHTML": "<div class=\"fragment\"><div><div><p><a href=\"\">Fragment URL</a></p></div></div></div>"
+          "rows": 1,
+          "columns": 1
         }
       }
     }
   ],
   "models": [
     {
-      "id": "fragment",
+      "id": "video",
       "fields": [
         {
           "component": "text",
           "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]",
-          "label": "Fragment URL",
+          "label": "Video URL",
+          "valueType": "string",
           "required": true
         },
         {
           "component": "text",
           "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)",
-          "label": "Fragment URL Text"
+          "label": "Video URL Text",
+          "valueType": "string"
+        },
+        {
+          "component": "reference",
+          "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(2)>img:nth-child(3)[src]",
+          "label": "Poster Image",
+          "valueType": "string"
         }
       ]
     }

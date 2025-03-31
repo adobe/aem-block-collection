@@ -1,29 +1,32 @@
 {
   "definitions": [
     {
-      "title": "Fragment",
-      "id": "fragment",
+      "title": "Search",
+      "id": "search",
       "plugins": {
         "da": {
-          "unsafeHTML": "<div class=\"fragment\"><div><div><p><a href=\"\">Fragment URL</a></p></div></div></div>"
+          "rows": 1,
+          "columns": 1
         }
       }
     }
   ],
   "models": [
     {
-      "id": "fragment",
+      "id": "search",
       "fields": [
         {
           "component": "text",
+          "valueType": "string",
           "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]",
-          "label": "Fragment URL",
+          "label": "Search URL",
           "required": true
         },
         {
           "component": "text",
           "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)",
-          "label": "Fragment URL Text"
+          "label": "Search URL Text",
+          "valueType": "string"
         }
       ]
     }

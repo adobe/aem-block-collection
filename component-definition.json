@@ -135,6 +135,26 @@
           }
         },
         {
+          "title": "Quote",
+          "id": "quote",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 1
+            }
+          }
+        },
+        {
+          "title": "Search",
+          "id": "search",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 1
+            }
+          }
+        },
+        {
           "title": "Tabs",
           "id": "tabs",
           "plugins": {
@@ -149,6 +169,16 @@
           "plugins": {
             "da": {
               "unsafeHTML": "<div><div><p></p></div><div></div></div>"
+            }
+          }
+        },
+        {
+          "title": "Video",
+          "id": "video",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 1
             }
           }
         }

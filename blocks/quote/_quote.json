@@ -1,0 +1,35 @@
+{
+  "definitions": [
+    {
+      "title": "Quote",
+      "id": "quote",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 1
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "quote",
+      "fields": [
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "div:nth-child(1)>div:nth-child(1)",
+          "label": "Quote",
+          "required": true
+        },
+        {
+          "component": "text",
+          "name": "div:nth-child(2)>div:nth-child(1)>p:nth-child(1)",
+          "label": "Author",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
