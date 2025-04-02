@@ -429,21 +429,15 @@ function decorateSections(main) {
   main.querySelectorAll(':scope > div').forEach((section) => {
     const wrappers = [];
     let defaultContent = false;
-
     [...section.children].forEach((e) => {
-      if (e.classList.contains('default-content-wrapper')) {
-        wrappers.push(e);
-      } else if (e.tagName === 'DIV' || !defaultContent) {
+      if (e.tagName === 'DIV' || !defaultContent) {
         const wrapper = document.createElement('div');
         wrappers.push(wrapper);
         defaultContent = e.tagName !== 'DIV';
         if (defaultContent) wrapper.classList.add('default-content-wrapper');
-        wrapper.append(e);
-      } else {
-        wrappers[wrappers.length - 1].append(e);
       }
+      wrappers[wrappers.length - 1].append(e);
     });
-
     wrappers.forEach((wrapper) => section.append(wrapper));
     section.classList.add('section');
     section.dataset.sectionStatus = 'initialized';
