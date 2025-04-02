@@ -81,7 +81,7 @@ function decorateSections(main) {
         e.removeAttribute('class');
         if (!defaultContent) {
           const wrapper = document.createElement('div');
-          wrapper.classList.add('default-content-wrapper')
+          wrapper.classList.add('default-content-wrapper');
           wrappers.push(wrapper);
           defaultContent = true;
         }
