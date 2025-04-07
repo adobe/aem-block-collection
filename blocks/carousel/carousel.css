@@ -56,7 +56,7 @@
   margin: 68px;
   padding: 16px;
   color: white;
-  background-color: rgba(19 19 19 / 75%);
+  background-color: rgb(19 19 19 / 75%);
   position: relative;
   width: var(--slide-content-width, auto);
 }
@@ -107,13 +107,13 @@
   margin: 0;
   border-radius: 50%;
   padding: 0;
-  background-color: rgba(19 19 19 / 25%);
+  background-color: rgb(19 19 19 / 25%);
   transition: background-color 0.2s;
 }
 
 .carousel .carousel-navigation-buttons button:hover,
 .carousel .carousel-navigation-buttons button:focus-visible {
-  background-color: rgba(19 19 19 / 75%);
+  background-color: rgb(19 19 19 / 75%);
 }
 
 .carousel .carousel-navigation-buttons button::after {
