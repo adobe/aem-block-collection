@@ -245,10 +245,10 @@ async function loadPage() {
   loadSidekick();
 }
 
-// UE Editor support
+// UE Editor support before page load
 if (window.location.hostname.includes('ue.da.live')) {
   // eslint-disable-next-line import/no-unresolved
-  import(`${window.hlx.codeBasePath}/ue/scripts/ue.js`).then(({ default: ue }) => ue());
+  await import(`${window.hlx.codeBasePath}/ue/scripts/ue.js`).then(({ default: ue }) => ue());
 }
 
 loadPage();

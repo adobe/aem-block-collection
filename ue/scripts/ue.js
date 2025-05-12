@@ -39,16 +39,22 @@ const setupCardsObserver = () => {
 };
 
 const setupAccordionObserver = () => {
-  const accordionBlocks = document.querySelectorAll('div.accordion.block');
+  const accordionBlocks = document.querySelectorAll('div.accordion');
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
-      const addedUlElements = mutation.addedNodes;
-      console.log(mutation);
+      if (mutation.type === 'childList' && mutation.target.tagName === 'DIV' && mutation.target.attributes['data-aue-model']?.value === 'accordion') {
+        const addedElements = mutation.addedNodes;
+        const removedElements = mutation.removedNodes;
+        if (addedElements.length === 1 && addedElements[0].tagName === 'details') {
+          moveInstrumentation(removedElements[0], addedElements[0]);
+          moveInstrumentation(removedElements[0].querySelector('div'), addedElements[0].querySelector('summary'));
+        }
+      }
     });
   });
 
   accordionBlocks.forEach((accordionBlock) => {
-    observer.observe(accordionBlock, { childList: true, subtree: true });
+    observer.observe(accordionBlock, { childList: true, subtree: true, attributes: true });
   });
 };
 
