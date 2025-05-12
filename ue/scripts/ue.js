@@ -1,7 +1,7 @@
 import { moveInstrumentation } from './ue-utils.js';
 
 const setupCardsObserver = () => {
-  const cardsBlocks = document.querySelectorAll('div.cards.block');
+  const cardsBlocks = document.querySelectorAll('div.cards');
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       const addedUlElements = mutation.addedNodes;
@@ -18,7 +18,7 @@ const setupCardsObserver = () => {
         }
 
         // handle card-image picture replacements
-        if (mutation.target.classList.contains('card-image')) {
+        if (mutation.target.classList.contains('cards-card-image')) {
           const addedPictureEl = [...mutation.addedNodes].filter((node) => node.tagName === 'PICTURE');
           const removedPictureEl = [...mutation.removedNodes].filter((node) => node.tagName === 'PICTURE');
           if (addedPictureEl.length === 1 && removedPictureEl.length === 1) {
