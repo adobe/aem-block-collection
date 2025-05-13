@@ -1,3 +1,4 @@
+import { showSlide } from '../../blocks/carousel/carousel.js';
 import { moveInstrumentation } from './ue-utils.js';
 
 const setupObservers = () => {
@@ -72,6 +73,50 @@ const setupObservers = () => {
   });
 };
 
+const setupUEEventHandlers = () => {
+  document.addEventListener('aue:ui-select', (event) => {
+    const { detail } = event;
+    const resource = detail?.resource;
+
+    if (resource) {
+      const element = document.querySelector(`[data-aue-resource="${resource}"]`);
+      const blockEl = element.parentElement?.closest('.block[data-aue-resource]') || element?.closest('.block[data-aue-resource]');
+      const block = blockEl.getAttribute('data-aue-model');
+      const index = element.getAttribute('data-slide-index');
+
+      switch (block) {
+        case 'accordion':
+          blockEl.querySelectorAll('details').forEach((details) => {
+            details.open = false;
+          });
+          element.open = true;
+          break;
+        case 'carousel':
+          if (index) {
+            showSlide(blockEl, index);
+          }
+          break;
+        case 'tabs':
+          if (element === block) {
+            return;
+          }
+          block.querySelectorAll('[role=tabpanel]').forEach((panel) => {
+            panel.setAttribute('aria-hidden', true);
+          });
+          element.setAttribute('aria-hidden', false);
+          block.querySelector('.tabs-list').querySelectorAll('button').forEach((btn) => {
+            btn.setAttribute('aria-selected', false);
+          });
+          block.querySelector(`[aria-controls=${element?.id}]`).setAttribute('aria-selected', true);
+          break;
+        default:
+          break;
+      }
+    }
+  });
+};
+
 export default () => {
   setupObservers();
+  setupUEEventHandlers();
 };
