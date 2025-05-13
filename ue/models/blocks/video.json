@@ -16,6 +16,12 @@
       "id": "video",
       "fields": [
         {
+          "component": "checkbox",
+          "name": "classes_autoplay",
+          "label": "Autoplay Video",
+          "valueType": "boolean"
+        },
+        {
           "component": "text",
           "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]",
           "label": "Video URL",
