@@ -92,7 +92,7 @@
         "component": "text",
         "valueType": "string",
         "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
-        "label": "Bacgkround Alt"
+        "label": "Background Image Alt"
       },
       {
         "component": "richtext",

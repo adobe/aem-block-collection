@@ -45,7 +45,7 @@ const setupAccordionObserver = () => {
       if (mutation.type === 'childList' && mutation.target.tagName === 'DIV' && mutation.target.attributes['data-aue-model']?.value === 'accordion') {
         const addedElements = mutation.addedNodes;
         const removedElements = mutation.removedNodes;
-        if (addedElements.length === 1 && addedElements[0].tagName === 'details') {
+        if (addedElements.length === 1 && addedElements[0].tagName === 'DETAILS') {
           moveInstrumentation(removedElements[0], addedElements[0]);
           moveInstrumentation(removedElements[0].querySelector('div'), addedElements[0].querySelector('summary'));
         }
@@ -58,7 +58,37 @@ const setupAccordionObserver = () => {
   });
 };
 
+const setupCarouselObserver = () => {
+  const carouselBlocks = document.querySelectorAll('div.carousel');
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList' && mutation.target.tagName === 'DIV' && mutation.target.attributes['data-aue-model']?.value === 'carousel') {
+        const removedElements = mutation.removedNodes;
+        if (removedElements.length === 1 && removedElements[0].attributes['data-aue-model']?.value === 'carousel-item') {
+          const resourceAttr = removedElements[0].getAttribute('data-aue-resource');
+          if (resourceAttr) {
+            const itemMatch = resourceAttr.match(/item-(\d+)/);
+            if (itemMatch && itemMatch[1]) {
+              const slideIndex = parseInt(itemMatch[1], 10);
+              const slides = mutation.target.querySelectorAll('li.carousel-slide');
+              const targetSlide = Array.from(slides).find((slide) => parseInt(slide.getAttribute('data-slide-index'), 10) === slideIndex);
+              if (targetSlide) {
+                moveInstrumentation(removedElements[0], targetSlide);
+              }
+            }
+          }
+        }
+      }
+    });
+  });
+
+  carouselBlocks.forEach((carouselBlock) => {
+    observer.observe(carouselBlock, { childList: true, subtree: true, attributes: true });
+  });
+};
+
 export default () => {
   setupCardsObserver();
   setupAccordionObserver();
+  setupCarouselObserver();
 };

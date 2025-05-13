@@ -100,8 +100,7 @@
           "plugins": {
             "da": {
               "name": "carousel",
-              "rows": 1,
-              "columns": 2
+              "unsafeHTML": "<fiv><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
             }
           }
         },
@@ -111,8 +110,7 @@
           "plugins": {
             "da": {
               "name": "carousel-item",
-              "rows": 2,
-              "columns": 0
+              "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
             }
           }
         },
