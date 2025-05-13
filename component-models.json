@@ -201,7 +201,7 @@
     "id": "video",
     "fields": [
       {
-        "component": "checkbox",
+        "component": "boolean",
         "name": "classes_autoplay",
         "label": "Autoplay Video",
         "valueType": "boolean"
