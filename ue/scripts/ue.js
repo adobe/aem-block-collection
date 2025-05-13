@@ -100,14 +100,14 @@ const setupUEEventHandlers = () => {
           if (element === block) {
             return;
           }
-          block.querySelectorAll('[role=tabpanel]').forEach((panel) => {
+          blockEl.querySelectorAll('[role=tabpanel]').forEach((panel) => {
             panel.setAttribute('aria-hidden', true);
           });
           element.setAttribute('aria-hidden', false);
-          block.querySelector('.tabs-list').querySelectorAll('button').forEach((btn) => {
+          blockEl.querySelector('.tabs-list').querySelectorAll('button').forEach((btn) => {
             btn.setAttribute('aria-selected', false);
           });
-          block.querySelector(`[aria-controls=${element?.id}]`).setAttribute('aria-selected', true);
+          blockEl.querySelector(`[aria-controls=${element?.id}]`).setAttribute('aria-selected', true);
           break;
         default:
           break;
