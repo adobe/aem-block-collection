@@ -6,8 +6,7 @@
       "plugins": {
         "da": {
           "name": "carousel",
-          "rows": 1,
-          "columns": 2
+          "unsafeHTML": "<div><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
         }
       }
     },
@@ -17,8 +16,7 @@
       "plugins": {
         "da": {
           "name": "carousel-item",
-          "rows": 2,
-          "columns": 0
+          "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
         }
       }
     }
@@ -38,7 +36,7 @@
           "component": "text",
           "valueType": "string",
           "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
-          "label": "Bacgkround Alt"
+          "label": "Background Image Alt"
         },
         {
           "component": "richtext",

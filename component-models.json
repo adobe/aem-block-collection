@@ -92,7 +92,7 @@
         "component": "text",
         "valueType": "string",
         "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
-        "label": "Bacgkround Alt"
+        "label": "Background Image Alt"
       },
       {
         "component": "richtext",
@@ -200,6 +200,12 @@
   {
     "id": "video",
     "fields": [
+      {
+        "component": "boolean",
+        "name": "classes_autoplay",
+        "label": "Autoplay Video",
+        "valueType": "boolean"
+      },
       {
         "component": "text",
         "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]",
