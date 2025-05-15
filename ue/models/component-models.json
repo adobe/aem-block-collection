@@ -1,5 +1,8 @@
 [
   {
+    "...": "./page.json#/models"
+  },
+  {
     "...": "./text.json#/models"
   },
   {

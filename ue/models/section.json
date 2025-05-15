@@ -35,7 +35,6 @@
       "id": "section",
       "components": [
         "accordion",
-        "button",
         "cards",
         "carousel",
         "columns",
@@ -49,7 +48,6 @@
         "tabs",
         "table",
         "text",
-        "title",
         "video"
       ]
     }
