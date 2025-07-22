@@ -5,8 +5,7 @@
       "id": "carousel",
       "plugins": {
         "da": {
-          "name": "carousel",
-          "unsafeHTML": "<div><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
+          "unsafeHTML": "<div class=\"carousel\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
         }
       }
     },
@@ -15,7 +14,6 @@
       "id": "carousel-item",
       "plugins": {
         "da": {
-          "name": "carousel-item",
           "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
         }
       }
