@@ -44,12 +44,6 @@
     ]
   },
   {
-    "id": "tabs",
-    "components": [
-      "tabs-item"
-    ]
-  },
-  {
     "id": "columns",
     "components": [
       "columns-row"
@@ -64,6 +58,12 @@
     "components": [
       "text",
       "image"
+    ]
+  },
+  {
+    "id": "tabs",
+    "components": [
+      "tabs-item"
     ]
   }
 ]

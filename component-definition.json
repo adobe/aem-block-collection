@@ -109,6 +109,38 @@
           }
         },
         {
+          "title": "Columns",
+          "id": "columns",
+          "plugins": {
+            "da": {
+              "name": "columns",
+              "rows": 1,
+              "columns": 2,
+              "behaviour": "columns"
+            }
+          }
+        },
+        {
+          "title": "Columns Row",
+          "id": "columns-row",
+          "plugins": {
+            "da": {
+              "name": "columns-row",
+              "behaviour": "columns-row"
+            }
+          }
+        },
+        {
+          "title": "Columns Cell",
+          "id": "columns-cell",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div></div>",
+              "behaviour": "columns-cell"
+            }
+          }
+        },
+        {
           "title": "Fragment",
           "id": "fragment",
           "plugins": {
@@ -171,38 +203,6 @@
             "da": {
               "rows": 1,
               "columns": 1
-            }
-          }
-        },
-        {
-          "title": "Columns",
-          "id": "columns",
-          "plugins": {
-            "da": {
-              "name": "columns",
-              "rows": 1,
-              "columns": 2,
-              "behaviour": "columns"
-            }
-          }
-        },
-        {
-          "title": "Columns Row",
-          "id": "columns-row",
-          "plugins": {
-            "da": {
-              "name": "columns-row",
-              "behaviour": "columns-row"
-            }
-          }
-        },
-        {
-          "title": "Columns Cell",
-          "id": "columns-cell",
-          "plugins": {
-            "da": {
-              "unsafeHTML": "<div></div>",
-              "behaviour": "columns-cell"
             }
           }
         }
