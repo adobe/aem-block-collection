@@ -5,6 +5,7 @@
       "id": "quote",
       "plugins": {
         "da": {
+          "name": "quote",
           "rows": 1,
           "columns": 1
         }

@@ -5,6 +5,7 @@
       "id": "video",
       "plugins": {
         "da": {
+          "name": "video",
           "rows": 1,
           "columns": 1
         }

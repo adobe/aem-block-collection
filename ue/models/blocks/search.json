@@ -5,6 +5,7 @@
       "id": "search",
       "plugins": {
         "da": {
+          "name": "search",
           "rows": 1,
           "columns": 1
         }

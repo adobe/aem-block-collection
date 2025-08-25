@@ -163,6 +163,7 @@
           "id": "quote",
           "plugins": {
             "da": {
+              "name": "quote",
               "rows": 1,
               "columns": 1
             }
@@ -173,6 +174,7 @@
           "id": "search",
           "plugins": {
             "da": {
+              "name": "search",
               "rows": 1,
               "columns": 1
             }
@@ -201,6 +203,7 @@
           "id": "video",
           "plugins": {
             "da": {
+              "name": "video",
               "rows": 1,
               "columns": 1
             }
