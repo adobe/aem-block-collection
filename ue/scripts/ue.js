@@ -86,6 +86,20 @@ const setupObservers = () => {
 };
 
 const setupUEEventHandlers = () => {
+  // For each img source change, update the srcsets of the parent picture sources
+  document.addEventListener('aue:content-patch', (event) => {
+    if (event.detail.patch.name.match(/img.*\[src\]/)) {
+      const newImgSrc = event.detail.patch.value;
+      const picture = event.srcElement.querySelector('picture');
+
+      if (picture) {
+        picture.querySelectorAll('source').forEach((source) => {
+          source.setAttribute('srcset', newImgSrc);
+        });
+      }
+    }
+  });
+
   document.addEventListener('aue:ui-select', (event) => {
     const { detail } = event;
     const resource = detail?.resource;
