@@ -30,6 +30,12 @@
     "fields": [
       {
         "component": "reference",
+        "name": "image",
+        "hidden": true,
+        "multi": false
+      },
+      {
+        "component": "reference",
         "name": "img:nth-child(3)[src]",
         "label": "Image",
         "multi": false
