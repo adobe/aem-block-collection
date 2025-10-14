@@ -73,22 +73,19 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   const expanded = forceExpanded !== null ? !forceExpanded : nav.getAttribute('aria-expanded') === 'true';
   const button = nav.querySelector('.nav-hamburger button');
   document.body.style.overflowY = (expanded || isDesktop.matches) ? '' : 'hidden';
-  nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+  if (!isDesktop.matches) nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
   toggleAllNavSections(navSections, expanded || isDesktop.matches ? 'false' : 'true');
   button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
   // enable nav dropdown keyboard accessibility
   const navDrops = navSections.querySelectorAll('.nav-drop');
+  console.log(navDrops);
   if (isDesktop.matches) {
     navDrops.forEach((drop) => {
-      if (!drop.hasAttribute('tabindex')) {
-        drop.setAttribute('tabindex', 0);
-        drop.addEventListener('focus', focusNavSection);
-      }
+      drop.addEventListener('focusin', focusNavSection);
     });
   } else {
     navDrops.forEach((drop) => {
-      drop.removeAttribute('tabindex');
-      drop.removeEventListener('focus', focusNavSection);
+      drop.removeEventListener('focusin', focusNavSection);
     });
   }
 
@@ -169,6 +166,25 @@ async function buildBreadcrumbs() {
   return breadcrumbs;
 }
 
+
+/**
+ * Click event handler for nav dropdowns
+ * @param {EventListenerObject} e Event object
+ * @param {Element} navSection The containing nav dropdown section
+ * @param {Element} navToggleButton The injected toggle button for the current section
+ * @param {Element} navSections All nav dropdown sections so they don't have to be re-queried
+ */
+function handleNavDropClick(e, navSection, navToggleButton, navSections) {
+  if (isDesktop.matches) {
+    // prevent double event on child button
+    e.stopPropagation();
+    const expanded = navSection.getAttribute('aria-expanded') === 'true';
+    navToggleButton.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    toggleAllNavSections(navSections);
+    navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+  }
+}
+
 /**
  * loads and decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -200,15 +216,18 @@ export default async function decorate(block) {
 
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
-    navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
-      if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
-      navSection.addEventListener('click', () => {
-        if (isDesktop.matches) {
-          const expanded = navSection.getAttribute('aria-expanded') === 'true';
-          toggleAllNavSections(navSections);
-          navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-        }
-      });
+    navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection, index) => {
+      if (navSection.querySelector('ul')) {
+        navSection.classList.add('nav-drop');
+        const navButton = document.createElement('button');
+        navButton.classList.add('nav-drop-toggle');
+        navButton.setAttribute('aria-label', `Nav section ${index + 1} toggle`);
+        navButton.setAttribute('aria-expanded', 'false');
+        // allow clicking on both nav section and interactive toggle button
+        navButton.addEventListener('click', (e) => handleNavDropClick(e, navSection, navButton, navSections));
+        navSection.addEventListener('click', (e) => handleNavDropClick(e, navSection, navButton, navSections));
+        navSection.appendChild(navButton);
+      }
     });
   }
 
@@ -228,7 +247,7 @@ export default async function decorate(block) {
     </button>`;
   hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
   nav.prepend(hamburger);
-  nav.setAttribute('aria-expanded', 'false');
+  if (!isDesktop.matches) nav.setAttribute('aria-expanded', 'false');
   // prevent mobile nav behavior on window resize
   toggleMenu(nav, navSections, isDesktop.matches);
   isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
