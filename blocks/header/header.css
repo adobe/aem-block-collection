@@ -278,23 +278,23 @@ header nav .nav-tools .button {
 
 /* breadcrumbs */
 header .breadcrumbs {
-  display: none;
+  display: block;
   margin: auto;
   max-width: 1248px;
   height: var(--breadcrumbs-height);
   padding: 0 24px;
   font-size: var(--body-font-size-xs);
-  overflow: hidden;
+  overflow: scroll;
 }
 
 header .breadcrumbs ol {
   display: flex;
-  flex-flow: wrap;
   list-style: none;
   padding: 0;
   margin-top: 0;
   margin-bottom: 0;
   gap: 1ch;
+  white-space: nowrap;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
@@ -313,10 +313,7 @@ header .breadcrumbs ol li[aria-current] {
   color: var(--text-color);
 }
 
-@media (width >= 900px) {
-  header .breadcrumbs {
-    display: block;
-    max-width: 1264px;
-    padding: 0 32px;
-  }
+header .breadcrumbs {
+  max-width: 1264px;
+  padding: 0 32px;
 }

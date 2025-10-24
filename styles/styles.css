@@ -100,10 +100,8 @@ footer .footer[data-block-status="loaded"] {
   visibility: visible;
 }
 
-@media (width >= 900px) {
-  body[data-breadcrumbs] {
-    --header-height: calc(var(--nav-height) + var(--breadcrumbs-height));
-  }
+body[data-breadcrumbs] {
+  --header-height: calc(var(--nav-height) + var(--breadcrumbs-height));
 }
 
 h1,
