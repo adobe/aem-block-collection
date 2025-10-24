@@ -313,7 +313,11 @@ header .breadcrumbs ol li[aria-current] {
   color: var(--text-color);
 }
 
-header .breadcrumbs {
-  max-width: 1264px;
-  padding: 0 32px;
+@media (width >= 900px) {
+    header .breadcrumbs {
+    max-width: 1264px;
+    padding: 0 32px;
+  }
 }
+
+
