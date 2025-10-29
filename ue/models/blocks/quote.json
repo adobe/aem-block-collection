@@ -3,6 +3,7 @@
     {
       "title": "Quote",
       "id": "quote",
+      "model": "quote",
       "plugins": {
         "da": {
           "name": "quote",

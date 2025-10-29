@@ -3,6 +3,8 @@
     {
       "title": "Carousel",
       "id": "carousel",
+      "model": "carousel",
+      "filter": "carousel",
       "plugins": {
         "da": {
           "unsafeHTML": "<div class=\"carousel\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
@@ -12,6 +14,7 @@
     {
       "title": "Carousel Slide",
       "id": "carousel-item",
+      "model": "carousel-item",
       "plugins": {
         "da": {
           "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"

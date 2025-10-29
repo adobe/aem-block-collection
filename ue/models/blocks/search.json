@@ -3,6 +3,7 @@
     {
       "title": "Search",
       "id": "search",
+      "model": "search",
       "plugins": {
         "da": {
           "name": "search",

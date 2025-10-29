@@ -3,6 +3,7 @@
     {
       "title": "Video",
       "id": "video",
+      "model": "video",
       "plugins": {
         "da": {
           "name": "video",
