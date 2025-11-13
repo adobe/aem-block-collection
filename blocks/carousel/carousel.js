@@ -20,10 +20,13 @@ function updateActiveSlide(slide) {
 
   const indicators = block.querySelectorAll('.carousel-slide-indicator');
   indicators.forEach((indicator, idx) => {
+    const button = indicator.querySelector('button');
     if (idx !== slideIndex) {
-      indicator.querySelector('button').removeAttribute('disabled');
+      button.removeAttribute('disabled');
+      button.removeAttribute('aria-current');
     } else {
-      indicator.querySelector('button').setAttribute('disabled', 'true');
+      button.setAttribute('disabled', true);
+      button.setAttribute('aria-current', true);
     }
   });
 }
