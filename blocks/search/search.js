@@ -212,6 +212,12 @@ function searchResultsContainer(block) {
   const results = document.createElement('ul');
   results.className = 'search-results';
   results.dataset.h = findNextHeading(block);
+
+  // add ARIA live region for screen reader announcements
+  results.setAttribute('role', 'status');
+  results.setAttribute('aria-live', 'polite');
+  results.setAttribute('aria-atomic', true);
+
   return results;
 }
 
