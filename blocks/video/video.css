@@ -69,3 +69,10 @@
   left: calc(50% + 2px);
   transform: translate(-50%, -50%);
 }
+
+.video .video-placeholder-play button:focus,
+.video .video-placeholder-play button:focus-visible {
+  outline: 2px solid black;
+  outline-offset: 2px;
+  background-color: black;
+}
