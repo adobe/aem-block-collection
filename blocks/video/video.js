@@ -6,6 +6,31 @@
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+/**
+ * Determines the video source type from a link
+ * @param {string} link - The video link URL
+ * @returns {string} - 'youtube', 'vimeo', or 'video'
+ */
+function getVideoSource(link) {
+  if (link.includes('youtube') || link.includes('youtu.be')) return 'youtube';
+  if (link.includes('vimeo')) return 'vimeo';
+  return 'video';
+}
+
+/**
+ * Gets a human-readable video type label
+ * @param {string} source - The video source type ('youtube', 'vimeo', or 'video')
+ * @returns {string} - Human-readable label
+ */
+function getVideoTypeLabel(source) {
+  const labels = {
+    youtube: 'YouTube video',
+    vimeo: 'Vimeo video',
+    video: 'MP4 video',
+  };
+  return labels[source] || 'video';
+}
+
 function embedYoutube(url, autoplay, background) {
   const usp = new URLSearchParams(url.search);
   let suffix = '';
@@ -76,22 +101,19 @@ function getVideoElement(source, autoplay, background) {
   return video;
 }
 
-const loadVideoEmbed = (block, link, autoplay, background) => {
-  if (block.dataset.embedLoaded === 'true') {
-    return;
-  }
+function loadVideoEmbed(block, link, autoplay, background) {
+  if (block.dataset.embedLoaded === 'true') return;
+
   const url = new URL(link);
+  const source = getVideoSource(link);
 
-  const isYoutube = link.includes('youtube') || link.includes('youtu.be');
-  const isVimeo = link.includes('vimeo');
-
-  if (isYoutube) {
+  if (source === 'youtube') {
     const embedWrapper = embedYoutube(url, autoplay, background);
     block.append(embedWrapper);
     embedWrapper.querySelector('iframe').addEventListener('load', () => {
       block.dataset.embedLoaded = true;
     });
-  } else if (isVimeo) {
+  } else if (source === 'vimeo') {
     const embedWrapper = embedVimeo(url, autoplay, background);
     block.append(embedWrapper);
     embedWrapper.querySelector('iframe').addEventListener('load', () => {
@@ -104,7 +126,7 @@ const loadVideoEmbed = (block, link, autoplay, background) => {
       block.dataset.embedLoaded = true;
     });
   }
-};
+}
 
 export default async function decorate(block) {
   const placeholder = block.querySelector('picture');
@@ -120,9 +142,13 @@ export default async function decorate(block) {
     wrapper.append(placeholder);
 
     if (!autoplay) {
+      const source = getVideoSource(link);
+      const videoType = getVideoTypeLabel(source);
+      const ariaLabel = `Play ${videoType}`;
+
       wrapper.insertAdjacentHTML(
         'beforeend',
-        '<div class="video-placeholder-play"><button type="button" title="Play"></button></div>',
+        `<div class="video-placeholder-play"><button type="button" title="Play" aria-label="${ariaLabel}"></button></div>`,
       );
       wrapper.addEventListener('click', () => {
         wrapper.remove();
