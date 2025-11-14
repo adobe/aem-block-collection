@@ -152,6 +152,10 @@ main > div {
   margin: 40px 16px;
 }
 
+main .library-metadata {
+  display: none;
+}
+
 input,
 textarea,
 select,
