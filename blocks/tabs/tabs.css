@@ -21,10 +21,10 @@
 .tabs .tabs-list button {
   flex: 0 0 max-content;
   margin: 0;
-  border: 1px solid #dadada;
+  border: 1px solid var(--dark-color);
   border-radius: 0;
   padding: 0.5em;
-  background-color: var(--light-color);
+  background-color: #949494;
   color: initial;
   font-weight: bold;
   line-height: unset;
@@ -39,7 +39,6 @@
   margin: 0;
 }
 
-
 .tabs .tabs-list button[aria-selected='true'] {
   border-bottom: 1px solid var(--background-color);
   background-color: var(--background-color);
@@ -49,7 +48,7 @@
 .tabs .tabs-panel {
   margin-top: -1px;
   padding: 24px;
-  border: 1px solid #dadada;
+  border: 1px solid var(--dark-color);
   overflow: auto;
 }
 
