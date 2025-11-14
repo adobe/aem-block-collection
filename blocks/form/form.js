@@ -507,7 +507,7 @@ function enableSubmission(form, submit, fields) {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const valid = form.checkValidity();
+    const valid = form.reportValidity();
     if (valid) {
       handleSubmit(form);
     } else {
@@ -611,6 +611,7 @@ function buildField(field) {
  */
 function buildForm(fields, submit) {
   const form = createElement('form');
+  form.setAttribute('novalidate', '');
 
   // group buttons at the end
   const buttons = [];
