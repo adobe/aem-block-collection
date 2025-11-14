@@ -1,170 +1,237 @@
-.form .field-wrapper {
-  display: grid;
-  grid-auto-flow: row;
-  align-items: center;
-}
-
-.form fieldset {
-  display: grid;
-  grid-auto-flow: row;
-  margin: 0;
-  border: none;
-  padding: 0;
-}
-
-.form form > .field-wrapper + .field-wrapper,
-.form form fieldset .field-wrapper + .field-wrapper {
-  margin-top: 24px;
-}
-
-.form form > .selection-wrapper + .selection-wrapper,
-.form form fieldset .selection-wrapper + .selection-wrapper {
-  margin-top: 0.25em;
-}
-
-@media (width >= 600px) {
-  .form fieldset {
-    grid-template-columns: repeat(2, auto);
-    gap: 0.25em 24px;
-  }
-
-  .form form > .selection-wrapper + .selection-wrapper,
-  .form form fieldset .field-wrapper + .field-wrapper,
-  .form form fieldset .selection-wrapper + .selection-wrapper {
-    margin-top: 0;
-  }
-}
-
-@media (width >= 900px) {
-  .form fieldset {
-    grid-template-columns: repeat(3, auto);
-  }
-}
-
-.form label,
-.form fieldset > legend {
-  margin-bottom: 0.25em;
-  font-size: var(--body-font-size-s);
-  font-weight: 700;
-}
-
-.form .selection-wrapper label {
-  margin: 0;
-  font-weight: normal;
+.form [aria-hidden='true'] {
+  display: none;
 }
 
 .form input,
+.form textarea,
 .form select,
-.form textarea {
+.form button {
   box-sizing: border-box;
   display: block;
+  max-width: 100%;
+  font: inherit;
+}
+
+.form input,
+.form textarea,
+.form select {
+  scroll-margin: 1em;
   width: 100%;
-  margin: 0;
-  padding: 0.5em;
-  border-radius: 4px;
   border: 1px solid var(--dark-color);
+  border-radius: 4px;
+  padding: 0.5em 0.75em;
   background-color: var(--background-color);
   color: var(--text-color);
   font-size: var(--body-font-size-s);
-  transition: border-color 0.2s;
 }
 
 .form textarea {
   resize: vertical;
 }
 
+.form fieldset {
+  appearance: none;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+}
+
 .form input:hover,
+.form textarea:hover,
 .form select:hover,
-.form textarea:hover {
-  border: 1px solid var(--text-color);
+.form button:hover {
+  border-color: var(--link-color);
 }
 
 .form input:focus,
+.form textarea:focus,
 .form select:focus,
-.form textarea:focus {
-  outline: 2px solid var(--link-color);
-  outline-offset: 2px;
+.form button:focus {
+  outline-offset: 4px;
 }
 
-.form .selection-wrapper input {
-  width: max-content;
+.form input:disabled,
+.form input:hover:disabled,
+.form input:focus:disabled,
+.form textarea:disabled,
+.form textarea:hover:disabled,
+.form textarea:focus:disabled,
+.form select:disabled,
+.form select:hover:disabled,
+.form select:focus:disabled,
+.form input[readonly],
+.form textarea[readonly],
+.form select[readonly] {
+  border-color: #d1d1d1;
+  background-color: var(--light-color);
+  color: var(--dark-color);
+}
+
+.form input[readonly]:focus,
+.form textarea[readonly]:focus,
+.form select[readonly]:focus {
+  outline: 0;
+}
+
+.form input[type='checkbox'],
+.form input[type='radio'] {
+  width: unset;
+}
+
+.form label,
+.form legend {
+  display: block;
+}
+
+.form label[data-required]::after,
+.form legend[data-required]::after {
+  content: '*';
+  margin-left: 0.25ch;
+  color: firebrick;
+}
+
+.form .form-field > label:first-child,
+.form .form-field > legend {
+  font-weight: bold;
+}
+
+.form .form-field + .form-field {
+  margin-top: 1em;
+}
+
+.form .form-field.checkbox-field label,
+.form .form-field.radio-field label {
+  position: relative;
+  padding-left: calc(1em + 1ch);
+  font-size: var(--body-font-size-s);
+  line-height: 44px;
+  cursor: pointer;
+}
+
+.form .form-field.checkbox-field label input,
+.form .form-field.radio-field label input,
+.form .form-field.toggle-field label input {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  margin: 0;
+  width: 1em;
+  height: 1em;
+  cursor: pointer;
+}
+
+.form .form-field.checkbox-field label input:disabled,
+.form .form-field.radio-field label input:disabled {
+  cursor: default;
 }
 
 @media (width >= 600px) {
-  .form input,
-  .form select,
-  .form textarea {
-    max-width: 50vw;
-  }
-
-  .form .button {
-    max-width: max-content;
+  .form .form-field.checkbox-field,
+  .form .form-field.radio-field {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25ch 1em;
   }
 }
 
-@media (width >= 900px) {
-  .form input,
-  .form select,
-  .form textarea {
-    max-width: 33vw;
-  }
-}
-
-.form .field-wrapper.selection-wrapper {
-  grid-auto-flow: column;
-  justify-content: start;
-  gap: 1ch;
-}
-
-.form label[data-required]::after {
-  content: '*';
-  color: firebrick;
-  margin-inline-start: 1ch;
-}
-
-.form .toggle-wrapper .switch {
+/* custom toggle field */
+.form .form-field.toggle-field label {
   position: relative;
-  display: inline-block;
-  width: 52px;
-  height: 28px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1ch;
+  min-height: 44px;
 }
 
-.form .toggle-wrapper input {
+/* stylelint-disable-next-line no-descending-specificity */
+.form .form-field.toggle-field label input {
+  width: 2em;
   opacity: 0;
-  width: 52px;
-  height: 28px;
+  border-radius: 50%;
 }
 
-.form .toggle-wrapper .slider {
-  position: absolute;
-  cursor: pointer;
-  inset: 0;
-  border-radius: 28px;
+.form .form-field.toggle-field label span {
+  position: relative;
+  width: calc(2em + (2 * 1px));
+  height: calc(1em + (2 * 1px));
+  border-radius: 1em;
+  border: 1px solid var(--dark-color);
   background-color: var(--dark-color);
   transition: background-color 0.2s;
+  cursor: pointer;
 }
 
-.form .toggle-wrapper .slider::before {
+.form .form-field.toggle-field label span::after {
   content: '';
   position: absolute;
-  width: 24px;
-  height: 24px;
-  top: 2px;
-  left: 2px;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 1em;
+  height: 1em;
   border-radius: 50%;
   background-color: var(--background-color);
-  transition: transform 0.2s;
+  transition: left 0.2s;
 }
 
-.form .toggle-wrapper input:checked + .slider {
+.form .form-field.toggle-field label input:checked + span {
   background-color: var(--link-color);
 }
 
-.form .toggle-wrapper input:focus + .slider {
-  outline: 2px solid var(--link-color);
-  outline-offset: 2px;
+.form .form-field.toggle-field label input:checked + span::after {
+  left: calc(100% - 1em);
 }
 
-.form .toggle-wrapper input:checked + .slider::before {
-  transform: translateX(24px);
+.form .form-field.toggle-field label input:disabled + span {
+  border-color: #d1d1d1;
+  background-color: #d1d1d1;
+  cursor: default;
+}
+
+.form .form-field.toggle-field label input:disabled + span::after {
+  background-color: var(--light-color);
+}
+
+.form .field-help-text {
+  margin-top: 0.2em;
+  color: var(--dark-color);
+  font-size: var(--body-font-size-xs);
+}
+
+.form .button-wrapper {
+  margin-top: 1em;
+}
+
+.form .button-wrapper button {
+  width: 100%;
+}
+
+.form .button-wrapper button.button:disabled,
+.form .button-wrapper button.button:hover:disabled {
+  border-color: var(--dark-color);
+  background-color: var(--dark-color);
+  color: var(--background-color);
+  cursor: progress;
+}
+
+.form .button-wrapper button.button.secondary:disabled,
+.form .button-wrapper button.button.secondary:hover:disabled {
+  border-color: var(--dark-color);
+  background-color: var(--light-color);
+  color: var(--dark-color);
+}
+
+@media (width >= 600px) {
+  .form .button-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1ch;
+  }
+
+  .form .button-wrapper button {
+    width: max-content;
+  }
 }
