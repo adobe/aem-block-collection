@@ -72,6 +72,10 @@
   }
 }
 
+html {
+  scroll-padding-top: var(--header-height);
+}
+
 body {
   display: none;
   margin: 0;
