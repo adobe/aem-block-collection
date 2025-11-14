@@ -81,7 +81,8 @@
 
 .form input:focus,
 .form select:focus,
-.form textarea:focus {
+.form textarea:focus,
+.form button:focus  {
   outline: 2px solid var(--link-color);
   outline-offset: 2px;
 }
