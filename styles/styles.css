@@ -204,11 +204,17 @@ button {
 }
 
 a.button:hover,
-a.button:focus,
 button:hover,
+a.button:focus,
 button:focus {
   background-color: var(--link-hover-color);
   cursor: pointer;
+}
+
+a.button:focus,
+button:focus {
+  outline: 2px solid var(--link-hover-color);
+  outline-offset: 2px;
 }
 
 button:disabled,
@@ -222,6 +228,20 @@ button.secondary {
   background-color: unset;
   border: 2px solid currentcolor;
   color: var(--text-color);
+}
+
+a.button.secondary:hover,
+button.secondary:hover,
+a.button.secondary:focus,
+button.secondary:focus {
+  background-color: var(--light-color);
+  cursor: pointer;
+}
+
+a.button.secondary:focus,
+button.secondary:focus {
+  outline: 2px solid;
+  outline-offset: 2px;
 }
 
 main img {
