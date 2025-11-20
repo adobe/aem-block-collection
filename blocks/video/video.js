@@ -148,7 +148,7 @@ export default async function decorate(block) {
 
       wrapper.insertAdjacentHTML(
         'beforeend',
-        `<div class="video-placeholder-play"><button type="button" title="Play" aria-label="${ariaLabel}"></button></div>`,
+        `<div class="video-placeholder-play"><button type="button" title="${ariaLabel}" aria-label="${ariaLabel}"></button></div>`,
       );
       wrapper.addEventListener('click', () => {
         wrapper.remove();
