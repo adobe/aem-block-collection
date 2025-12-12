@@ -30,6 +30,15 @@ header nav[aria-expanded='true'] {
   min-height: 100dvh;
 }
 
+header nav p {
+  margin: 0;
+  line-height: 1;
+}
+
+header nav a:any-link {
+  color: currentcolor;
+}
+
 @media (width >= 900px) {
   header .nav-wrapper {
     position: relative;
@@ -47,15 +56,6 @@ header nav[aria-expanded='true'] {
     min-height: 0;
     overflow: visible;
   }
-}
-
-header nav p {
-  margin: 0;
-  line-height: 1;
-}
-
-header nav a:any-link {
-  color: currentcolor;
 }
 
 /* hamburger */
@@ -140,7 +140,7 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
 }
 
 /* brand */
-header .nav-brand {
+header nav .nav-brand {
   grid-area: brand;
   flex-basis: 128px;
   font-size: var(--heading-font-size-s);
@@ -173,15 +173,27 @@ header nav .nav-sections ul {
   font-size: var(--body-font-size-s);
 }
 
-header nav .nav-sections ul > li {
+header nav .nav-sections li {
   font-weight: 500;
 }
 
-header nav .nav-sections ul > li > ul {
+header nav .nav-drop > button {
+  all: unset;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+header nav .nav-drop > button:focus {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+header nav .nav-drop > ul {
   margin-top: 0;
 }
 
-header nav .nav-sections ul > li > ul > li {
+header nav .nav-drop > ul > li {
   font-weight: 400;
 }
 
@@ -196,13 +208,28 @@ header nav .nav-sections ul > li > ul > li {
     align-self: unset;
   }
 
-  header nav .nav-sections .nav-drop {
-    position: relative;
-    padding-right: 16px;
-    cursor: pointer;
+  header nav .nav-sections ul {
+    display: flex;
+    gap: 24px;
+    margin: 0;
   }
 
-  header nav .nav-sections .nav-drop::after {
+  header nav .nav-sections > * > ul > li {
+    flex: 0 1 auto;
+    position: relative;
+  }
+
+  header nav .nav-drop {
+    position: relative;
+    padding-right: 16px;
+  }
+
+  header nav .nav-drop > button {
+    position: relative;
+    padding-right: 16px;
+  }
+
+  header nav .nav-drop > button::after {
     content: '';
     display: inline-block;
     position: absolute;
@@ -216,29 +243,18 @@ header nav .nav-sections ul > li > ul > li {
     border-width: 2px 2px 0 0;
   }
 
-  header nav .nav-sections .nav-drop[aria-expanded='true']::after {
+  header nav .nav-drop > button[aria-expanded='true']::after {
     top: unset;
     bottom: 0.5em;
     transform: rotate(315deg);
   }
 
-  header nav .nav-sections ul {
-    display: flex;
-    gap: 24px;
-    margin: 0;
-  }
-
-  header nav .nav-sections .default-content-wrapper > ul > li {
-    flex: 0 1 auto;
-    position: relative;
-  }
-
-  header nav .nav-sections .default-content-wrapper > ul > li > ul {
+  header nav .nav-drop > ul {
     display: none;
     position: relative;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul {
+  header nav .nav-drop > button[aria-expanded='true'] + ul {
     display: block;
     position: absolute;
     left: -24px;
@@ -250,7 +266,7 @@ header nav .nav-sections ul > li > ul > li {
     z-index: 1;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li > ul::before {
+  header nav .nav-drop > ul::before {
     content: '';
     position: absolute;
     top: -8px;
@@ -262,7 +278,7 @@ header nav .nav-sections ul > li > ul > li {
     border-bottom: 8px solid var(--light-color);
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
+  header nav .nav-drop > ul > li {
     padding: 8px 0;
   }
 }
@@ -302,26 +318,23 @@ header .breadcrumbs ol {
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-header .breadcrumbs ol li {
+header .breadcrumbs li {
   padding: 0;
   color: var(--dark-color);
 }
 
-header .breadcrumbs ol li:not(:last-child)::after {
+header .breadcrumbs li:not(:last-child)::after {
   content: '/';
   padding-left: 1ch;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
-header .breadcrumbs ol li[aria-current] {
+header .breadcrumbs li[aria-current] {
   color: var(--text-color);
 }
 
 @media (width >= 900px) {
-    header .breadcrumbs {
+  header .breadcrumbs {
     max-width: 1264px;
     padding: 0 32px;
   }
 }
-
-
