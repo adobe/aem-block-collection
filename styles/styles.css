@@ -289,3 +289,32 @@ main .section.highlight {
   margin: 0;
   padding: 40px 0;
 }
+
+.library-metadata {
+  margin-bottom: 75px;
+  padding: 20px;
+  background-color: var(--light-color);
+  border-radius: 8px;
+}
+
+.library-metadata > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.library-metadata > div > div:first-of-type {
+  text-transform: capitalize;
+  font-size: var(--heading-font-size-sm);
+  font-weight: 600;
+}
+
+.library-metadata > div > div:first-of-type::after {
+  content: ":";
+}
+
+@media (width >= 600px) {
+  .library-metadata > div {
+    flex-direction: row;
+    gap: 10px;
+  }
+}
