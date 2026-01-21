@@ -1,0 +1,13 @@
+{
+    "project": "Block Collection",
+    "plugins": [
+      {
+        "id": "library",
+        "title": "Library",
+        "environments": ["edit"],
+        "url": "https://main--aem-block-collection--adobe.hlx.live/tools/sidekick/library.html",
+        "includePaths": ["**.docx**"]
+      }
+    ]
+  }
+  
