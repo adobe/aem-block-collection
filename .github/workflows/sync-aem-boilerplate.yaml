@@ -6,6 +6,14 @@ on:
     - cron: '0 6 * * *'
   workflow_dispatch: # Allow manual trigger
 
+# ============================================
+# CONFIGURATION: Add files to sync here
+# Format: "local/path:remote/path" (one per line)
+# ============================================
+env:
+  SYNC_FILES: |
+    scripts/aem.js:scripts/aem.js
+
 jobs:
   sync-aem-boilerplate:
     runs-on: ubuntu-latest
@@ -17,23 +25,41 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: Download latest AEM Boilerplate from source
+      - name: Download files from AEM Boilerplate
         run: |
-          curl -sSL \
-            -H "Accept: application/vnd.github.v3.raw" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://raw.githubusercontent.com/adobe/aem-boilerplate/main/scripts/aem.js?ref=main" \
-            -o scripts/aem.js
+          echo "📥 Downloading files from adobe/aem-boilerplate..."
+          
+          while IFS= read -r mapping; do
+            # Skip empty lines
+            [[ -z "$mapping" ]] && continue
+            
+            # Parse local:remote mapping
+            local_path="${mapping%%:*}"
+            remote_path="${mapping##*:}"
+            
+            echo "  → $remote_path → $local_path"
+            
+            # Ensure target directory exists
+            mkdir -p "$(dirname "$local_path")"
+            
+            # Download file (fail on HTTP errors)
+            curl -sSLf \
+              "https://raw.githubusercontent.com/adobe/aem-boilerplate/main/$remote_path" \
+              -o "$local_path"
+          done <<< "$SYNC_FILES"
+          
+          echo "✅ Download complete"
       
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet scripts/aem.js; then
+          if git diff --quiet; then
             echo "changed=false" >> $GITHUB_OUTPUT
-            echo "✅ Already up to date"
+            echo "✅ All files are already up to date"
           else
             echo "changed=true" >> $GITHUB_OUTPUT
-            echo "🔄 Changes detected"
+            echo "🔄 Changes detected:"
+            git diff --name-only
           fi
       
       - name: Create Pull Request
@@ -43,8 +69,13 @@ jobs:
           commit-message: "chore: sync AEM Boilerplate from adobe/aem-boilerplate"
           title: "🔄 Sync AEM Boilerplate from adobe/aem-boilerplate"
           body: |
-            This PR automatically syncs the files as configured in the `sync-aem-boilerplate.yml` workflow file from the upstream [adobe/aem-boilerplate](https://github.com/adobe/aem-boilerplate) repository.
-                        
+            This PR automatically syncs files from the upstream [adobe/aem-boilerplate](https://github.com/adobe/aem-boilerplate) repository.
+            
+            **Files synced:**
+            ${{ env.SYNC_FILES }}
+            
+            **Source:** https://github.com/adobe/aem-boilerplate
+            
             ---
             _This PR was created automatically by a scheduled sync workflow._
           branch: chore/sync-aem-boilerplate
