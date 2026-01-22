@@ -22,7 +22,7 @@ jobs:
           curl -sSL \
             -H "Accept: application/vnd.github.v3.raw" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://raw.githubusercontent.com/adobe/aem-boilerplate/main/scripts/aem.js" \
+            "https://raw.githubusercontent.com/adobe/aem-boilerplate/main/scripts/aem.js?ref=main" \
             -o scripts/aem.js
       
       - name: Check for changes
