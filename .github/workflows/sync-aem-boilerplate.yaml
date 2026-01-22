@@ -78,7 +78,7 @@ jobs:
             
             ---
             _This PR was created automatically by a scheduled sync workflow._
-          branch: chore/sync-aem-boilerplate
+          branch: sync-aem-boilerplate
           delete-branch: true
           labels: |
             automated
