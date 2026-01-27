@@ -12,6 +12,7 @@ import {
 export async function createModal(contentNodes) {
   await loadCSS(`${window.hlx.codeBasePath}/blocks/modal/modal.css`);
   const dialog = document.createElement('dialog');
+  dialog.setAttribute('closedby', 'any');
   const dialogContent = document.createElement('div');
   dialogContent.classList.add('modal-content');
   dialogContent.append(...contentNodes);
@@ -29,17 +30,6 @@ export async function createModal(contentNodes) {
   document.querySelector('main').append(block);
   decorateBlock(block);
   await loadBlock(block);
-
-  // close on click outside the dialog
-  dialog.addEventListener('click', (e) => {
-    const {
-      left, right, top, bottom,
-    } = dialog.getBoundingClientRect();
-    const { clientX, clientY } = e;
-    if (clientX < left || clientX > right || clientY < top || clientY > bottom) {
-      dialog.close();
-    }
-  });
 
   dialog.addEventListener('close', () => {
     document.body.classList.remove('modal-open');
