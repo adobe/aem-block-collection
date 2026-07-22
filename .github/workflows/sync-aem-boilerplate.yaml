@@ -1,0 +1,85 @@
+name: Sync from AEM Boilerplate
+
+on:
+  schedule:
+    # Run daily at 6:00 AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+# ============================================
+# CONFIGURATION: Add files to sync here
+# Format: "local/path:remote/path" (one per line)
+# ============================================
+env:
+  SYNC_FILES: |
+    scripts/aem.js:scripts/aem.js
+
+jobs:
+  sync-aem-boilerplate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Download files from AEM Boilerplate
+        run: |
+          echo "📥 Downloading files from adobe/aem-boilerplate..."
+          
+          while IFS= read -r mapping; do
+            # Skip empty lines
+            [[ -z "$mapping" ]] && continue
+            
+            # Parse local:remote mapping
+            local_path="${mapping%%:*}"
+            remote_path="${mapping##*:}"
+            
+            echo "  → $remote_path → $local_path"
+            
+            # Ensure target directory exists
+            mkdir -p "$(dirname "$local_path")"
+            
+            # Download file (fail on HTTP errors)
+            curl -sSLf \
+              "https://raw.githubusercontent.com/adobe/aem-boilerplate/main/$remote_path" \
+              -o "$local_path"
+          done <<< "$SYNC_FILES"
+          
+          echo "✅ Download complete"
+      
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "✅ All files are already up to date"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "🔄 Changes detected:"
+            git diff --name-only
+          fi
+      
+      - name: Create Pull Request
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore: sync AEM Boilerplate from adobe/aem-boilerplate"
+          title: "🔄 Sync AEM Boilerplate from adobe/aem-boilerplate"
+          body: |
+            This PR automatically syncs files from the upstream [adobe/aem-boilerplate](https://github.com/adobe/aem-boilerplate) repository.
+            
+            **Files synced:**
+            ${{ env.SYNC_FILES }}
+            
+            **Source:** https://github.com/adobe/aem-boilerplate
+            
+            ---
+            _This PR was created automatically by a scheduled sync workflow._
+          branch: sync-aem-boilerplate
+          delete-branch: true
+          labels: |
+            automated
+            sync
