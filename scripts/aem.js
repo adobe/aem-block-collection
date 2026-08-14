@@ -28,6 +28,7 @@ function sampleRUM(checkpoint, data) {
         on: 1,
         off: 0,
         high: 10,
+        medium: 100,
         low: 1000,
       }[rate];
       const weight = rateValue !== undefined ? rateValue : 100;
@@ -93,14 +94,18 @@ function sampleRUM(checkpoint, data) {
         sampleRUM.baseURL = sampleRUM.baseURL || new URL(window.RUM_BASE || '/', new URL('https://ot.aem.live'));
         sampleRUM.collectBaseURL = sampleRUM.collectBaseURL || sampleRUM.baseURL;
         sampleRUM.sendPing = (ck, time, pingData = {}) => {
+          const uaExtra = navigator.webdriver && !navigator.userAgent.includes('+http')
+            ? { ua: `${navigator.userAgent} +http://navigator.webdriver` }
+            : {};
           // eslint-disable-next-line max-len, object-curly-newline
           const rumData = JSON.stringify({
             weight,
             id,
-            referer: window.location.href,
+            referer: window.location.origin + window.location.pathname,
             checkpoint: ck,
             t: time,
             ...pingData,
+            ...uaExtra,
           });
           const urlParams = window.RUM_PARAMS
             ? new URLSearchParams(window.RUM_PARAMS).toString() || ''
@@ -120,7 +125,9 @@ function sampleRUM(checkpoint, data) {
 
         sampleRUM.enhance = () => {
           // only enhance once
-          if (document.querySelector('script[src*="rum-enhancer"]')) return;
+          if (document.querySelector('script[src*="rum-enhancer"]')) {
+            return;
+          }
           const { enhancerVersion, enhancerHash } = sampleRUM.enhancerContext || {};
           const script = document.createElement('script');
           if (enhancerHash) {
@@ -387,6 +394,7 @@ function wrapTextNodes(block) {
     'OL',
     'PICTURE',
     'TABLE',
+    'BLOCKQUOTE',
     'H1',
     'H2',
     'H3',
@@ -471,24 +479,6 @@ function decorateSections(main) {
     section.classList.add('section');
     section.dataset.sectionStatus = 'initialized';
     section.style.display = 'none';
-
-    // Process section metadata
-    const sectionMeta = section.querySelector('div.section-metadata');
-    if (sectionMeta) {
-      const meta = readBlockConfig(sectionMeta);
-      Object.keys(meta).forEach((key) => {
-        if (key === 'style') {
-          const styles = meta.style
-            .split(',')
-            .filter((style) => style)
-            .map((style) => toClassName(style.trim()));
-          styles.forEach((style) => section.classList.add(style));
-        } else {
-          section.dataset[toCamelCase(key)] = meta[key];
-        }
-      });
-      sectionMeta.parentNode.remove();
-    }
   });
 }
 
@@ -593,7 +583,12 @@ function decorateBlocks(main) {
  */
 async function loadHeader(header) {
   const headerBlock = buildBlock('header', '');
-  header.append(headerBlock);
+  const existingHeaderBlock = header.querySelector(':scope > .header');
+  if (existingHeaderBlock) {
+    existingHeaderBlock.replaceWith(headerBlock);
+  } else {
+    header.append(headerBlock);
+  }
   decorateBlock(headerBlock);
   return loadBlock(headerBlock);
 }
@@ -605,7 +600,12 @@ async function loadHeader(header) {
  */
 async function loadFooter(footer) {
   const footerBlock = buildBlock('footer', '');
-  footer.append(footerBlock);
+  const existingFooterBlock = footer.querySelector(':scope > .footer');
+  if (existingFooterBlock) {
+    existingFooterBlock.replaceWith(footerBlock);
+  } else {
+    footer.append(footerBlock);
+  }
   decorateBlock(footerBlock);
   return loadBlock(footerBlock);
 }
