@@ -19,7 +19,7 @@ jobs:
     if: ${{ github.repository != 'adobe/aem-block-collection' && ( github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Initial commit' ) }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Use Node.js 20
         uses: actions/setup-node@v6
         with:
