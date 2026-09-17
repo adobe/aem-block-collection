@@ -1,0 +1,539 @@
+/* page-assistant — a modern, on-device AI chat assistant.
+   All UI is position: fixed, so it never affects document layout (no CLS). */
+
+.page-assistant {
+  --pa-accent: var(--link-color, #3b63fb);
+  --pa-accent-hover: var(--link-hover-color, color-mix(in srgb, var(--pa-accent) 85%, #000));
+  --pa-on-accent: #fff;
+  --pa-bg: var(--background-color, #fff);
+  --pa-surface: color-mix(in srgb, var(--pa-text, #131313) 4%, var(--pa-bg));
+  --pa-surface-2: color-mix(in srgb, var(--pa-text, #131313) 7%, var(--pa-bg));
+  --pa-text: var(--text-color, #131313);
+  --pa-muted: color-mix(in srgb, var(--pa-text, #131313) 55%, transparent);
+  --pa-border: color-mix(in srgb, var(--pa-text, #131313) 12%, transparent);
+  --pa-radius: 1rem;
+  --pa-shadow: 0 1px 2px rgb(0 0 0 / 8%), 0 12px 32px -8px rgb(0 0 0 / 25%);
+
+  position: fixed;
+  bottom: 1.25rem;
+  z-index: 1000;
+  font-family: var(--body-font-family, system-ui, -apple-system, "Segoe UI", roboto, sans-serif);
+  color: var(--pa-text);
+}
+
+.page-assistant.page-assistant-bottom-right {
+  right: 1.25rem;
+}
+
+.page-assistant.page-assistant-bottom-left {
+  left: 1.25rem;
+}
+
+.page-assistant *,
+.page-assistant *::before,
+.page-assistant *::after {
+  box-sizing: border-box;
+}
+
+/* ---------------------------------------------------------------- Bubble -- */
+.page-assistant-bubble {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  color: var(--pa-on-accent);
+  cursor: pointer;
+  background: var(--pa-accent);
+  background-image: linear-gradient(150deg, color-mix(in srgb, var(--pa-accent) 82%, #fff), var(--pa-accent));
+  border: 0;
+  border-radius: 50%;
+  box-shadow: var(--pa-shadow);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.page-assistant-bubble:hover {
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 18px 40px -8px rgb(0 0 0 / 32%);
+}
+
+.page-assistant-bubble:focus-visible {
+  outline: 2px solid var(--pa-accent);
+  outline-offset: 3px;
+}
+
+.page-assistant-bubble:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.page-assistant-bubble-icon {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.page-assistant-bubble-icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.page-assistant-icon-chevron {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
+}
+
+.page-assistant.page-assistant-open .page-assistant-icon-chat {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.6);
+}
+
+.page-assistant.page-assistant-open .page-assistant-icon-chevron {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+/* ----------------------------------------------------------------- Panel -- */
+.page-assistant-panel {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 5rem;
+  left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  max-height: min(72vh, 36rem);
+  overflow: hidden;
+  background: var(--pa-bg);
+  border: 1px solid var(--pa-border);
+  border-radius: var(--pa-radius);
+  box-shadow: var(--pa-shadow);
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+  transform-origin: bottom right;
+  visibility: hidden;
+  transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.22s;
+}
+
+.page-assistant.page-assistant-bottom-left .page-assistant-panel {
+  transform-origin: bottom left;
+}
+
+.page-assistant.page-assistant-open .page-assistant-panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+}
+
+/* ---------------------------------------------------------------- Header -- */
+.page-assistant-header {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0.9rem 0.85rem 0.9rem 1.1rem;
+  background: linear-gradient(180deg, var(--pa-surface), transparent);
+  border-bottom: 1px solid var(--pa-border);
+}
+
+.page-assistant-heads {
+  min-width: 0;
+}
+
+.page-assistant-title {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--pa-text);
+}
+
+.page-assistant-title::before {
+  width: 0.5rem;
+  height: 0.5rem;
+  content: "";
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #22c55e 25%, transparent);
+}
+
+.page-assistant-subtext {
+  margin: 0.25rem 0 0;
+  font-size: 0.7rem;
+  line-height: 1.35;
+  color: var(--pa-muted);
+}
+
+.page-assistant-header-btns {
+  display: flex;
+  flex: none;
+  gap: 0.15rem;
+  align-items: center;
+}
+
+.page-assistant-clear,
+.page-assistant-close {
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  padding: 0;
+  color: var(--pa-muted);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: 0.5rem;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.page-assistant-clear svg,
+.page-assistant-close svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.page-assistant-clear:hover,
+.page-assistant-close:hover {
+  color: var(--pa-text);
+  background-color: var(--pa-surface-2);
+}
+
+.page-assistant-clear:focus-visible,
+.page-assistant-close:focus-visible {
+  outline: 2px solid var(--pa-accent);
+  outline-offset: 1px;
+}
+
+.page-assistant-clear:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+/* ------------------------------------------------------------ Transcript -- */
+.page-assistant-transcript {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 5rem;
+  padding: 1rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--pa-border) transparent;
+}
+
+.page-assistant-transcript::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.page-assistant-transcript::-webkit-scrollbar-thumb {
+  background: var(--pa-border);
+  border-radius: 999px;
+}
+
+.page-assistant-msg {
+  max-width: 88%;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  border-radius: 1.1rem;
+  animation: page-assistant-pop 0.18s ease;
+}
+
+.page-assistant-msg-user {
+  align-self: flex-end;
+  color: var(--pa-on-accent);
+  white-space: pre-wrap;
+  background: var(--pa-accent);
+  border-bottom-right-radius: 0.35rem;
+}
+
+.page-assistant-msg-assistant {
+  align-self: flex-start;
+  color: var(--pa-text);
+  background: var(--pa-surface-2);
+  border-bottom-left-radius: 0.35rem;
+}
+
+.page-assistant-msg.page-assistant-error {
+  color: #b42318;
+  background-color: color-mix(in srgb, #b42318 10%, var(--pa-bg));
+}
+
+@keyframes page-assistant-pop {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Typing indicator */
+.page-assistant-typing {
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: center;
+  padding: 0.15rem 0;
+}
+
+.page-assistant-typing i {
+  width: 0.4rem;
+  height: 0.4rem;
+  background: var(--pa-muted);
+  border-radius: 50%;
+  animation: page-assistant-blink 1.2s infinite ease-in-out both;
+}
+
+.page-assistant-typing i:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.page-assistant-typing i:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes page-assistant-blink {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Rendered Markdown inside assistant messages */
+.page-assistant-markdown > :first-child {
+  margin-top: 0;
+}
+
+.page-assistant-markdown > :last-child {
+  margin-bottom: 0;
+}
+
+.page-assistant-markdown p {
+  margin: 0.4rem 0;
+}
+
+.page-assistant-markdown h3,
+.page-assistant-markdown h4,
+.page-assistant-markdown h5,
+.page-assistant-markdown h6 {
+  margin: 0.6rem 0 0.25rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.page-assistant-markdown ul,
+.page-assistant-markdown ol {
+  margin: 0.4rem 0;
+  padding-left: 1.2rem;
+}
+
+.page-assistant-markdown li {
+  margin: 0.15rem 0;
+}
+
+.page-assistant-markdown a {
+  color: var(--pa-accent);
+  text-underline-offset: 2px;
+}
+
+.page-assistant-markdown code {
+  padding: 0.05rem 0.35rem;
+  font-family: var(--fixed-font-family, ui-monospace, "SF Mono", monospace);
+  font-size: 0.85em;
+  background-color: color-mix(in srgb, var(--pa-text) 8%, transparent);
+  border-radius: 0.35rem;
+}
+
+.page-assistant-markdown pre {
+  padding: 0.7rem 0.8rem;
+  margin: 0.4rem 0;
+  overflow-x: auto;
+  background-color: color-mix(in srgb, var(--pa-text) 8%, transparent);
+  border-radius: 0.6rem;
+}
+
+.page-assistant-markdown pre code {
+  padding: 0;
+  background: none;
+}
+
+/* --------------------------------------------------------------- Actions -- */
+.page-assistant-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.6rem 1rem 0.25rem;
+}
+
+.page-assistant-action,
+.page-assistant-translate {
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--pa-text);
+  cursor: pointer;
+  background-color: var(--pa-surface-2);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.page-assistant-action {
+  padding: 0.4rem 0.8rem;
+}
+
+.page-assistant-translate {
+  padding: 0.4rem 1.6rem 0.4rem 0.75rem;
+  background-image:
+    linear-gradient(45deg, transparent 50%, currentcolor 50%),
+    linear-gradient(135deg, currentcolor 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center, right 0.55rem center;
+  background-size: 0.32rem 0.32rem, 0.32rem 0.32rem;
+  appearance: none;
+}
+
+.page-assistant-action:hover {
+  color: var(--pa-on-accent);
+  background-color: var(--pa-accent);
+}
+
+.page-assistant-action:active {
+  transform: scale(0.96);
+}
+
+.page-assistant-translate:hover {
+  border-color: var(--pa-accent);
+}
+
+.page-assistant-action:disabled,
+.page-assistant-translate:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+/* ----------------------------------------------------------------- Input -- */
+.page-assistant-input-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+  padding: 0.6rem 1rem 0.9rem;
+}
+
+.page-assistant-input {
+  flex: 1;
+  max-height: 7rem;
+  padding: 0.6rem 0.85rem;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--pa-text);
+  resize: none;
+  background: var(--pa-surface);
+  border: 1px solid var(--pa-border);
+  border-radius: 1.25rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.page-assistant-input::placeholder {
+  color: var(--pa-muted);
+}
+
+.page-assistant-input:focus {
+  outline: none;
+  border-color: var(--pa-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pa-accent) 18%, transparent);
+}
+
+.page-assistant-send {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  color: var(--pa-on-accent);
+  cursor: pointer;
+  background: var(--pa-accent);
+  border: 0;
+  border-radius: 50%;
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+
+.page-assistant-send svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-left: 1px;
+}
+
+.page-assistant-send:hover {
+  filter: brightness(1.06);
+}
+
+.page-assistant-send:active {
+  transform: scale(0.94);
+}
+
+.page-assistant-send:focus-visible {
+  outline: 2px solid var(--pa-accent);
+  outline-offset: 2px;
+}
+
+.page-assistant-send:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+/* While a response is streaming, the send button becomes a Stop control. */
+.page-assistant-send.page-assistant-send-stop {
+  background: color-mix(in srgb, var(--pa-text) 55%, transparent);
+}
+
+.page-assistant-send.page-assistant-send-stop svg {
+  width: 0.85rem;
+  height: 0.85rem;
+  margin-left: 0;
+}
+
+/* --------------------------------------------------------- Responsive ---- */
+@media (width >= 600px) {
+  .page-assistant-panel {
+    left: auto;
+    width: 23rem;
+  }
+
+  .page-assistant.page-assistant-bottom-left .page-assistant-panel {
+    right: auto;
+    left: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-assistant-bubble,
+  .page-assistant-bubble-icon,
+  .page-assistant-panel,
+  .page-assistant-msg,
+  .page-assistant-typing i {
+    transition: none;
+    animation: none;
+  }
+}
